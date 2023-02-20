@@ -32,6 +32,7 @@ public class Test {
         Iterable<User> all = userRepository.findAll();
         for (User user : all) {
             System.out.println(user);
+            System.out.println("te4st");
         }
     }
 
