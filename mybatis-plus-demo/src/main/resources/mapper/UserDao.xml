@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mybatisplusdemo.mapper.UserDao">
+
+    <insert id="save" parameterType="com.example.mybatisplusdemo.model.User">
+        insert into user (id, user_name, age, email)
+        values
+            (#{id}, #{userName}, #{age1}, #{email})
+        ON DUPLICATE KEY UPDATE id=values(id), age = values(age), user_name = values(user_name)
+    </insert>
+</mapper>

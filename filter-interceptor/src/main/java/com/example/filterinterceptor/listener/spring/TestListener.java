@@ -1,0 +1,17 @@
+package com.example.filterinterceptor.listener.spring;
+
+import org.springframework.context.ApplicationListener;
+import org.springframework.stereotype.Component;
+
+/**
+ * @author xiaobo
+ * @description 监听器
+ * @date 2022/8/4 17:28
+ */
+@Component
+public class TestListener implements ApplicationListener<TestEvent> {
+    @Override
+    public void onApplicationEvent(TestEvent event) {
+        System.out.println("监听到事件发生："+event.getSs());
+    }
+}

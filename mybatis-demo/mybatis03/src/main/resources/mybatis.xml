@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!--外置配置文件-->
+    <properties resource="db.properties">
+      <!--  <property name="username" value="dev_user"/>
+        <property name="password" value="F2Fa3!33TYyg"/>-->
+    </properties>
+    
+   <!-- <settings>
+        <setting name="cacheEnabled" value="true"/>
+    </settings>-->
+
+    <!--别名-->
+    <typeAliases>
+        <package name="com.example.mybatis.model"/>
+    </typeAliases>
+
+    <!--重写类型处理器-->
+    <!--<typeHandlers>
+        <typeHandler handler="org.mybatis.example.ExampleTypeHandler"/>
+    </typeHandlers>-->
+
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${mysql.driver}"/>
+                <property name="url" value="${mysql.url}"/>
+                <property name="username" value="${mysql.username}"/>
+                <property name="password" value="${mysql.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+
+    <mappers>
+       <!-- <mapper resource="com/example/mybatis/mapper/UserMapper.xml"/>-->
+       <!-- <mapper class="com.example.mybatis.mapper.UserMapper"></mapper>-->
+        <package name="com.example.mybatis.mapper"/>
+    </mappers>
+
+
+</configuration>

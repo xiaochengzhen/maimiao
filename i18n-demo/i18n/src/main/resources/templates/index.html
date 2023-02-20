@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form>
+
+    <h3 th:text="#{login.tip}" >Please Sign in</h3>
+
+    <input type="text"  th:placeholder="#{login.username}" > <br>
+    <input type="password" th:placeholder="#{login.password}"> <br>
+
+
+    <input type="checkbox" value="rember-me">[[#{login.rember}]] <br>
+
+    <button type="submit" th:text="#{login.btn}" > Sign in</button>  <br>
+
+    <a th:href="@{'http://localhost:8080/index?lang=zh_CN'}" >中文</a> &nbsp;&nbsp;&nbsp;
+    <a th:href="@{'http://localhost:8080/index?lang=en_US'}">English</a>
+
+</form>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mybatis.mapper.DeptMapper">
+    <resultMap id="deptResult" type="com.example.mybatis.model.Dept">
+        <id column="id" property="id"></id>
+        <result column="dept_name" property="deptName"></result>
+    </resultMap>
+
+    <!--多对一，必须查询id，是根据id来判断list的，两个表中result 中 id的名称也不能相同-->
+    <resultMap id="deptResult1" type="com.example.mybatis.model.dto.DeptUser"  extends="deptResult">
+        <collection property="list" ofType="com.example.mybatis.model.User">
+            <id column="userId" property="id"></id>
+            <result column="username" property="username"></result>
+            <result column="age" property="age"></result>
+        </collection>
+    </resultMap>
+
+    <!--嵌套-->
+    <resultMap id="deptResult2" type="com.example.mybatis.model.dto.DeptUser"  extends="deptResult">
+        <collection property="list" column="id" ofType="com.example.mybatis.model.User" select="com.example.mybatis.mapper.UserMapper.selectUserByDeptId">
+
+        </collection>
+    </resultMap>
+
+    <select id="listDetpUser" resultMap="deptResult1">
+        select * from dept t0 left join user t1 on t0.id  =t1.dept_id
+    </select>
+
+    <select id="listDetpUser2" resultMap="deptResult2">
+        select * from dept
+    </select>
+</mapper>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mybatis.mapper.UserMapper">
+
+    <resultMap id="userResult" type="com.example.mybatis.model.User">
+        <id column="id" property="id"></id>
+        <result column="username" property="username"></result>
+        <result column="age" property="age"></result>
+    </resultMap>
+    <resultMap id="userResult1" type="com.example.mybatis.model.dto.UserDept">
+        <id column="id" property="id"></id>
+        <result column="username" property="username"></result>
+        <result column="age" property="age"></result>
+        <association property="dept" resultMap="com.example.mybatis.mapper.DeptMapper.deptResult"></association>
+    </resultMap>
+
+    <select id="selectUserAndDept" resultMap="userResult1">
+        select * from
+          user t0 left join dept t1
+          on t0.dept_id = t1.id
+    </select>
+
+    <select id="selectUserByDeptId" resultMap="userResult">
+        select * from
+            user where dept_id = #{deptId}
+    </select>
+
+
+</mapper>

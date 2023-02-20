@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!--外置配置文件-->
+    <properties resource="db.properties">
+    </properties>
+    
+   <!-- <settings>
+        <setting name="cacheEnabled" value="true"/>
+    </settings>-->
+
+    <!--别名-->
+    <typeAliases>
+        <package name="com.example.mybatisplugins.model"/>
+    </typeAliases>
+
+    <!--重写类型处理器-->
+    <!--<typeHandlers>
+        <typeHandler handler="org.mybatis.example.ExampleTypeHandler"/>
+    </typeHandlers>-->
+
+    <plugins>
+        <plugin interceptor="com.example.mybatisplugins.interceptor.MyPageInterceptor"></plugin>
+       <!-- <plugin interceptor="com.github.pagehelper.PageInterceptor">
+         &lt;!&ndash;   &lt;!&ndash;helperDialect （可省略）， 设置当前数据库的方言，默认会自动检查当前数据库环境实用的数据库&ndash;&gt;&ndash;&gt;
+            <property name="helperDialect" value="mysql"/>
+          &lt;!&ndash;  &lt;!&ndash;offsetAsPageNum 将RowBounds的参数作为分页插件的pageNum实用&ndash;&gt;
+            <property name="offsetAsPageNum" value="false"/>
+        &lt;!&ndash;    &lt;!&ndash;rowBoundsWithCount 将RowBounds的参数作为分页插件的一页数实用&ndash;&gt;
+            <property name="rowBoundsWithCount" value="false"/>
+         &lt;!&ndash;   &lt;!&ndash;reasonable 分页合理化参数，默认值为false。当该参数设置为 true 时，pageNum<=0 时会查询第一页， pageNum>pages（超过总数时），会查询最后一页。默认false 时，直接根据参数进行查询。 &ndash;&gt;&ndash;&gt;
+            <property name="reasonable" value="true"/>
+       &lt;!&ndash;     &lt;!&ndash;supportMethodsArguments 支持通过Mapper接口参数来传递分页&ndash;&gt;
+            <property name="supportMethodsArguments" value="true"/>
+         &lt;!&ndash;   &lt;!&ndash;当使用Mapper接口参数来传递分页 必须使用设定的参数名字：
+            默认映射规则pageNum=pageNum;pageSize=pageSize;count=countSql;reasonable=reasonable;pageSizeZero=pageSizeZero。&ndash;&gt;
+            <property name="params" value="pageNum=pageno"/>
+        &lt;!&ndash;    &lt;!&ndash;autoRuntimeDialect ： 如果程序使用了动态切换数据库的功能可以开启该参数true，默认是false&ndash;&gt;&ndash;&gt;
+        </plugin>-->
+    </plugins>
+
+
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${mysql.driver}"/>
+                <property name="url" value="${mysql.url}"/>
+                <property name="username" value="${mysql.username}"/>
+                <property name="password" value="${mysql.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+
+    <mappers>
+       <!-- <mapper resource="com/example/mybatis/mapper/UserMapper.xml"/>-->
+       <!-- <mapper class="com.example.mybatis.mapper.UserMapper"></mapper>-->
+        <package name="com.example.mybatisplugins.mapper"/>
+    </mappers>
+
+</configuration>

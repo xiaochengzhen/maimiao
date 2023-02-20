@@ -1,0 +1,9 @@
+com\xiao\springdatajpa\service\UserRepository.class
+com\xiao\springdatajpa\service\UserNativeNameRepository.class
+com\xiao\springdatajpa\service\UserSelfRepository.class
+com\xiao\springdatajpa\service\UserQueryByExampleRepository.class
+com\xiao\springdatajpa\service\UserQueryDSLRepository.class
+com\xiao\springdatajpa\config\SpringDataJpaConfig.class
+com\xiao\springdatajpa\service\UserPageRepository.class
+com\xiao\springdatajpa\model\User.class
+com\xiao\springdatajpa\model\QUser.class

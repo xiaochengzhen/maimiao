@@ -1,0 +1,17 @@
+user:
+  # ${random} 随机
+  age: ${random.int}
+  username: ${random.value}
+ # list: [a, b]
+  list:
+    - a
+    - b
+ # map: {1: a, 2: b}
+  map:
+    1: a
+    2: b
+
+  address:
+    id: 1
+    desc: xxx
+
