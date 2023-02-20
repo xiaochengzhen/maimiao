@@ -63,6 +63,7 @@ public class LoginController {
         //获取用户个人信息，如需获取当前授权人的信息，unionId参数必须传me
         String me = JSON.toJSONString(client.getUserWithOptions("me", getUserHeaders, new RuntimeOptions()).getBody());
         System.out.println(me);
+        System.out.println(me);
         return me;
     }
 }
