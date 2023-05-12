@@ -6,10 +6,13 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.segments.MergeSegments;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.example.mybatisplusdemo.mapper.TableUserMapper;
+import com.example.mybatisplusdemo.mapper.TbSecurDao;
 import com.example.mybatisplusdemo.mapper.UserDao;
 import com.example.mybatisplusdemo.model.PageUtils;
 import com.example.mybatisplusdemo.model.TableUser;
+import com.example.mybatisplusdemo.model.TbSecur;
 import com.example.mybatisplusdemo.model.User;
+import com.example.mybatisplusdemo.service.TblRoleService;
 import com.example.mybatisplusdemo.service.UserService;
 import com.github.fashionbrot.validated.annotation.Validated;
 import com.github.pagehelper.PageHelper;
@@ -17,16 +20,14 @@ import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @SpringBootTest(classes = MybatisPlusDemoApplication.class)
 class MybatisPlusDemoApplicationTests {
@@ -37,6 +38,19 @@ class MybatisPlusDemoApplicationTests {
 
     @Autowired
     private TableUserMapper tableUserMapper;
+    @Autowired
+    private TbSecurDao tbSecurDao;
+    @Autowired
+    private TblRoleService tblRoleService;
+
+    @Test
+    public void testSecur() {
+        TbSecur tbSecur = new TbSecur();
+        tbSecur.setAge((byte)3);
+      /*  tbSecur.setCreateTime(new Date());
+        tbSecur.setUpdateTime(new Date());*/
+        tbSecurDao.insertSelective(tbSecur);
+    }
 
     @Test
     public void getUser() {
@@ -54,8 +68,8 @@ class MybatisPlusDemoApplicationTests {
     public void save() {
         User user = new User();
         user.setUserName("123111211212");
-        user.setAge1(10);
-       userService.save1(user);
+       // user.setAge1(10);
+       userService.save(user);
     }
 
 
@@ -91,7 +105,7 @@ class MybatisPlusDemoApplicationTests {
         List<User> list = new ArrayList<>();
         User user1 = new User();
         user1.setUserName("12301");
-        user1.setAge1(1011334);
+        user1.setAge1(1);
         user1.setId(51L);
         User user2 = new User();
         user2.setUserName("Jone611111");
@@ -251,6 +265,11 @@ class MybatisPlusDemoApplicationTests {
         Date parse1 = simpleDateFormat.parse(s);
         System.out.println(parse1.toString());
         System.out.println(parse1.getTime());
+    }
+
+    @Test
+    public void testSynTran() {
+        tblRoleService.testSynTran();
     }
 
 }

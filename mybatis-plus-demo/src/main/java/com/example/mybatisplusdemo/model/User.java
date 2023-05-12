@@ -2,6 +2,7 @@ package com.example.mybatisplusdemo.model;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
@@ -40,7 +41,7 @@ public class User implements Serializable {
     private LocalDateTime updateTime;
 
     @TableField(fill = FieldFill.INSERT)
-    private LocalDateTime createTime;
+    private Date createTime;
 
     //@TableField(update = "%s+1")
     @Version

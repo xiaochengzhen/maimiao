@@ -23,7 +23,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserDao, User> implements U
 
     @Override
     public User listUser() {
-        User user = userDao.selectById(1);
+        User user = userDao.selectById(56);
         return user;
     }
 
@@ -47,6 +47,11 @@ public class UserServiceImpl extends BaseServiceImpl<UserDao, User> implements U
     @Override
     public void delete(Long id) {
         userDao.deleteById(id);
+    }
+
+    @Override
+    public void save(User user) {
+        userDao.save(user);
     }
 
 

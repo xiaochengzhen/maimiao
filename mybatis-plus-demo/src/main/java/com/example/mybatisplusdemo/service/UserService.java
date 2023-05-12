@@ -16,4 +16,5 @@ public interface UserService extends BaseService<User> {
     void save1(User user);
     void update(User user);
     void delete(Long id);
+    void save(User user);
 }
