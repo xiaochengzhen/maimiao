@@ -11,6 +11,8 @@ public class JavabaseApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(JavabaseApplication.class, args);
+
+
     }
 
     @Bean

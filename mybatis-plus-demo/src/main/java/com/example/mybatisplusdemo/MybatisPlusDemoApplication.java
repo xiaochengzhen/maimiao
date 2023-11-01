@@ -8,6 +8,9 @@ import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
+
 @SpringBootApplication
 //@SpringBootApplication(exclude = JacksonAutoConfiguration.class)
 //@MapperScan(basePackages="com.example.mybatisplusdemo.mapper")

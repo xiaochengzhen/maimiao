@@ -51,6 +51,9 @@ class MybatisPlusDemoApplicationTests {
         tbSecur.setUpdateTime(new Date());*/
         tbSecurDao.insertSelective(tbSecur);
     }
+    @Autowired
+    private TbSecurDao tbSecurDao;
+
 
     @Test
     public void getUser() {
