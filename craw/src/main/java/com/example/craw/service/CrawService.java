@@ -24,8 +24,8 @@ public class CrawService {
     private List<CrawHandler> crawHandlerList;
 
     public void craw() {
-       // String symbol = "AAPL.us";
-        String symbol = "00700.hk";
+        String symbol = "AAPL.us";
+       // String symbol = "00700.hk";
         String marketCode = "1";
         String marketType = "1";
         String market = StringUtils.substringAfter(symbol, ".");

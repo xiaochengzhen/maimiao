@@ -17,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.text.spi.DateFormatProvider;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -73,9 +72,11 @@ public class CompanyFinancialRealHandler extends CrawHandler{
         List<CompanyMainCompositionDO> list = new ArrayList<>();
         requestDTO.setConvertResult(list);
         if (StringUtils.isNotBlank(httpResult)) {
-            CompanyFinancialRealDTO companyFinancialRealDTO = JSONObject.parseObject(httpResult, CompanyFinancialRealDTO.class);
-            Integer code = companyFinancialRealDTO.getCode();
-            if (code == 0) {
+            JSONObject jsonObject = JSON.parseObject(httpResult);
+            Integer code = jsonObject.getInteger("code");
+            JSONObject dataJT = jsonObject.getJSONObject("data");
+            if (code == 0 && dataJT != null) {
+                CompanyFinancialRealDTO companyFinancialRealDTO = JSONObject.parseObject(httpResult, CompanyFinancialRealDTO.class);
                 CompanyFinancialRealDTO.DataDTO data = companyFinancialRealDTO.getData();
                 if (data != null) {
                     CompanyFinancialRealDTO.DataDTO.DataModuleDTO dataModule = data.getDataModule();

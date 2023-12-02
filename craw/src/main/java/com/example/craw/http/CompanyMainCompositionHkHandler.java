@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.craw.dto.RequestDTO;
 import com.example.craw.dto.response.CompositionDataHkDTO;
+import com.example.craw.dto.response.CompositionDataHkDTO.DataDTO.MainIncomeDTO.PriceItemDTO;
 import com.example.craw.mapper.CompanyMainCompositionMapper;
 import com.example.craw.model.CompanyMainCompositionDO;
 import com.example.craw.util.EncodeUtil;
@@ -130,23 +131,10 @@ public class CompanyMainCompositionHkHandler extends CrawHandler{
                     }
                     companyMainCompositionMapper.update(companyMainCompositionDO);
                 } else {
-                    JSONObject jsonObject = new JSONObject();
-                    if (language.equals("zh_CN")) {
-                        if (type.equals("4")) {
-                            jsonObject.put("zh_CN", companyMainCompositionDO.getRegion());
-                            companyMainCompositionDO.setRegion(jsonObject.toJSONString());
-                        } else {
-                            jsonObject.put("zh_CN", companyMainCompositionDO.getBusiness());
-                            companyMainCompositionDO.setBusiness(jsonObject.toJSONString());
-                        }
+                    if (type.equals("4")) {
+                        companyMainCompositionDO.setRegion(companyMainCompositionDO.getRegion());
                     } else {
-                        if (type.equals("4")) {
-                            jsonObject.put("en_US", companyMainCompositionDO.getRegion());
-                            companyMainCompositionDO.setRegion(jsonObject.toJSONString());
-                        } else {
-                            jsonObject.put("en_US", companyMainCompositionDO.getBusiness());
-                            companyMainCompositionDO.setBusiness(jsonObject.toJSONString());
-                        }
+                        companyMainCompositionDO.setBusiness(companyMainCompositionDO.getBusiness());
                     }
                     companyMainCompositionMapper.insert(companyMainCompositionDO);
                 }
@@ -157,72 +145,72 @@ public class CompanyMainCompositionHkHandler extends CrawHandler{
     private boolean zhExt(String type, CompanyMainCompositionDO companyMainCompositionDO, CompanyMainCompositionDO companyMainCompositionDORaw) {
         if (type.equals("4")) {
             String regionRaw = companyMainCompositionDORaw.getRegion();
-            JSONObject regionJO = new JSONObject();
-            String en = "";
             if (StringUtils.isNotBlank(regionRaw)) {
-                JSONObject jsonObject = JSON.parseObject(regionRaw);
-                String zh = jsonObject.getString("zh_CN");
-                en = jsonObject.getString("en_US");
-                if (StringUtils.isNotBlank(zh)) {
-                    return true;
-                }
+                return true;
             }
-            regionJO.put("zh_CN", companyMainCompositionDO.getRegion());
-            regionJO.put("en_US", en);
-            companyMainCompositionDO.setRegion(regionJO.toJSONString());
         } else {
             String businessRaw = companyMainCompositionDORaw.getBusiness();
-            JSONObject businessJO = new JSONObject();
-            String en = "";
             if (StringUtils.isNotBlank(businessRaw)) {
-                JSONObject jsonObject = JSON.parseObject(businessRaw);
-                String zh = jsonObject.getString("zh_CN");
-                en = jsonObject.getString("en_US");
-                if (StringUtils.isNotBlank(zh)) {
-                    return true;
-                }
+                return true;
             }
-            businessJO.put("zh_CN", companyMainCompositionDO.getBusiness());
-            businessJO.put("en_US", en);
-            companyMainCompositionDO.setBusiness(businessJO.toJSONString());
         }
         return false;
     }
 
     private boolean enExt(String type, CompanyMainCompositionDO companyMainCompositionDO, CompanyMainCompositionDO companyMainCompositionDORaw) {
+        Map<Integer, String> nameMap = new HashMap<>();
+        String str = "";
+        if (type.equals("4")) {
+            str = companyMainCompositionDO.getRegion();
+        } else {
+            str = companyMainCompositionDO.getBusiness();
+        }
+        CompositionDataHkDTO.DataDTO.MainIncomeDTO mainIncomeDTO = JSON.parseObject(str, CompositionDataHkDTO.DataDTO.MainIncomeDTO.class);
+        List<PriceItemDTO> priceItem = mainIncomeDTO.getPriceItem();
+        if (!CollectionUtils.isEmpty(priceItem)) {
+            for (int i = 0; i < priceItem.size(); i++) {
+                PriceItemDTO priceItemDTO = priceItem.get(i);
+                if (priceItemDTO != null) {
+                    String name = priceItemDTO.getName();
+                    if (StringUtils.isNotBlank(name)) {
+                        name = JSON.parseObject(name).getString("zh_CN");
+                    }
+                    nameMap.put(i, name);
+                }
+            }
+        }
         if (type.equals("4")) {
             String regionRaw = companyMainCompositionDORaw.getRegion();
-            JSONObject regionJO = new JSONObject();
-            String zh = "";
-            if (StringUtils.isNotBlank(regionRaw)) {
-                JSONObject jsonObject = JSON.parseObject(regionRaw);
-                zh = jsonObject.getString("zh_CN");
-                String en = jsonObject.getString("en_US");
-                if (StringUtils.isNotBlank(en)) {
-                    return true;
-                }
+            if (StringUtils.isBlank(regionRaw)) {
+                return true;
             }
-            regionJO.put("zh_CN", zh);
-            regionJO.put("en_US", companyMainCompositionDO.getRegion());
-            companyMainCompositionDO.setRegion(regionJO.toJSONString());
+            CompositionDataHkDTO.DataDTO.MainIncomeDTO mainIncomeDTORaw = JSON.parseObject(regionRaw, CompositionDataHkDTO.DataDTO.MainIncomeDTO.class);
+            List<PriceItemDTO> priceItemRaw = mainIncomeDTORaw.getPriceItem();
+            for (int i = 0; i < priceItemRaw.size(); i++) {
+                PriceItemDTO priceItemDTORaw = priceItemRaw.get(i);
+                String name = priceItemDTORaw.getName();
+                JSONObject nameJson = JSON.parseObject(name);
+                nameJson.put("en_US", nameMap.get(i));
+                priceItemDTORaw.setName(nameJson.toJSONString());
+            }
+            companyMainCompositionDO.setRegion(JSONObject.toJSONString(mainIncomeDTORaw));
         } else {
             String businessRaw = companyMainCompositionDORaw.getBusiness();
-            JSONObject businessJO = new JSONObject();
-            String zh = "";
-            if (StringUtils.isNotBlank(businessRaw)) {
-                JSONObject jsonObject = JSON.parseObject(businessRaw);
-                zh = jsonObject.getString("zh_CN");
-                String en = jsonObject.getString("en_US");
-                if (StringUtils.isNotBlank(en)) {
-                    return true;
-                }
+            if (StringUtils.isBlank(businessRaw)) {
+                return true;
             }
-            businessJO.put("zh_CN", zh);
-            businessJO.put("en_US", companyMainCompositionDO.getBusiness());
-            companyMainCompositionDO.setBusiness(businessJO.toJSONString());
+            CompositionDataHkDTO.DataDTO.MainIncomeDTO mainIncomeDTORaw = JSON.parseObject(businessRaw, CompositionDataHkDTO.DataDTO.MainIncomeDTO.class);
+            List<PriceItemDTO> priceItemRaw = mainIncomeDTORaw.getPriceItem();
+            for (int i = 0; i < priceItemRaw.size(); i++) {
+                PriceItemDTO priceItemDTORaw = priceItemRaw.get(i);
+                String name = priceItemDTORaw.getName();
+                JSONObject nameJson = JSON.parseObject(name);
+                nameJson.put("en_US", nameMap.get(i));
+                priceItemDTORaw.setName(nameJson.toJSONString());
+            }
+            companyMainCompositionDO.setBusiness(JSONObject.toJSONString(mainIncomeDTORaw));
         }
         return false;
     }
-
 
 }

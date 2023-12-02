@@ -1,6 +1,7 @@
 package com.example.craw.dto.response;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.example.craw.http.UnitDeserializer;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -43,7 +44,7 @@ public class CompanyFinancialRealDTO {
             @NoArgsConstructor
             @Data
             public static class IndicatorsDTO {
-                @JSONField(name = "num")
+                @JSONField(name = "num", deserializeUsing = UnitDeserializer.class)
                 private String num;
                 @JSONField(name = "radio")
                 private String radio;

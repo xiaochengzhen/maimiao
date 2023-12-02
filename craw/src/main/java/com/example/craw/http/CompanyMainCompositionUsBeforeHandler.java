@@ -78,7 +78,7 @@ public class CompanyMainCompositionUsBeforeHandler extends CrawHandler{
                             Integer date = screenDate.getDate();
                             if (date != null) {
                                 if (requestDTO.getType().equals("4")) {
-                                    CrawEnum [] crawEnums = {COMPANY_MAIN_REGION_US_EN, COMPANY_MAIN_REGION_US_ZH};
+                                    CrawEnum [] crawEnums = {COMPANY_MAIN_REGION_US_ZH, COMPANY_MAIN_REGION_US_EN};
                                     for (CrawEnum crawEnum : crawEnums) {
                                         RequestDTO request = new RequestDTO();
                                         request.setSymbol(requestDTO.getSymbol());
@@ -90,7 +90,7 @@ public class CompanyMainCompositionUsBeforeHandler extends CrawHandler{
                                         companyMainCompositionUsHandler.craw(request);
                                     }
                                 } else {
-                                    CrawEnum [] crawEnums = {COMPANY_MAIN_BUSINESS_US_EN, COMPANY_MAIN_BUSINESS_US_ZH};
+                                    CrawEnum [] crawEnums = {COMPANY_MAIN_BUSINESS_US_ZH, COMPANY_MAIN_BUSINESS_US_EN};
                                     for (CrawEnum crawEnum : crawEnums) {
                                         RequestDTO request = new RequestDTO();
                                         request.setSymbol(requestDTO.getSymbol());

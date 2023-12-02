@@ -1,6 +1,8 @@
 package com.example.craw.dto.response;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.example.craw.http.UnitDeserializer;
+import com.example.craw.http.ZhNameDeserializer;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -37,9 +39,9 @@ public class CompositionDataUsDTO {
         @NoArgsConstructor
         @Data
         public static class PriceItemDTO {
-            @JSONField(name = "name")
+            @JSONField(name = "name", deserializeUsing = ZhNameDeserializer.class)
             private String name;
-            @JSONField(name = "mainOperIncome")
+            @JSONField(name = "mainOperIncome", deserializeUsing = UnitDeserializer.class)
             private String mainOperIncome;
             @JSONField(name = "ratio")
             private String ratio;
