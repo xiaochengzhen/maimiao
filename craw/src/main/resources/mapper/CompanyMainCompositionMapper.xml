@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.craw.mapper.CompanyMainCompositionMapper">
+  <resultMap id="BaseResultMap" type="com.example.craw.model.CompanyMainCompositionDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="symbol" jdbcType="VARCHAR" property="symbol" />
+    <result column="quarter" jdbcType="VARCHAR" property="quarter" />
+    <result column="business" jdbcType="OTHER" property="business" />
+    <result column="region" jdbcType="OTHER" property="region" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, symbol, quarter, business, region, created_at, updated_at
+  </sql>
+  <select id="selectByQuarter"  resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_company_main_composition
+    where symbol = #{symbol} and quarter = #{quarter}  limit 1
+  </select>
+
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.example.craw.model.CompanyMainCompositionDO" useGeneratedKeys="true">
+    insert into tb_company_main_composition (symbol, quarter, business, region)
+    values (#{symbol,jdbcType=VARCHAR}, #{quarter,jdbcType=VARCHAR}, #{business,jdbcType=OTHER}, 
+      #{region,jdbcType=OTHER})
+  </insert>
+
+  <insert id="insertBatch"  parameterType="com.example.craw.model.CompanyMainCompositionDO">
+    insert into tb_company_main_composition (symbol, quarter, business,region)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.symbol,jdbcType=VARCHAR}, #{item.quarter,jdbcType=VARCHAR}, #{item.business,jdbcType=OTHER},
+      #{item.region,jdbcType=OTHER}
+      )
+    </foreach>
+  </insert>
+
+  <update id="update">
+    update tb_company_main_composition
+    <set>
+      <if test="business != null">
+        business = #{business},
+      </if>
+      <if test="region != null">
+        region = #{region},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+
+
+</mapper>

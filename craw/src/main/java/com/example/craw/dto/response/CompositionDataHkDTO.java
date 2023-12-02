@@ -1,7 +1,6 @@
 package com.example.craw.dto.response;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.example.craw.dto.ResponseDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,7 +13,7 @@ import java.util.List;
  */
 @NoArgsConstructor
 @Data
-public class CompositionDataResponseDTO {
+public class CompositionDataHkDTO {
 
     @JSONField(name = "code")
     private Integer code;

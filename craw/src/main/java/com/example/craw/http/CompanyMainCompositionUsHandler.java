@@ -3,8 +3,7 @@ package com.example.craw.http;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.craw.dto.RequestDTO;
-import com.example.craw.dto.ResponseDTO;
-import com.example.craw.dto.response.CompositionDataResponseDTO;
+import com.example.craw.dto.response.CompositionDataUsDTO;
 import com.example.craw.mapper.CompanyMainCompositionMapper;
 import com.example.craw.model.CompanyMainCompositionDO;
 import com.example.craw.util.EncodeUtil;
@@ -18,9 +17,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.Instant;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+
 
 /**
  * @description 
@@ -28,9 +30,9 @@ import java.util.*;
  * @date 2023/11/29 8:59
  */
 @Service
-public class CompanyMainCompositionHandler extends CrawHandler{
+public class CompanyMainCompositionUsHandler extends CrawHandler{
 
-    public static final String URL = "https://www.futunn.com/quote-api/quote-v2/get-composition-data?code={code}&market={market}&marketType={marketType}&period={period}&flag={flag}&count={count}&sort={sort}&type={type}&time={time}";
+    public static final String URL = "https://www.futunn.com/quote-api/quote-v2/get-composition-data?code={code}&market={market}&marketType={marketType}&type={type}&date={date}";
 
     @Autowired
     private RestTemplate restTemplate;
@@ -38,33 +40,30 @@ public class CompanyMainCompositionHandler extends CrawHandler{
     private CompanyMainCompositionMapper companyMainCompositionMapper;
 
     @Override
-    public boolean match(CrawEnum crawEnum) {
-        return crawEnum.getCode().equals("COMPANY_MAIN");
+    public boolean match(CrawEnum crawEnum, String market) {
+        return crawEnum.getCode().equals("COMPANY_MAIN_US") && market.equalsIgnoreCase("US");
     }
 
     @Override
     void httpRequest(RequestDTO requestDTO) {
+        String date = requestDTO.getDate();
         String symbol = requestDTO.getSymbol();
         String type = requestDTO.getType();
         String language = requestDTO.getLanguage();
         Map<String, String> map = new LinkedHashMap<>();
         map.put("code",StringUtils.substringBefore(symbol, "."));
         map.put("market",StringUtils.substringAfter(symbol, "."));
-        map.put("marketType","1");
-        map.put("period","3");
-        map.put("flag","0");
-        map.put("count","100");
-        map.put("sort","0");
-        map.put("flag","0");
+        map.put("marketType",requestDTO.getMarketType());
         map.put("type",type);
-        map.put("time",Instant.now().getEpochSecond()+"");
+        map.put("date",date);
         String s = JSONObject.toJSONString(map);
         System.out.println(s);
         String quoteToken = EncodeUtil.getQuoteToken(map);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("quote-token", quoteToken);
-        if (StringUtils.isBlank(language) || language.equals("en")) {
-            httpHeaders.add("referer", "https://www.futunn.com/en/stock/00002-HK/financial/main-composition");
+        if (StringUtils.isBlank(language) || language.equals("en_US")) {
+            String symbolMarket = StringUtils.substringBefore(symbol, ".")+"-"+StringUtils.substringAfter(symbol, ".").toUpperCase(Locale.ROOT);
+            httpHeaders.add("referer", "https://www.futunn.com/en/stock/"+symbolMarket+"/financial/main-composition");
         }
         HttpEntity httpEntity = new HttpEntity(map, httpHeaders);
         ResponseEntity<String> exchange = restTemplate.exchange(URL, HttpMethod.GET, httpEntity, String.class, map);
@@ -78,26 +77,35 @@ public class CompanyMainCompositionHandler extends CrawHandler{
         String httpResult = requestDTO.getHttpResult();
         String symbol = requestDTO.getSymbol();
         String type = requestDTO.getType();
+        String language = requestDTO.getLanguage();
         List<CompanyMainCompositionDO> list = new ArrayList<>();
         requestDTO.setConvertResult(list);
         if (StringUtils.isNotBlank(httpResult)) {
-            CompositionDataResponseDTO compositionDataResponseDTO = JSONObject.parseObject(httpResult, CompositionDataResponseDTO.class);
-            CompositionDataResponseDTO.DataDTO data = compositionDataResponseDTO.getData();
-            if (data != null) {
-                List<CompositionDataResponseDTO.DataDTO.MainIncomeDTO> mainIncome = data.getMainIncome();
-                if (!CollectionUtils.isEmpty(mainIncome)) {
-                    for (CompositionDataResponseDTO.DataDTO.MainIncomeDTO mainIncomeDTO : mainIncome) {
-                        Integer date = mainIncomeDTO.getDate();
-                        CompanyMainCompositionDO companyMainCompositionDO = new CompanyMainCompositionDO();
-                        companyMainCompositionDO.setSymbol(symbol);
-                        companyMainCompositionDO.setQuarter(date.toString());
-                        String mainIncomeDTOStr = JSON.toJSONString(mainIncomeDTO);
-                        if (type.equals("4")) {
-                            companyMainCompositionDO.setRegion(mainIncomeDTOStr);
-                        } else {
-                            companyMainCompositionDO.setBusiness(mainIncomeDTOStr);
+            JSONObject jsonObject = JSON.parseObject(httpResult);
+            Integer code = jsonObject.getInteger("code");
+            JSONObject dataJT = jsonObject.getJSONObject("data");
+            if (code == 0 && dataJT != null) {
+                CompositionDataUsDTO compositionDataUsDTO = JSONObject.parseObject(httpResult, CompositionDataUsDTO.class);
+                CompositionDataUsDTO.DataDTO data = compositionDataUsDTO.getData();
+                if (data != null) {
+                    String date = data.getDate();
+                    if (language.equals("en_US")) {
+                        date = dateFormatConvert(date);
+                    }
+                    List<CompositionDataUsDTO.DataDTO.PriceItemDTO> priceItem = data.getPriceItem();
+                    if (!CollectionUtils.isEmpty(priceItem)) {
+                        for (CompositionDataUsDTO.DataDTO.PriceItemDTO priceItemDTO : priceItem) {
+                            CompanyMainCompositionDO companyMainCompositionDO = new CompanyMainCompositionDO();
+                            companyMainCompositionDO.setSymbol(symbol);
+                            companyMainCompositionDO.setQuarter(date);
+                            String mainIncomeDTOStr = JSON.toJSONString(priceItemDTO);
+                            if (type.equals("4")) {
+                                companyMainCompositionDO.setRegion(mainIncomeDTOStr);
+                            } else {
+                                companyMainCompositionDO.setBusiness(mainIncomeDTOStr);
+                            }
+                            list.add(companyMainCompositionDO);
                         }
-                        list.add(companyMainCompositionDO);
                     }
                 }
             }
@@ -116,7 +124,7 @@ public class CompanyMainCompositionHandler extends CrawHandler{
                 CompanyMainCompositionDO companyMainCompositionDORaw = companyMainCompositionMapper.selectByQuarter(symbol, companyMainCompositionDO.getQuarter());
                 if (companyMainCompositionDORaw != null) {
                     companyMainCompositionDO.setId(companyMainCompositionDORaw.getId());
-                    if (language.equals("zh")) {
+                    if (language.equals("zh_CN")) {
                         if (zhExt(type, companyMainCompositionDO, companyMainCompositionDORaw)) {
                             break;
                         }
@@ -128,20 +136,20 @@ public class CompanyMainCompositionHandler extends CrawHandler{
                     companyMainCompositionMapper.update(companyMainCompositionDO);
                 } else {
                     JSONObject jsonObject = new JSONObject();
-                    if (language.equals("zh")) {
+                    if (language.equals("zh_CN")) {
                         if (type.equals("4")) {
-                            jsonObject.put("zh", companyMainCompositionDO.getRegion());
+                            jsonObject.put("zh_CN", companyMainCompositionDO.getRegion());
                             companyMainCompositionDO.setRegion(jsonObject.toJSONString());
                         } else {
-                            jsonObject.put("zh", companyMainCompositionDO.getBusiness());
+                            jsonObject.put("zh_CN", companyMainCompositionDO.getBusiness());
                             companyMainCompositionDO.setBusiness(jsonObject.toJSONString());
                         }
                     } else {
                         if (type.equals("4")) {
-                            jsonObject.put("en", companyMainCompositionDO.getRegion());
+                            jsonObject.put("en_US", companyMainCompositionDO.getRegion());
                             companyMainCompositionDO.setRegion(jsonObject.toJSONString());
                         } else {
-                            jsonObject.put("en", companyMainCompositionDO.getBusiness());
+                            jsonObject.put("en_US", companyMainCompositionDO.getBusiness());
                             companyMainCompositionDO.setBusiness(jsonObject.toJSONString());
                         }
                     }
@@ -158,14 +166,14 @@ public class CompanyMainCompositionHandler extends CrawHandler{
             String en = "";
             if (StringUtils.isNotBlank(regionRaw)) {
                 JSONObject jsonObject = JSON.parseObject(regionRaw);
-                String zh = jsonObject.getString("zh");
-                en = jsonObject.getString("en");
+                String zh = jsonObject.getString("zh_CN");
+                en = jsonObject.getString("en_US");
                 if (StringUtils.isNotBlank(zh)) {
                     return true;
                 }
             }
-            regionJO.put("zh", companyMainCompositionDO.getRegion());
-            regionJO.put("en", en);
+            regionJO.put("zh_CN", companyMainCompositionDO.getRegion());
+            regionJO.put("en_US", en);
             companyMainCompositionDO.setRegion(regionJO.toJSONString());
         } else {
             String businessRaw = companyMainCompositionDORaw.getBusiness();
@@ -173,14 +181,14 @@ public class CompanyMainCompositionHandler extends CrawHandler{
             String en = "";
             if (StringUtils.isNotBlank(businessRaw)) {
                 JSONObject jsonObject = JSON.parseObject(businessRaw);
-                String zh = jsonObject.getString("zh");
-                en = jsonObject.getString("en");
+                String zh = jsonObject.getString("zh_CN");
+                en = jsonObject.getString("en_US");
                 if (StringUtils.isNotBlank(zh)) {
                     return true;
                 }
             }
-            businessJO.put("zh", companyMainCompositionDO.getBusiness());
-            businessJO.put("en", en);
+            businessJO.put("zh_CN", companyMainCompositionDO.getBusiness());
+            businessJO.put("en_US", en);
             companyMainCompositionDO.setBusiness(businessJO.toJSONString());
         }
         return false;
@@ -193,14 +201,14 @@ public class CompanyMainCompositionHandler extends CrawHandler{
             String zh = "";
             if (StringUtils.isNotBlank(regionRaw)) {
                 JSONObject jsonObject = JSON.parseObject(regionRaw);
-                zh = jsonObject.getString("zh");
-                String en = jsonObject.getString("en");
+                zh = jsonObject.getString("zh_CN");
+                String en = jsonObject.getString("en_US");
                 if (StringUtils.isNotBlank(en)) {
                     return true;
                 }
             }
-            regionJO.put("zh", zh);
-            regionJO.put("en", companyMainCompositionDO.getRegion());
+            regionJO.put("zh_CN", zh);
+            regionJO.put("en_US", companyMainCompositionDO.getRegion());
             companyMainCompositionDO.setRegion(regionJO.toJSONString());
         } else {
             String businessRaw = companyMainCompositionDORaw.getBusiness();
@@ -208,18 +216,35 @@ public class CompanyMainCompositionHandler extends CrawHandler{
             String zh = "";
             if (StringUtils.isNotBlank(businessRaw)) {
                 JSONObject jsonObject = JSON.parseObject(businessRaw);
-                zh = jsonObject.getString("zh");
-                String en = jsonObject.getString("en");
+                zh = jsonObject.getString("zh_CN");
+                String en = jsonObject.getString("en_US");
                 if (StringUtils.isNotBlank(en)) {
                     return true;
                 }
             }
-            businessJO.put("zh", zh);
-            businessJO.put("en", companyMainCompositionDO.getBusiness());
+            businessJO.put("zh_CN", zh);
+            businessJO.put("en_US", companyMainCompositionDO.getBusiness());
             companyMainCompositionDO.setBusiness(businessJO.toJSONString());
         }
         return false;
     }
 
+
+    public static String dateFormatConvert(String date) {
+        // 定义输入日期字符串的格式
+        SimpleDateFormat inputDateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        // 定义输出日期字符串的格式
+        SimpleDateFormat outputDateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        try {
+            // 解析输入日期字符串
+            Date inputDate = inputDateFormat.parse(date);
+            // 格式化输出日期字符串
+            String outputDateStr = outputDateFormat.format(inputDate);
+            return outputDateStr;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
 
 }

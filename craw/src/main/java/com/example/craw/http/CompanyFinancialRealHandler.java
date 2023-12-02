@@ -17,13 +17,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.text.spi.DateFormatProvider;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
-import static com.example.craw.http.MainCompositionHandler.threadLocal;
+import static com.example.craw.http.MainCompositionHandler.stockIdThreadLocal;
 
 /**
  * @description 
@@ -41,7 +40,7 @@ public class CompanyFinancialRealHandler extends CrawHandler{
     private CompanyFinancialRealMapper companyFinancialRealMapper;
 
     @Override
-    public boolean match(CrawEnum crawEnum) {
+    public boolean match(CrawEnum crawEnum, String market) {
         return crawEnum.getCode().equals("FINANCIAL_REAL");
     }
 
@@ -49,16 +48,17 @@ public class CompanyFinancialRealHandler extends CrawHandler{
     void httpRequest(RequestDTO requestDTO) {
         String language = requestDTO.getLanguage();
         Map<String, String> map = new LinkedHashMap<>();
-        map.put("stockId",threadLocal.get());
-        LocalDateTime now = LocalDateTime.now();
-        map.put("date",now.getYear()+""+now.getMonthValue()+""+now.getDayOfMonth());
+        map.put("stockId",stockIdThreadLocal.get());
+        map.put("date",getDateStr());
         String s = JSONObject.toJSONString(map);
         System.out.println(s);
         String quoteToken = EncodeUtil.getQuoteToken(map);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("quote-token", quoteToken);
-        if (StringUtils.isBlank(language) || language.equals("en")) {
-            httpHeaders.add("referer", "https://www.futunn.com/en/stock/00003-HK/financial/main-composition");
+        if (StringUtils.isBlank(language) || language.equals("en_US")) {
+            String symbol = requestDTO.getSymbol();
+            String symbolMarket = StringUtils.substringBefore(symbol, ".")+"-"+StringUtils.substringAfter(symbol, ".").toUpperCase(Locale.ROOT);
+            httpHeaders.add("referer", "https://www.futunn.com/en/stock/"+symbolMarket+"/financial/main-composition");
         }
         HttpEntity httpEntity = new HttpEntity(map, httpHeaders);
         ResponseEntity<String> exchange = restTemplate.exchange(URL, HttpMethod.GET, httpEntity, String.class, map);
@@ -74,11 +74,14 @@ public class CompanyFinancialRealHandler extends CrawHandler{
         requestDTO.setConvertResult(list);
         if (StringUtils.isNotBlank(httpResult)) {
             CompanyFinancialRealDTO companyFinancialRealDTO = JSONObject.parseObject(httpResult, CompanyFinancialRealDTO.class);
-            CompanyFinancialRealDTO.DataDTO data = companyFinancialRealDTO.getData();
-            if (data != null) {
-                CompanyFinancialRealDTO.DataDTO.DataModuleDTO dataModule = data.getDataModule();
-                if (dataModule != null) {
-                    requestDTO.setConvertResult(dataModule);
+            Integer code = companyFinancialRealDTO.getCode();
+            if (code == 0) {
+                CompanyFinancialRealDTO.DataDTO data = companyFinancialRealDTO.getData();
+                if (data != null) {
+                    CompanyFinancialRealDTO.DataDTO.DataModuleDTO dataModule = data.getDataModule();
+                    if (dataModule != null) {
+                        requestDTO.setConvertResult(dataModule);
+                    }
                 }
             }
         }
@@ -93,7 +96,7 @@ public class CompanyFinancialRealHandler extends CrawHandler{
         if (convertResult != null) {
             CompanyFinancialRealDTO.DataDTO.DataModuleDTO dataModule = (CompanyFinancialRealDTO.DataDTO.DataModuleDTO) convertResult;
             CompanyFinancialRealDO companyFinancialRealRaw = companyFinancialRealMapper.selectByPrimaryKey(symbol);
-                if (language.equals("en")) {
+                if (language.equals("en_US")) {
                     enExt(companyFinancialRealRaw, companyFinancialRealDO, dataModule, symbol);
                 } else {
                     zhExt(companyFinancialRealRaw, companyFinancialRealDO, dataModule, symbol);
@@ -135,5 +138,10 @@ public class CompanyFinancialRealHandler extends CrawHandler{
         }
     }
 
+    private String getDateStr() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        String format = LocalDateTime.now().format(formatter);
+        return format;
+    }
 
 }

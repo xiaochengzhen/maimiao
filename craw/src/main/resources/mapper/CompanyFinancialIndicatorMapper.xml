@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.craw.mapper.CompanyFinancialIndicatorMapper">
+  <resultMap id="BaseResultMap" type="com.example.craw.model.CompanyFinancialIndicatorDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="symbol" jdbcType="VARCHAR" property="symbol" />
+    <result column="period" jdbcType="TINYINT" property="period" />
+    <result column="eps" jdbcType="OTHER" property="eps" />
+    <result column="bvps" jdbcType="OTHER" property="bvps" />
+    <result column="current_ratio" jdbcType="OTHER" property="currentRatio" />
+    <result column="quick_ratio" jdbcType="OTHER" property="quickRatio" />
+    <result column="roe" jdbcType="OTHER" property="roe" />
+    <result column="roa" jdbcType="OTHER" property="roa" />
+    <result column="gross_margin" jdbcType="OTHER" property="grossMargin" />
+    <result column="net_margin" jdbcType="OTHER" property="netMargin" />
+    <result column="fcf" jdbcType="OTHER" property="fcf" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, symbol, period, eps, bvps, current_ratio, quick_ratio, roe, roa, gross_margin, 
+    net_margin, fcf, created_at, updated_at
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_company_financial_indicator
+    where symbol = #{symbol} and period = #{period}  limit 1
+  </select>
+
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.example.craw.model.CompanyFinancialIndicatorDO" useGeneratedKeys="true">
+    insert into tb_company_financial_indicator (symbol, period, eps, 
+      bvps, current_ratio, quick_ratio, 
+      roe, roa, gross_margin, net_margin, 
+      fcf
+      )
+    values (#{symbol,jdbcType=VARCHAR}, #{period,jdbcType=TINYINT}, #{eps,jdbcType=OTHER}, 
+      #{bvps,jdbcType=OTHER}, #{currentRatio,jdbcType=OTHER}, #{quickRatio,jdbcType=OTHER}, 
+      #{roe,jdbcType=OTHER}, #{roa,jdbcType=OTHER}, #{grossMargin,jdbcType=OTHER}, #{netMargin,jdbcType=OTHER}, 
+      #{fcf,jdbcType=OTHER}
+      )
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.craw.model.CompanyFinancialIndicatorDO">
+    update tb_company_financial_indicator
+    <set>
+      <if test="symbol != null">
+        symbol = #{symbol,jdbcType=VARCHAR},
+      </if>
+      <if test="period != null">
+        period = #{period,jdbcType=TINYINT},
+      </if>
+      <if test="eps != null">
+        eps = #{eps,jdbcType=OTHER},
+      </if>
+      <if test="bvps != null">
+        bvps = #{bvps,jdbcType=OTHER},
+      </if>
+      <if test="currentRatio != null">
+        current_ratio = #{currentRatio,jdbcType=OTHER},
+      </if>
+      <if test="quickRatio != null">
+        quick_ratio = #{quickRatio,jdbcType=OTHER},
+      </if>
+      <if test="roe != null">
+        roe = #{roe,jdbcType=OTHER},
+      </if>
+      <if test="roa != null">
+        roa = #{roa,jdbcType=OTHER},
+      </if>
+      <if test="grossMargin != null">
+        gross_margin = #{grossMargin,jdbcType=OTHER},
+      </if>
+      <if test="netMargin != null">
+        net_margin = #{netMargin,jdbcType=OTHER},
+      </if>
+      <if test="fcf != null">
+        fcf = #{fcf,jdbcType=OTHER},
+      </if>
+      <if test="createdAt != null">
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>

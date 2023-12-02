@@ -16,7 +16,7 @@ import java.util.Map;
 public abstract class CrawHandler {
 
 
-  public abstract boolean match(CrawEnum crawEnum);
+  public abstract boolean match(CrawEnum crawEnum, String market);
 
   public void craw(RequestDTO requestDTO) {
       httpRequest(requestDTO);

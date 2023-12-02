@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.craw.mapper.CompanyHkIncomeStatementMapper">
+  <resultMap id="BaseResultMap" type="com.example.craw.model.CompanyHkIncomeStatementDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="symbol" jdbcType="VARCHAR" property="symbol" />
+    <result column="quarter" jdbcType="VARCHAR" property="quarter" />
+    <result column="turnover" jdbcType="OTHER" property="turnover" />
+    <result column="special_items_of_operating_revenue" jdbcType="OTHER" property="specialItemsOfOperatingRevenue" />
+    <result column="adjustment_items_of_operating_revenue" jdbcType="OTHER" property="adjustmentItemsOfOperatingRevenue" />
+    <result column="operating_income" jdbcType="OTHER" property="operatingIncome" />
+    <result column="employee_expenditure_operating_expenses" jdbcType="OTHER" property="employeeExpenditureOperatingExpenses" />
+    <result column="depreciation_and_amortization_operating_expenses" jdbcType="OTHER" property="depreciationAndAmortizationOperatingExpenses" />
+    <result column="cost_of_sales" jdbcType="OTHER" property="costOfSales" />
+    <result column="other_costs" jdbcType="OTHER" property="otherCosts" />
+    <result column="operating_expenses" jdbcType="OTHER" property="operatingExpenses" />
+    <result column="special_items_of_gross_profit" jdbcType="OTHER" property="specialItemsOfGrossProfit" />
+    <result column="adjustment_items_of_gross_profit" jdbcType="OTHER" property="adjustmentItemsOfGrossProfit" />
+    <result column="gross_profit" jdbcType="OTHER" property="grossProfit" />
+    <result column="selling_expenses" jdbcType="OTHER" property="sellingExpenses" />
+    <result column="administrative_expenses" jdbcType="OTHER" property="administrativeExpenses" />
+    <result column="research_and_development_expenses" jdbcType="OTHER" property="researchAndDevelopmentExpenses" />
+    <result column="profit_from_asset_sales" jdbcType="OTHER" property="profitFromAssetSales" />
+    <result column="employee_expense" jdbcType="OTHER" property="employeeExpense" />
+    <result column="depreciation_and_amortization" jdbcType="OTHER" property="depreciationAndAmortization" />
+    <result column="revaluation_surplus" jdbcType="OTHER" property="revaluationSurplus" />
+    <result column="changes_in_the_fair_value_of_investment_property" jdbcType="OTHER" property="changesInTheFairValueOfInvestmentProperty" />
+    <result column="changes_in_the_fair_value_of_derivative_financial_instruments" jdbcType="OTHER" property="changesInTheFairValueOfDerivativeFinancialInstruments" />
+    <result column="changes_in_the_fair_value_of_financial_assets" jdbcType="OTHER" property="changesInTheFairValueOfFinancialAssets" />
+    <result column="changes_in_the_fair_value_of_other_assets" jdbcType="OTHER" property="changesInTheFairValueOfOtherAssets" />
+    <result column="impairment_and_provision" jdbcType="OTHER" property="impairmentAndProvision" />
+    <result column="impairment_of_intangible_assets" jdbcType="OTHER" property="impairmentOfIntangibleAssets" />
+    <result column="impairment_of_property_machinery_and_equipment" jdbcType="OTHER" property="impairmentOfPropertyMachineryAndEquipment" />
+    <result column="impairment_of_available_for_sale_investments" jdbcType="OTHER" property="impairmentOfAvailableForSaleInvestments" />
+    <result column="goodwill_impairment" jdbcType="OTHER" property="goodwillImpairment" />
+    <result column="other_impairment_is_provision" jdbcType="OTHER" property="otherImpairmentIsProvision" />
+    <result column="operating_interest_expense" jdbcType="OTHER" property="operatingInterestExpense" />
+    <result column="special_items_of_operating_profit" jdbcType="OTHER" property="specialItemsOfOperatingProfit" />
+    <result column="adjustment_items_of_operating_profit" jdbcType="OTHER" property="adjustmentItemsOfOperatingProfit" />
+    <result column="operating_profit" jdbcType="OTHER" property="operatingProfit" />
+    <result column="financing_income" jdbcType="OTHER" property="financingIncome" />
+    <result column="financing_cost" jdbcType="OTHER" property="financingCost" />
+    <result column="share_of_profits_of_associates" jdbcType="OTHER" property="shareOfProfitsOfAssociates" />
+    <result column="share_of_profit_from_joint_venture_company" jdbcType="OTHER" property="shareOfProfitFromJointVentureCompany" />
+    <result column="share_of_jointly_controlled_entity_profit" jdbcType="OTHER" property="shareOfJointlyControlledEntityProfit" />
+    <result column="special_items_of_earning_before_tax" jdbcType="OTHER" property="specialItemsOfEarningBeforeTax" />
+    <result column="adjustment_items_of_earning_before_tax" jdbcType="OTHER" property="adjustmentItemsOfEarningBeforeTax" />
+    <result column="earning_before_tax" jdbcType="OTHER" property="earningBeforeTax" />
+    <result column="tax" jdbcType="OTHER" property="tax" />
+    <result column="deferred_tax" jdbcType="OTHER" property="deferredTax" />
+    <result column="after_tax_profit_from_continuing_operations" jdbcType="OTHER" property="afterTaxProfitFromContinuingOperations" />
+    <result column="after_tax_profit_from_non_continuing_business" jdbcType="OTHER" property="afterTaxProfitFromNonContinuingBusiness" />
+    <result column="special_items_of_earning_after_tax" jdbcType="OTHER" property="specialItemsOfEarningAfterTax" />
+    <result column="adjustment_items_of_earning_after_tax" jdbcType="OTHER" property="adjustmentItemsOfEarningAfterTax" />
+    <result column="earning_after_tax" jdbcType="OTHER" property="earningAfterTax" />
+    <result column="minority_shareholders_profits_from_continuing_business" jdbcType="OTHER" property="minorityShareholdersProfitsFromContinuingBusiness" />
+    <result column="minority_shareholders_non_continuing_business_profits" jdbcType="OTHER" property="minorityShareholdersNonContinuingBusinessProfits" />
+    <result column="minority_profit" jdbcType="OTHER" property="minorityProfit" />
+    <result column="shareholders_profits_from_continuing_business" jdbcType="OTHER" property="shareholdersProfitsFromContinuingBusiness" />
+    <result column="shareholders_from_non_continuing_business" jdbcType="OTHER" property="shareholdersFromNonContinuingBusiness" />
+    <result column="special_items_of_profit_attributable_to_shareholders" jdbcType="OTHER" property="specialItemsOfProfitAttributableToShareholders" />
+    <result column="adjustment_items_of_profit_attributable_to_shareholders" jdbcType="OTHER" property="adjustmentItemsOfProfitAttributableToShareholders" />
+    <result column="profit_attributable_to_shareholders" jdbcType="OTHER" property="profitAttributableToShareholders" />
+    <result column="dividend" jdbcType="OTHER" property="dividend" />
+    <result column="dividend_per_share" jdbcType="OTHER" property="dividendPerShare" />
+    <result column="basic_earnings_per_share" jdbcType="OTHER" property="basicEarningsPerShare" />
+    <result column="diluted_earnings_per_share" jdbcType="OTHER" property="dilutedEarningsPerShare" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, symbol, quarter, turnover, special_items_of_operating_revenue, adjustment_items_of_operating_revenue, 
+    operating_income, employee_expenditure_operating_expenses, depreciation_and_amortization_operating_expenses, 
+    cost_of_sales, other_costs, operating_expenses, special_items_of_gross_profit, adjustment_items_of_gross_profit, 
+    gross_profit, selling_expenses, administrative_expenses, research_and_development_expenses, 
+    profit_from_asset_sales, employee_expense, depreciation_and_amortization, revaluation_surplus, 
+    changes_in_the_fair_value_of_investment_property, changes_in_the_fair_value_of_derivative_financial_instruments, 
+    changes_in_the_fair_value_of_financial_assets, changes_in_the_fair_value_of_other_assets, 
+    impairment_and_provision, impairment_of_intangible_assets, impairment_of_property_machinery_and_equipment, 
+    impairment_of_available_for_sale_investments, goodwill_impairment, other_impairment_is_provision, 
+    operating_interest_expense, special_items_of_operating_profit, adjustment_items_of_operating_profit, 
+    operating_profit, financing_income, financing_cost, share_of_profits_of_associates, 
+    share_of_profit_from_joint_venture_company, share_of_jointly_controlled_entity_profit, 
+    special_items_of_earning_before_tax, adjustment_items_of_earning_before_tax, earning_before_tax, 
+    tax, deferred_tax, after_tax_profit_from_continuing_operations, after_tax_profit_from_non_continuing_business, 
+    special_items_of_earning_after_tax, adjustment_items_of_earning_after_tax, earning_after_tax, 
+    minority_shareholders_profits_from_continuing_business, minority_shareholders_non_continuing_business_profits, 
+    minority_profit, shareholders_profits_from_continuing_business, shareholders_from_non_continuing_business, 
+    special_items_of_profit_attributable_to_shareholders, adjustment_items_of_profit_attributable_to_shareholders, 
+    profit_attributable_to_shareholders, dividend, dividend_per_share, basic_earnings_per_share, 
+    diluted_earnings_per_share, created_at, updated_at
+  </sql>
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_company_hk_income_statement
+    where symbol = #{symbol} and quarter = #{quarter} limit 1
+  </select>
+
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.example.craw.model.CompanyHkIncomeStatementDO" useGeneratedKeys="true">
+    insert into tb_company_hk_income_statement (symbol, quarter, turnover, 
+      special_items_of_operating_revenue, adjustment_items_of_operating_revenue, 
+      operating_income, employee_expenditure_operating_expenses, 
+      depreciation_and_amortization_operating_expenses, cost_of_sales, 
+      other_costs, operating_expenses, special_items_of_gross_profit, 
+      adjustment_items_of_gross_profit, gross_profit, 
+      selling_expenses, administrative_expenses, research_and_development_expenses, 
+      profit_from_asset_sales, employee_expense, depreciation_and_amortization, 
+      revaluation_surplus, changes_in_the_fair_value_of_investment_property, 
+      changes_in_the_fair_value_of_derivative_financial_instruments, changes_in_the_fair_value_of_financial_assets, 
+      changes_in_the_fair_value_of_other_assets, impairment_and_provision, 
+      impairment_of_intangible_assets, impairment_of_property_machinery_and_equipment, 
+      impairment_of_available_for_sale_investments, goodwill_impairment, 
+      other_impairment_is_provision, operating_interest_expense, 
+      special_items_of_operating_profit, adjustment_items_of_operating_profit, 
+      operating_profit, financing_income, financing_cost, 
+      share_of_profits_of_associates, share_of_profit_from_joint_venture_company, 
+      share_of_jointly_controlled_entity_profit, special_items_of_earning_before_tax, 
+      adjustment_items_of_earning_before_tax, earning_before_tax, 
+      tax, deferred_tax, after_tax_profit_from_continuing_operations, 
+      after_tax_profit_from_non_continuing_business, special_items_of_earning_after_tax, 
+      adjustment_items_of_earning_after_tax, earning_after_tax, 
+      minority_shareholders_profits_from_continuing_business, minority_shareholders_non_continuing_business_profits, 
+      minority_profit, shareholders_profits_from_continuing_business, 
+      shareholders_from_non_continuing_business, special_items_of_profit_attributable_to_shareholders, 
+      adjustment_items_of_profit_attributable_to_shareholders, profit_attributable_to_shareholders, 
+      dividend, dividend_per_share, basic_earnings_per_share, 
+      diluted_earnings_per_share
+      )
+    values (#{symbol,jdbcType=VARCHAR}, #{quarter,jdbcType=VARCHAR}, #{turnover,jdbcType=OTHER}, 
+      #{specialItemsOfOperatingRevenue,jdbcType=OTHER}, #{adjustmentItemsOfOperatingRevenue,jdbcType=OTHER}, 
+      #{operatingIncome,jdbcType=OTHER}, #{employeeExpenditureOperatingExpenses,jdbcType=OTHER}, 
+      #{depreciationAndAmortizationOperatingExpenses,jdbcType=OTHER}, #{costOfSales,jdbcType=OTHER}, 
+      #{otherCosts,jdbcType=OTHER}, #{operatingExpenses,jdbcType=OTHER}, #{specialItemsOfGrossProfit,jdbcType=OTHER}, 
+      #{adjustmentItemsOfGrossProfit,jdbcType=OTHER}, #{grossProfit,jdbcType=OTHER}, 
+      #{sellingExpenses,jdbcType=OTHER}, #{administrativeExpenses,jdbcType=OTHER}, #{researchAndDevelopmentExpenses,jdbcType=OTHER}, 
+      #{profitFromAssetSales,jdbcType=OTHER}, #{employeeExpense,jdbcType=OTHER}, #{depreciationAndAmortization,jdbcType=OTHER}, 
+      #{revaluationSurplus,jdbcType=OTHER}, #{changesInTheFairValueOfInvestmentProperty,jdbcType=OTHER}, 
+      #{changesInTheFairValueOfDerivativeFinancialInstruments,jdbcType=OTHER}, #{changesInTheFairValueOfFinancialAssets,jdbcType=OTHER}, 
+      #{changesInTheFairValueOfOtherAssets,jdbcType=OTHER}, #{impairmentAndProvision,jdbcType=OTHER}, 
+      #{impairmentOfIntangibleAssets,jdbcType=OTHER}, #{impairmentOfPropertyMachineryAndEquipment,jdbcType=OTHER}, 
+      #{impairmentOfAvailableForSaleInvestments,jdbcType=OTHER}, #{goodwillImpairment,jdbcType=OTHER}, 
+      #{otherImpairmentIsProvision,jdbcType=OTHER}, #{operatingInterestExpense,jdbcType=OTHER}, 
+      #{specialItemsOfOperatingProfit,jdbcType=OTHER}, #{adjustmentItemsOfOperatingProfit,jdbcType=OTHER}, 
+      #{operatingProfit,jdbcType=OTHER}, #{financingIncome,jdbcType=OTHER}, #{financingCost,jdbcType=OTHER}, 
+      #{shareOfProfitsOfAssociates,jdbcType=OTHER}, #{shareOfProfitFromJointVentureCompany,jdbcType=OTHER}, 
+      #{shareOfJointlyControlledEntityProfit,jdbcType=OTHER}, #{specialItemsOfEarningBeforeTax,jdbcType=OTHER}, 
+      #{adjustmentItemsOfEarningBeforeTax,jdbcType=OTHER}, #{earningBeforeTax,jdbcType=OTHER}, 
+      #{tax,jdbcType=OTHER}, #{deferredTax,jdbcType=OTHER}, #{afterTaxProfitFromContinuingOperations,jdbcType=OTHER}, 
+      #{afterTaxProfitFromNonContinuingBusiness,jdbcType=OTHER}, #{specialItemsOfEarningAfterTax,jdbcType=OTHER}, 
+      #{adjustmentItemsOfEarningAfterTax,jdbcType=OTHER}, #{earningAfterTax,jdbcType=OTHER}, 
+      #{minorityShareholdersProfitsFromContinuingBusiness,jdbcType=OTHER}, #{minorityShareholdersNonContinuingBusinessProfits,jdbcType=OTHER}, 
+      #{minorityProfit,jdbcType=OTHER}, #{shareholdersProfitsFromContinuingBusiness,jdbcType=OTHER}, 
+      #{shareholdersFromNonContinuingBusiness,jdbcType=OTHER}, #{specialItemsOfProfitAttributableToShareholders,jdbcType=OTHER}, 
+      #{adjustmentItemsOfProfitAttributableToShareholders,jdbcType=OTHER}, #{profitAttributableToShareholders,jdbcType=OTHER}, 
+      #{dividend,jdbcType=OTHER}, #{dividendPerShare,jdbcType=OTHER}, #{basicEarningsPerShare,jdbcType=OTHER}, 
+      #{dilutedEarningsPerShare,jdbcType=OTHER}
+      )
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.craw.model.CompanyHkIncomeStatementDO">
+    update tb_company_hk_income_statement
+    <set>
+      <if test="symbol != null">
+        symbol = #{symbol,jdbcType=VARCHAR},
+      </if>
+      <if test="quarter != null">
+        quarter = #{quarter,jdbcType=VARCHAR},
+      </if>
+      <if test="turnover != null">
+        turnover = #{turnover,jdbcType=OTHER},
+      </if>
+      <if test="specialItemsOfOperatingRevenue != null">
+        special_items_of_operating_revenue = #{specialItemsOfOperatingRevenue,jdbcType=OTHER},
+      </if>
+      <if test="adjustmentItemsOfOperatingRevenue != null">
+        adjustment_items_of_operating_revenue = #{adjustmentItemsOfOperatingRevenue,jdbcType=OTHER},
+      </if>
+      <if test="operatingIncome != null">
+        operating_income = #{operatingIncome,jdbcType=OTHER},
+      </if>
+      <if test="employeeExpenditureOperatingExpenses != null">
+        employee_expenditure_operating_expenses = #{employeeExpenditureOperatingExpenses,jdbcType=OTHER},
+      </if>
+      <if test="depreciationAndAmortizationOperatingExpenses != null">
+        depreciation_and_amortization_operating_expenses = #{depreciationAndAmortizationOperatingExpenses,jdbcType=OTHER},
+      </if>
+      <if test="costOfSales != null">
+        cost_of_sales = #{costOfSales,jdbcType=OTHER},
+      </if>
+      <if test="otherCosts != null">
+        other_costs = #{otherCosts,jdbcType=OTHER},
+      </if>
+      <if test="operatingExpenses != null">
+        operating_expenses = #{operatingExpenses,jdbcType=OTHER},
+      </if>
+      <if test="specialItemsOfGrossProfit != null">
+        special_items_of_gross_profit = #{specialItemsOfGrossProfit,jdbcType=OTHER},
+      </if>
+      <if test="adjustmentItemsOfGrossProfit != null">
+        adjustment_items_of_gross_profit = #{adjustmentItemsOfGrossProfit,jdbcType=OTHER},
+      </if>
+      <if test="grossProfit != null">
+        gross_profit = #{grossProfit,jdbcType=OTHER},
+      </if>
+      <if test="sellingExpenses != null">
+        selling_expenses = #{sellingExpenses,jdbcType=OTHER},
+      </if>
+      <if test="administrativeExpenses != null">
+        administrative_expenses = #{administrativeExpenses,jdbcType=OTHER},
+      </if>
+      <if test="researchAndDevelopmentExpenses != null">
+        research_and_development_expenses = #{researchAndDevelopmentExpenses,jdbcType=OTHER},
+      </if>
+      <if test="profitFromAssetSales != null">
+        profit_from_asset_sales = #{profitFromAssetSales,jdbcType=OTHER},
+      </if>
+      <if test="employeeExpense != null">
+        employee_expense = #{employeeExpense,jdbcType=OTHER},
+      </if>
+      <if test="depreciationAndAmortization != null">
+        depreciation_and_amortization = #{depreciationAndAmortization,jdbcType=OTHER},
+      </if>
+      <if test="revaluationSurplus != null">
+        revaluation_surplus = #{revaluationSurplus,jdbcType=OTHER},
+      </if>
+      <if test="changesInTheFairValueOfInvestmentProperty != null">
+        changes_in_the_fair_value_of_investment_property = #{changesInTheFairValueOfInvestmentProperty,jdbcType=OTHER},
+      </if>
+      <if test="changesInTheFairValueOfDerivativeFinancialInstruments != null">
+        changes_in_the_fair_value_of_derivative_financial_instruments = #{changesInTheFairValueOfDerivativeFinancialInstruments,jdbcType=OTHER},
+      </if>
+      <if test="changesInTheFairValueOfFinancialAssets != null">
+        changes_in_the_fair_value_of_financial_assets = #{changesInTheFairValueOfFinancialAssets,jdbcType=OTHER},
+      </if>
+      <if test="changesInTheFairValueOfOtherAssets != null">
+        changes_in_the_fair_value_of_other_assets = #{changesInTheFairValueOfOtherAssets,jdbcType=OTHER},
+      </if>
+      <if test="impairmentAndProvision != null">
+        impairment_and_provision = #{impairmentAndProvision,jdbcType=OTHER},
+      </if>
+      <if test="impairmentOfIntangibleAssets != null">
+        impairment_of_intangible_assets = #{impairmentOfIntangibleAssets,jdbcType=OTHER},
+      </if>
+      <if test="impairmentOfPropertyMachineryAndEquipment != null">
+        impairment_of_property_machinery_and_equipment = #{impairmentOfPropertyMachineryAndEquipment,jdbcType=OTHER},
+      </if>
+      <if test="impairmentOfAvailableForSaleInvestments != null">
+        impairment_of_available_for_sale_investments = #{impairmentOfAvailableForSaleInvestments,jdbcType=OTHER},
+      </if>
+      <if test="goodwillImpairment != null">
+        goodwill_impairment = #{goodwillImpairment,jdbcType=OTHER},
+      </if>
+      <if test="otherImpairmentIsProvision != null">
+        other_impairment_is_provision = #{otherImpairmentIsProvision,jdbcType=OTHER},
+      </if>
+      <if test="operatingInterestExpense != null">
+        operating_interest_expense = #{operatingInterestExpense,jdbcType=OTHER},
+      </if>
+      <if test="specialItemsOfOperatingProfit != null">
+        special_items_of_operating_profit = #{specialItemsOfOperatingProfit,jdbcType=OTHER},
+      </if>
+      <if test="adjustmentItemsOfOperatingProfit != null">
+        adjustment_items_of_operating_profit = #{adjustmentItemsOfOperatingProfit,jdbcType=OTHER},
+      </if>
+      <if test="operatingProfit != null">
+        operating_profit = #{operatingProfit,jdbcType=OTHER},
+      </if>
+      <if test="financingIncome != null">
+        financing_income = #{financingIncome,jdbcType=OTHER},
+      </if>
+      <if test="financingCost != null">
+        financing_cost = #{financingCost,jdbcType=OTHER},
+      </if>
+      <if test="shareOfProfitsOfAssociates != null">
+        share_of_profits_of_associates = #{shareOfProfitsOfAssociates,jdbcType=OTHER},
+      </if>
+      <if test="shareOfProfitFromJointVentureCompany != null">
+        share_of_profit_from_joint_venture_company = #{shareOfProfitFromJointVentureCompany,jdbcType=OTHER},
+      </if>
+      <if test="shareOfJointlyControlledEntityProfit != null">
+        share_of_jointly_controlled_entity_profit = #{shareOfJointlyControlledEntityProfit,jdbcType=OTHER},
+      </if>
+      <if test="specialItemsOfEarningBeforeTax != null">
+        special_items_of_earning_before_tax = #{specialItemsOfEarningBeforeTax,jdbcType=OTHER},
+      </if>
+      <if test="adjustmentItemsOfEarningBeforeTax != null">
+        adjustment_items_of_earning_before_tax = #{adjustmentItemsOfEarningBeforeTax,jdbcType=OTHER},
+      </if>
+      <if test="earningBeforeTax != null">
+        earning_before_tax = #{earningBeforeTax,jdbcType=OTHER},
+      </if>
+      <if test="tax != null">
+        tax = #{tax,jdbcType=OTHER},
+      </if>
+      <if test="deferredTax != null">
+        deferred_tax = #{deferredTax,jdbcType=OTHER},
+      </if>
+      <if test="afterTaxProfitFromContinuingOperations != null">
+        after_tax_profit_from_continuing_operations = #{afterTaxProfitFromContinuingOperations,jdbcType=OTHER},
+      </if>
+      <if test="afterTaxProfitFromNonContinuingBusiness != null">
+        after_tax_profit_from_non_continuing_business = #{afterTaxProfitFromNonContinuingBusiness,jdbcType=OTHER},
+      </if>
+      <if test="specialItemsOfEarningAfterTax != null">
+        special_items_of_earning_after_tax = #{specialItemsOfEarningAfterTax,jdbcType=OTHER},
+      </if>
+      <if test="adjustmentItemsOfEarningAfterTax != null">
+        adjustment_items_of_earning_after_tax = #{adjustmentItemsOfEarningAfterTax,jdbcType=OTHER},
+      </if>
+      <if test="earningAfterTax != null">
+        earning_after_tax = #{earningAfterTax,jdbcType=OTHER},
+      </if>
+      <if test="minorityShareholdersProfitsFromContinuingBusiness != null">
+        minority_shareholders_profits_from_continuing_business = #{minorityShareholdersProfitsFromContinuingBusiness,jdbcType=OTHER},
+      </if>
+      <if test="minorityShareholdersNonContinuingBusinessProfits != null">
+        minority_shareholders_non_continuing_business_profits = #{minorityShareholdersNonContinuingBusinessProfits,jdbcType=OTHER},
+      </if>
+      <if test="minorityProfit != null">
+        minority_profit = #{minorityProfit,jdbcType=OTHER},
+      </if>
+      <if test="shareholdersProfitsFromContinuingBusiness != null">
+        shareholders_profits_from_continuing_business = #{shareholdersProfitsFromContinuingBusiness,jdbcType=OTHER},
+      </if>
+      <if test="shareholdersFromNonContinuingBusiness != null">
+        shareholders_from_non_continuing_business = #{shareholdersFromNonContinuingBusiness,jdbcType=OTHER},
+      </if>
+      <if test="specialItemsOfProfitAttributableToShareholders != null">
+        special_items_of_profit_attributable_to_shareholders = #{specialItemsOfProfitAttributableToShareholders,jdbcType=OTHER},
+      </if>
+      <if test="adjustmentItemsOfProfitAttributableToShareholders != null">
+        adjustment_items_of_profit_attributable_to_shareholders = #{adjustmentItemsOfProfitAttributableToShareholders,jdbcType=OTHER},
+      </if>
+      <if test="profitAttributableToShareholders != null">
+        profit_attributable_to_shareholders = #{profitAttributableToShareholders,jdbcType=OTHER},
+      </if>
+      <if test="dividend != null">
+        dividend = #{dividend,jdbcType=OTHER},
+      </if>
+      <if test="dividendPerShare != null">
+        dividend_per_share = #{dividendPerShare,jdbcType=OTHER},
+      </if>
+      <if test="basicEarningsPerShare != null">
+        basic_earnings_per_share = #{basicEarningsPerShare,jdbcType=OTHER},
+      </if>
+      <if test="dilutedEarningsPerShare != null">
+        diluted_earnings_per_share = #{dilutedEarningsPerShare,jdbcType=OTHER},
+      </if>
+      <if test="createdAt != null">
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>

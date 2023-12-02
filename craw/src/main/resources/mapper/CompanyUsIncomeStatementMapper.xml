@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.craw.mapper.CompanyUsIncomeStatementMapper">
+  <resultMap id="BaseResultMap" type="com.example.craw.model.CompanyUsIncomeStatementDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="symbol" jdbcType="VARCHAR" property="symbol" />
+    <result column="quarter" jdbcType="VARCHAR" property="quarter" />
+    <result column="total_revenue" jdbcType="OTHER" property="totalRevenue" />
+    <result column="operating_revenue" jdbcType="OTHER" property="operatingRevenue" />
+    <result column="excise_taxes" jdbcType="OTHER" property="exciseTaxes" />
+    <result column="cost_of_revenue" jdbcType="OTHER" property="costOfRevenue" />
+    <result column="gross_profit" jdbcType="OTHER" property="grossProfit" />
+    <result column="operating_expense" jdbcType="OTHER" property="operatingExpense" />
+    <result column="selling_and_administrative_expenses" jdbcType="OTHER" property="sellingAndAdministrativeExpenses" />
+    <result column="selling_and_marketing_expense" jdbcType="OTHER" property="sellingAndMarketingExpense" />
+    <result column="general_and_administrative_expense" jdbcType="OTHER" property="generalAndAdministrativeExpense" />
+    <result column="research_and_development_costs" jdbcType="OTHER" property="researchAndDevelopmentCosts" />
+    <result column="depreciation_amortization_depletion" jdbcType="OTHER" property="depreciationAmortizationDepletion" />
+    <result column="depreciation_and_amortization" jdbcType="OTHER" property="depreciationAndAmortization" />
+    <result column="depletion" jdbcType="OTHER" property="depletion" />
+    <result column="provision_for_doubtful_accounts" jdbcType="OTHER" property="provisionForDoubtfulAccounts" />
+    <result column="other_taxes" jdbcType="OTHER" property="otherTaxes" />
+    <result column="other_operating_expenses" jdbcType="OTHER" property="otherOperatingExpenses" />
+    <result column="operating_profit" jdbcType="OTHER" property="operatingProfit" />
+    <result column="net_non_operating_interest_income_expense" jdbcType="OTHER" property="netNonOperatingInterestIncomeExpense" />
+    <result column="non_operating_interest_income" jdbcType="OTHER" property="nonOperatingInterestIncome" />
+    <result column="non_operating_interest_expense" jdbcType="OTHER" property="nonOperatingInterestExpense" />
+    <result column="total_other_finance_cost" jdbcType="OTHER" property="totalOtherFinanceCost" />
+    <result column="other_net_income" jdbcType="OTHER" property="otherNetIncome" />
+    <result column="gain_on_sale_of_security" jdbcType="OTHER" property="gainOnSaleOfSecurity" />
+    <result column="earnings_from_equity_interest" jdbcType="OTHER" property="earningsFromEquityInterest" />
+    <result column="amortization_of_securities" jdbcType="OTHER" property="amortizationOfSecurities" />
+    <result column="special_income" jdbcType="OTHER" property="specialIncome" />
+    <result column="restructuring_and_merger_acquisition" jdbcType="OTHER" property="restructuringAndMergerAcquisition" />
+    <result column="impairment_of_capital_assets" jdbcType="OTHER" property="impairmentOfCapitalAssets" />
+    <result column="other_special_charges" jdbcType="OTHER" property="otherSpecialCharges" />
+    <result column="write_off" jdbcType="OTHER" property="writeOff" />
+    <result column="gain_on_sale_of_business" jdbcType="OTHER" property="gainOnSaleOfBusiness" />
+    <result column="gain_on_sale_of_property_plant_equipment" jdbcType="OTHER" property="gainOnSaleOfPropertyPlantEquipment" />
+    <result column="other_non_operating_income" jdbcType="OTHER" property="otherNonOperatingIncome" />
+    <result column="income_before_tax" jdbcType="OTHER" property="incomeBeforeTax" />
+    <result column="income_tax" jdbcType="OTHER" property="incomeTax" />
+    <result column="earnings_from_equity_interest_net_of_tax" jdbcType="OTHER" property="earningsFromEquityInterestNetOfTax" />
+    <result column="net_income" jdbcType="OTHER" property="netIncome" />
+    <result column="net_income_continuous_operations" jdbcType="OTHER" property="netIncomeContinuousOperations" />
+    <result column="net_income_discontinuous_operations" jdbcType="OTHER" property="netIncomeDiscontinuousOperations" />
+    <result column="net_income_extraordinary" jdbcType="OTHER" property="netIncomeExtraordinary" />
+    <result column="cumulative_effect_of_accounting_change" jdbcType="OTHER" property="cumulativeEffectOfAccountingChange" />
+    <result column="net_income_from_tax_loss_carry_forward" jdbcType="OTHER" property="netIncomeFromTaxLossCarryForward" />
+    <result column="net_income_from_other_gains_losses" jdbcType="OTHER" property="netIncomeFromOtherGainsLosses" />
+    <result column="minority_interest_income" jdbcType="OTHER" property="minorityInterestIncome" />
+    <result column="net_income_attributable_to_the_parent_company" jdbcType="OTHER" property="netIncomeAttributableToTheParentCompany" />
+    <result column="preferred_stock_dividends" jdbcType="OTHER" property="preferredStockDividends" />
+    <result column="other_preferred_stock_dividends" jdbcType="OTHER" property="otherPreferredStockDividends" />
+    <result column="net_income_attributable_to_common_stockholders" jdbcType="OTHER" property="netIncomeAttributableToCommonStockholders" />
+    <result column="basic_earnings_per_share" jdbcType="OTHER" property="basicEarningsPerShare" />
+    <result column="diluted_earnings_per_share" jdbcType="OTHER" property="dilutedEarningsPerShare" />
+    <result column="dividend_per_share" jdbcType="OTHER" property="dividendPerShare" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, symbol, quarter, total_revenue, operating_revenue, excise_taxes, cost_of_revenue, 
+    gross_profit, operating_expense, selling_and_administrative_expenses, selling_and_marketing_expense, 
+    general_and_administrative_expense, research_and_development_costs, depreciation_amortization_depletion, 
+    depreciation_and_amortization, depletion, provision_for_doubtful_accounts, other_taxes, 
+    other_operating_expenses, operating_profit, net_non_operating_interest_income_expense, 
+    non_operating_interest_income, non_operating_interest_expense, total_other_finance_cost, 
+    other_net_income, gain_on_sale_of_security, earnings_from_equity_interest, amortization_of_securities, 
+    special_income, restructuring_and_merger_acquisition, impairment_of_capital_assets, 
+    other_special_charges, write_off, gain_on_sale_of_business, gain_on_sale_of_property_plant_equipment, 
+    other_non_operating_income, income_before_tax, income_tax, earnings_from_equity_interest_net_of_tax, 
+    net_income, net_income_continuous_operations, net_income_discontinuous_operations, 
+    net_income_extraordinary, cumulative_effect_of_accounting_change, net_income_from_tax_loss_carry_forward, 
+    net_income_from_other_gains_losses, minority_interest_income, net_income_attributable_to_the_parent_company, 
+    preferred_stock_dividends, other_preferred_stock_dividends, net_income_attributable_to_common_stockholders, 
+    basic_earnings_per_share, diluted_earnings_per_share, dividend_per_share, created_at, 
+    updated_at
+  </sql>
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_company_us_income_statement
+    where symbol = #{symbol} and quarter = #{quarter} limit 1
+  </select>
+
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.example.craw.model.CompanyUsIncomeStatementDO" useGeneratedKeys="true">
+    insert into tb_company_us_income_statement (symbol, quarter, total_revenue, 
+      operating_revenue, excise_taxes, cost_of_revenue, 
+      gross_profit, operating_expense, selling_and_administrative_expenses, 
+      selling_and_marketing_expense, general_and_administrative_expense, 
+      research_and_development_costs, depreciation_amortization_depletion, 
+      depreciation_and_amortization, depletion, provision_for_doubtful_accounts, 
+      other_taxes, other_operating_expenses, operating_profit, 
+      net_non_operating_interest_income_expense, non_operating_interest_income, 
+      non_operating_interest_expense, total_other_finance_cost, 
+      other_net_income, gain_on_sale_of_security, earnings_from_equity_interest, 
+      amortization_of_securities, special_income, restructuring_and_merger_acquisition, 
+      impairment_of_capital_assets, other_special_charges, 
+      write_off, gain_on_sale_of_business, gain_on_sale_of_property_plant_equipment, 
+      other_non_operating_income, income_before_tax, income_tax, 
+      earnings_from_equity_interest_net_of_tax, net_income, 
+      net_income_continuous_operations, net_income_discontinuous_operations, 
+      net_income_extraordinary, cumulative_effect_of_accounting_change, 
+      net_income_from_tax_loss_carry_forward, net_income_from_other_gains_losses, 
+      minority_interest_income, net_income_attributable_to_the_parent_company, 
+      preferred_stock_dividends, other_preferred_stock_dividends, 
+      net_income_attributable_to_common_stockholders, basic_earnings_per_share, 
+      diluted_earnings_per_share, dividend_per_share)
+    values (#{symbol,jdbcType=VARCHAR}, #{quarter,jdbcType=VARCHAR}, #{totalRevenue,jdbcType=OTHER}, 
+      #{operatingRevenue,jdbcType=OTHER}, #{exciseTaxes,jdbcType=OTHER}, #{costOfRevenue,jdbcType=OTHER}, 
+      #{grossProfit,jdbcType=OTHER}, #{operatingExpense,jdbcType=OTHER}, #{sellingAndAdministrativeExpenses,jdbcType=OTHER}, 
+      #{sellingAndMarketingExpense,jdbcType=OTHER}, #{generalAndAdministrativeExpense,jdbcType=OTHER}, 
+      #{researchAndDevelopmentCosts,jdbcType=OTHER}, #{depreciationAmortizationDepletion,jdbcType=OTHER}, 
+      #{depreciationAndAmortization,jdbcType=OTHER}, #{depletion,jdbcType=OTHER}, #{provisionForDoubtfulAccounts,jdbcType=OTHER}, 
+      #{otherTaxes,jdbcType=OTHER}, #{otherOperatingExpenses,jdbcType=OTHER}, #{operatingProfit,jdbcType=OTHER}, 
+      #{netNonOperatingInterestIncomeExpense,jdbcType=OTHER}, #{nonOperatingInterestIncome,jdbcType=OTHER}, 
+      #{nonOperatingInterestExpense,jdbcType=OTHER}, #{totalOtherFinanceCost,jdbcType=OTHER}, 
+      #{otherNetIncome,jdbcType=OTHER}, #{gainOnSaleOfSecurity,jdbcType=OTHER}, #{earningsFromEquityInterest,jdbcType=OTHER}, 
+      #{amortizationOfSecurities,jdbcType=OTHER}, #{specialIncome,jdbcType=OTHER}, #{restructuringAndMergerAcquisition,jdbcType=OTHER}, 
+      #{impairmentOfCapitalAssets,jdbcType=OTHER}, #{otherSpecialCharges,jdbcType=OTHER}, 
+      #{writeOff,jdbcType=OTHER}, #{gainOnSaleOfBusiness,jdbcType=OTHER}, #{gainOnSaleOfPropertyPlantEquipment,jdbcType=OTHER}, 
+      #{otherNonOperatingIncome,jdbcType=OTHER}, #{incomeBeforeTax,jdbcType=OTHER}, #{incomeTax,jdbcType=OTHER}, 
+      #{earningsFromEquityInterestNetOfTax,jdbcType=OTHER}, #{netIncome,jdbcType=OTHER}, 
+      #{netIncomeContinuousOperations,jdbcType=OTHER}, #{netIncomeDiscontinuousOperations,jdbcType=OTHER}, 
+      #{netIncomeExtraordinary,jdbcType=OTHER}, #{cumulativeEffectOfAccountingChange,jdbcType=OTHER}, 
+      #{netIncomeFromTaxLossCarryForward,jdbcType=OTHER}, #{netIncomeFromOtherGainsLosses,jdbcType=OTHER}, 
+      #{minorityInterestIncome,jdbcType=OTHER}, #{netIncomeAttributableToTheParentCompany,jdbcType=OTHER}, 
+      #{preferredStockDividends,jdbcType=OTHER}, #{otherPreferredStockDividends,jdbcType=OTHER}, 
+      #{netIncomeAttributableToCommonStockholders,jdbcType=OTHER}, #{basicEarningsPerShare,jdbcType=OTHER}, 
+      #{dilutedEarningsPerShare,jdbcType=OTHER}, #{dividendPerShare,jdbcType=OTHER})
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.craw.model.CompanyUsIncomeStatementDO">
+    update tb_company_us_income_statement
+    <set>
+      <if test="symbol != null">
+        symbol = #{symbol,jdbcType=VARCHAR},
+      </if>
+      <if test="quarter != null">
+        quarter = #{quarter,jdbcType=VARCHAR},
+      </if>
+      <if test="totalRevenue != null">
+        total_revenue = #{totalRevenue,jdbcType=OTHER},
+      </if>
+      <if test="operatingRevenue != null">
+        operating_revenue = #{operatingRevenue,jdbcType=OTHER},
+      </if>
+      <if test="exciseTaxes != null">
+        excise_taxes = #{exciseTaxes,jdbcType=OTHER},
+      </if>
+      <if test="costOfRevenue != null">
+        cost_of_revenue = #{costOfRevenue,jdbcType=OTHER},
+      </if>
+      <if test="grossProfit != null">
+        gross_profit = #{grossProfit,jdbcType=OTHER},
+      </if>
+      <if test="operatingExpense != null">
+        operating_expense = #{operatingExpense,jdbcType=OTHER},
+      </if>
+      <if test="sellingAndAdministrativeExpenses != null">
+        selling_and_administrative_expenses = #{sellingAndAdministrativeExpenses,jdbcType=OTHER},
+      </if>
+      <if test="sellingAndMarketingExpense != null">
+        selling_and_marketing_expense = #{sellingAndMarketingExpense,jdbcType=OTHER},
+      </if>
+      <if test="generalAndAdministrativeExpense != null">
+        general_and_administrative_expense = #{generalAndAdministrativeExpense,jdbcType=OTHER},
+      </if>
+      <if test="researchAndDevelopmentCosts != null">
+        research_and_development_costs = #{researchAndDevelopmentCosts,jdbcType=OTHER},
+      </if>
+      <if test="depreciationAmortizationDepletion != null">
+        depreciation_amortization_depletion = #{depreciationAmortizationDepletion,jdbcType=OTHER},
+      </if>
+      <if test="depreciationAndAmortization != null">
+        depreciation_and_amortization = #{depreciationAndAmortization,jdbcType=OTHER},
+      </if>
+      <if test="depletion != null">
+        depletion = #{depletion,jdbcType=OTHER},
+      </if>
+      <if test="provisionForDoubtfulAccounts != null">
+        provision_for_doubtful_accounts = #{provisionForDoubtfulAccounts,jdbcType=OTHER},
+      </if>
+      <if test="otherTaxes != null">
+        other_taxes = #{otherTaxes,jdbcType=OTHER},
+      </if>
+      <if test="otherOperatingExpenses != null">
+        other_operating_expenses = #{otherOperatingExpenses,jdbcType=OTHER},
+      </if>
+      <if test="operatingProfit != null">
+        operating_profit = #{operatingProfit,jdbcType=OTHER},
+      </if>
+      <if test="netNonOperatingInterestIncomeExpense != null">
+        net_non_operating_interest_income_expense = #{netNonOperatingInterestIncomeExpense,jdbcType=OTHER},
+      </if>
+      <if test="nonOperatingInterestIncome != null">
+        non_operating_interest_income = #{nonOperatingInterestIncome,jdbcType=OTHER},
+      </if>
+      <if test="nonOperatingInterestExpense != null">
+        non_operating_interest_expense = #{nonOperatingInterestExpense,jdbcType=OTHER},
+      </if>
+      <if test="totalOtherFinanceCost != null">
+        total_other_finance_cost = #{totalOtherFinanceCost,jdbcType=OTHER},
+      </if>
+      <if test="otherNetIncome != null">
+        other_net_income = #{otherNetIncome,jdbcType=OTHER},
+      </if>
+      <if test="gainOnSaleOfSecurity != null">
+        gain_on_sale_of_security = #{gainOnSaleOfSecurity,jdbcType=OTHER},
+      </if>
+      <if test="earningsFromEquityInterest != null">
+        earnings_from_equity_interest = #{earningsFromEquityInterest,jdbcType=OTHER},
+      </if>
+      <if test="amortizationOfSecurities != null">
+        amortization_of_securities = #{amortizationOfSecurities,jdbcType=OTHER},
+      </if>
+      <if test="specialIncome != null">
+        special_income = #{specialIncome,jdbcType=OTHER},
+      </if>
+      <if test="restructuringAndMergerAcquisition != null">
+        restructuring_and_merger_acquisition = #{restructuringAndMergerAcquisition,jdbcType=OTHER},
+      </if>
+      <if test="impairmentOfCapitalAssets != null">
+        impairment_of_capital_assets = #{impairmentOfCapitalAssets,jdbcType=OTHER},
+      </if>
+      <if test="otherSpecialCharges != null">
+        other_special_charges = #{otherSpecialCharges,jdbcType=OTHER},
+      </if>
+      <if test="writeOff != null">
+        write_off = #{writeOff,jdbcType=OTHER},
+      </if>
+      <if test="gainOnSaleOfBusiness != null">
+        gain_on_sale_of_business = #{gainOnSaleOfBusiness,jdbcType=OTHER},
+      </if>
+      <if test="gainOnSaleOfPropertyPlantEquipment != null">
+        gain_on_sale_of_property_plant_equipment = #{gainOnSaleOfPropertyPlantEquipment,jdbcType=OTHER},
+      </if>
+      <if test="otherNonOperatingIncome != null">
+        other_non_operating_income = #{otherNonOperatingIncome,jdbcType=OTHER},
+      </if>
+      <if test="incomeBeforeTax != null">
+        income_before_tax = #{incomeBeforeTax,jdbcType=OTHER},
+      </if>
+      <if test="incomeTax != null">
+        income_tax = #{incomeTax,jdbcType=OTHER},
+      </if>
+      <if test="earningsFromEquityInterestNetOfTax != null">
+        earnings_from_equity_interest_net_of_tax = #{earningsFromEquityInterestNetOfTax,jdbcType=OTHER},
+      </if>
+      <if test="netIncome != null">
+        net_income = #{netIncome,jdbcType=OTHER},
+      </if>
+      <if test="netIncomeContinuousOperations != null">
+        net_income_continuous_operations = #{netIncomeContinuousOperations,jdbcType=OTHER},
+      </if>
+      <if test="netIncomeDiscontinuousOperations != null">
+        net_income_discontinuous_operations = #{netIncomeDiscontinuousOperations,jdbcType=OTHER},
+      </if>
+      <if test="netIncomeExtraordinary != null">
+        net_income_extraordinary = #{netIncomeExtraordinary,jdbcType=OTHER},
+      </if>
+      <if test="cumulativeEffectOfAccountingChange != null">
+        cumulative_effect_of_accounting_change = #{cumulativeEffectOfAccountingChange,jdbcType=OTHER},
+      </if>
+      <if test="netIncomeFromTaxLossCarryForward != null">
+        net_income_from_tax_loss_carry_forward = #{netIncomeFromTaxLossCarryForward,jdbcType=OTHER},
+      </if>
+      <if test="netIncomeFromOtherGainsLosses != null">
+        net_income_from_other_gains_losses = #{netIncomeFromOtherGainsLosses,jdbcType=OTHER},
+      </if>
+      <if test="minorityInterestIncome != null">
+        minority_interest_income = #{minorityInterestIncome,jdbcType=OTHER},
+      </if>
+      <if test="netIncomeAttributableToTheParentCompany != null">
+        net_income_attributable_to_the_parent_company = #{netIncomeAttributableToTheParentCompany,jdbcType=OTHER},
+      </if>
+      <if test="preferredStockDividends != null">
+        preferred_stock_dividends = #{preferredStockDividends,jdbcType=OTHER},
+      </if>
+      <if test="otherPreferredStockDividends != null">
+        other_preferred_stock_dividends = #{otherPreferredStockDividends,jdbcType=OTHER},
+      </if>
+      <if test="netIncomeAttributableToCommonStockholders != null">
+        net_income_attributable_to_common_stockholders = #{netIncomeAttributableToCommonStockholders,jdbcType=OTHER},
+      </if>
+      <if test="basicEarningsPerShare != null">
+        basic_earnings_per_share = #{basicEarningsPerShare,jdbcType=OTHER},
+      </if>
+      <if test="dilutedEarningsPerShare != null">
+        diluted_earnings_per_share = #{dilutedEarningsPerShare,jdbcType=OTHER},
+      </if>
+      <if test="dividendPerShare != null">
+        dividend_per_share = #{dividendPerShare,jdbcType=OTHER},
+      </if>
+      <if test="createdAt != null">
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>

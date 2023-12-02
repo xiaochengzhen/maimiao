@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.craw.mapper.CompanyFinancialRealMapper">
+  <resultMap id="BaseResultMap" type="com.example.craw.model.CompanyFinancialRealDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="symbol" jdbcType="VARCHAR" property="symbol" />
+    <result column="earnings_per_share" jdbcType="DECIMAL" property="earningsPerShare" />
+    <result column="revenue" jdbcType="DECIMAL" property="revenue" />
+    <result column="cash_from_operating" jdbcType="DECIMAL" property="cashFromOperating" />
+    <result column="return_on_equity" jdbcType="DECIMAL" property="returnOnEquity" />
+    <result column="gross_margin" jdbcType="DECIMAL" property="grossMargin" />
+    <result column="current_ratio" jdbcType="DECIMAL" property="currentRatio" />
+    <result column="composition_data" jdbcType="OTHER" property="compositionData" />
+    <result column="currency" jdbcType="VARCHAR" property="currency" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, symbol, earnings_per_share, revenue, cash_from_operating, return_on_equity, gross_margin, 
+    current_ratio, composition_data, currency, created_at, updated_at
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_company_financial_real
+    where symbol = #{symbol} limit 1
+  </select>
+
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.example.craw.model.CompanyFinancialRealDO" useGeneratedKeys="true">
+    insert into tb_company_financial_real (symbol, earnings_per_share, revenue, 
+      cash_from_operating, return_on_equity, gross_margin, 
+      current_ratio, composition_data, currency)
+    values (#{symbol,jdbcType=VARCHAR}, #{earningsPerShare,jdbcType=DECIMAL}, #{revenue,jdbcType=DECIMAL}, 
+      #{cashFromOperating,jdbcType=DECIMAL}, #{returnOnEquity,jdbcType=DECIMAL}, #{grossMargin,jdbcType=DECIMAL}, 
+      #{currentRatio,jdbcType=DECIMAL}, #{compositionData,jdbcType=OTHER}, #{currency,jdbcType=VARCHAR})
+  </insert>
+
+  <update id="update" parameterType="com.example.craw.model.CompanyFinancialRealDO">
+    update tb_company_financial_real
+    <set>
+      <if test="compositionData != null">
+        composition_data = #{compositionData,jdbcType=OTHER},
+      </if>
+      <if test="currency != null">
+        currency = #{currency,jdbcType=VARCHAR},
+      </if>
+      <if test="earningsPerShare != null">
+        earnings_per_share = #{earningsPerShare},
+      </if>
+      <if test="returnOnEquity != null">
+        return_on_equity = #{returnOnEquity},
+      </if>
+      <if test="grossMargin != null">
+        gross_margin = #{grossMargin},
+      </if>
+      <if test="currentRatio != null">
+        current_ratio = #{currentRatio},
+      </if>
+      <if test="revenue != null">
+        revenue = #{revenue},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>
