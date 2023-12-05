@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.craw.mapper.CompanyShareActiveMapper">
+  <resultMap id="BaseResultMap" type="com.example.craw.CompanyShareActiveDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="symbol" jdbcType="VARCHAR" property="symbol" />
+    <result column="date" jdbcType="VARCHAR" property="date" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="name" jdbcType="OTHER" property="name" />
+    <result column="side" jdbcType="TINYINT" property="side" />
+    <result column="quantity" jdbcType="DECIMAL" property="quantity" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="share_value" jdbcType="DECIMAL" property="shareValue" />
+    <result column="share_ratio" jdbcType="DECIMAL" property="shareRatio" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, symbol, `date`, `type`, `name`, side, quantity, amount, share_value, share_ratio, 
+    created_at, updated_at
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_company_share_active
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="getBySymbolAndName" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_company_share_active
+    where symbol = #{symbol} and name->'$.en_US' = #{name} order by date desc limit 1
+  </select>
+
+  <select id="listBySymbol" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_company_share_active
+    where type = #{type} and symbol = #{symbol} order by date desc
+  </select>
+
+  <select id="statBySymbol" resultType="com.example.craw.dto.vo.CompanyShareActiveTotalVO">
+    select
+      sum(share_ratio) shareRatio, sum(share_value) shareValue, count(*) count
+    from tb_company_share_active where id in(
+      select
+      max(id)
+      from tb_company_share_active
+      where type = #{type} and symbol = #{symbol} group by name
+      )
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tb_company_share_active
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.example.craw.CompanyShareActiveDO" useGeneratedKeys="true">
+    insert into tb_company_share_active (symbol, `date`, `type`, 
+      `name`, side, quantity, 
+      amount, share_value, share_ratio, 
+      created_at, updated_at)
+    values (#{symbol,jdbcType=VARCHAR}, #{date,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT}, 
+      #{name,jdbcType=OTHER}, #{side,jdbcType=TINYINT}, #{quantity,jdbcType=DECIMAL}, 
+      #{amount,jdbcType=DECIMAL}, #{shareValue,jdbcType=DECIMAL}, #{shareRatio,jdbcType=DECIMAL}, 
+      #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.example.craw.CompanyShareActiveDO" useGeneratedKeys="true">
+    insert into tb_company_share_active
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="symbol != null">
+        symbol,
+      </if>
+      <if test="date != null">
+        `date`,
+      </if>
+      <if test="type != null">
+        `type`,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="side != null">
+        side,
+      </if>
+      <if test="quantity != null">
+        quantity,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="shareValue != null">
+        share_value,
+      </if>
+      <if test="shareRatio != null">
+        share_ratio,
+      </if>
+      <if test="createdAt != null">
+        created_at,
+      </if>
+      <if test="updatedAt != null">
+        updated_at,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="symbol != null">
+        #{symbol,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null">
+        #{date,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=OTHER},
+      </if>
+      <if test="side != null">
+        #{side,jdbcType=TINYINT},
+      </if>
+      <if test="quantity != null">
+        #{quantity,jdbcType=DECIMAL},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="shareValue != null">
+        #{shareValue,jdbcType=DECIMAL},
+      </if>
+      <if test="shareRatio != null">
+        #{shareRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="createdAt != null">
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.craw.CompanyShareActiveDO">
+    update tb_company_share_active
+    <set>
+      <if test="symbol != null">
+        symbol = #{symbol,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null">
+        `date` = #{date,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="name != null">
+        `name` = #{name,jdbcType=OTHER},
+      </if>
+      <if test="side != null">
+        side = #{side,jdbcType=TINYINT},
+      </if>
+      <if test="quantity != null">
+        quantity = #{quantity,jdbcType=DECIMAL},
+      </if>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="shareValue != null">
+        share_value = #{shareValue,jdbcType=DECIMAL},
+      </if>
+      <if test="shareRatio != null">
+        share_ratio = #{shareRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="createdAt != null">
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.craw.CompanyShareActiveDO">
+    update tb_company_share_active
+    set symbol = #{symbol,jdbcType=VARCHAR},
+      `date` = #{date,jdbcType=VARCHAR},
+      `type` = #{type,jdbcType=TINYINT},
+      `name` = #{name,jdbcType=OTHER},
+      side = #{side,jdbcType=TINYINT},
+      quantity = #{quantity,jdbcType=DECIMAL},
+      amount = #{amount,jdbcType=DECIMAL},
+      share_value = #{shareValue,jdbcType=DECIMAL},
+      share_ratio = #{shareRatio,jdbcType=DECIMAL},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
