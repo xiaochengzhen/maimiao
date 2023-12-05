@@ -91,11 +91,19 @@
     diluted_earnings_per_share, created_at, updated_at
   </sql>
   <select id="selectByPrimaryKey"  resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from tb_company_hk_income_statement
     where symbol = #{symbol} and quarter = #{quarter} limit 1
   </select>
+
+  <select id="listBySymbol"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_company_hk_income_statement
+    where symbol = #{symbol}
+  </select>
+
 
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.example.craw.model.CompanyHkIncomeStatementDO" useGeneratedKeys="true">
     insert into tb_company_hk_income_statement (symbol, quarter, turnover, 

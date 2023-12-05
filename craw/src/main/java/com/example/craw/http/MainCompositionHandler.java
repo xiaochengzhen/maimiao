@@ -1,6 +1,7 @@
 package com.example.craw.http;
 
 import com.example.craw.dto.RequestDTO;
+import com.example.craw.util.RestTemplateUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
@@ -13,7 +14,7 @@ import java.util.Locale;
 import java.util.Map;
 
 /**
- * @description 
+ * @description 获取stockId的handler
  * @author xiaobo
  * @date 2023/11/29 8:59
  */
@@ -24,7 +25,7 @@ public class MainCompositionHandler extends CrawHandler{
     public static ThreadLocal<String> stockIdThreadLocal = new ThreadLocal<>();
 
     @Autowired
-    private RestTemplate restTemplate;
+    private RestTemplateUtil restTemplateUtil;
 
     @Override
     public boolean match(CrawEnum crawEnum, String market) {
@@ -37,13 +38,14 @@ public class MainCompositionHandler extends CrawHandler{
         Map<String, String> map = new LinkedHashMap<>();
         String symbolMarket = StringUtils.substringBefore(symbol, ".")+"-"+StringUtils.substringAfter(symbol, ".").toUpperCase(Locale.ROOT);
         map.put("code",symbolMarket);
-        String body = restTemplate.getForObject(URL, String.class, map);
-        String s = extractJsonContent(body);
-        System.out.println(s);
-        if (StringUtils.isNotBlank(s)) {
-            String stockId = StringUtils.substringAfter(s, ":");
-            if (StringUtils.isNotBlank(stockId)) {
-                stockIdThreadLocal.set(stockId.replace("\"",""));
+        String body = restTemplateUtil.httpGet(map, null, URL);
+        if (StringUtils.isNotBlank(body)) {
+            String s = extractJsonContent(body);
+            if (StringUtils.isNotBlank(s)) {
+                String stockId = StringUtils.substringAfter(s, ":");
+                if (StringUtils.isNotBlank(stockId)) {
+                    stockIdThreadLocal.set(stockId.replace("\"",""));
+                }
             }
         }
 

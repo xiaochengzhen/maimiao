@@ -10,10 +10,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Locale;
 
+import static com.example.craw.http.CrawConstant.*;
 import static com.example.craw.http.MainCompositionHandler.stockIdThreadLocal;
 
 /**
- * @description 
+ * @description 爬取财务指标、主营构成、利润表的service层
  * @author xiaobo
  * @date 2023/11/29 9:02
  */
@@ -23,15 +24,16 @@ public class CrawService {
     @Autowired
     private List<CrawHandler> crawHandlerList;
 
+    //爬取数据
     public void craw() {
         String symbol = "AAPL.us";
-       // String symbol = "00700.hk";
-        String marketCode = "1";
-        String marketType = "1";
+      //  String symbol = "00700.hk";
+        String marketCode = MARKET_CODE_HK;
+        String marketType = MARKET_TYPE_HK;
         String market = StringUtils.substringAfter(symbol, ".");
         if (StringUtils.substringAfter(symbol, ".").equalsIgnoreCase("us")) {
-            marketCode = "11";
-            marketType = "2";
+            marketCode = MARKET_CODE_US;
+            marketType = MARKET_TYPE_US;
         }
         CrawEnum[] values = CrawEnum.values();
         for (CrawEnum value : values) {

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 /**
- * @description 
+ * @description 主营构成详细信息us接口返回DTO
  * @author xiaobo
  * @date 2023/12/2 10:20
  */
@@ -36,16 +36,27 @@ public class CompositionDataUsDTO {
         @JSONField(name = "currency")
         private String currency;
 
-        @NoArgsConstructor
         @Data
+        @NoArgsConstructor
         public static class PriceItemDTO {
             @JSONField(name = "name", deserializeUsing = ZhNameDeserializer.class)
             private String name;
-            @JSONField(name = "mainOperIncome", deserializeUsing = UnitDeserializer.class)
-            private String mainOperIncome;
+            private String price;
             @JSONField(name = "ratio")
             private String ratio;
+
+            @JSONField(name = "price")
+            public String getPrice() {
+                return price;
+            }
+
+            @JSONField(alternateNames = {"mainOperIncome","price"}, deserializeUsing = UnitDeserializer.class)
+            public void setPrice(String price) {
+                this.price = price;
+            }
         }
+
+
 
         @NoArgsConstructor
         @Data

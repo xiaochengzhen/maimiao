@@ -6,6 +6,11 @@ import com.alibaba.fastjson.parser.deserializer.ObjectDeserializer;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
 
+/**
+ * @description 单位转换序列号类
+ * @author xiaobo
+ * @date 2023/12/4 8:15
+ */
 public class UnitDeserializer implements ObjectDeserializer{
     @Override
     public Object deserialze(DefaultJSONParser defaultJSONParser, Type type, Object o) {

@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 /**
- * @description 
+ * @description 主营构成汇总的接口返回DTO
  * @author xiaobo
  * @date 2023/11/30 18:47
  */

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 /**
- * @description 
+ * @description 主营构成详细信息hk接口返回DTO
  * @author xiaobo
  * @date 2023/11/29 10:06
  */

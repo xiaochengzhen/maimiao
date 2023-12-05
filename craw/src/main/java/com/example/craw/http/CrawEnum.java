@@ -1,6 +1,6 @@
 package com.example.craw.http;
 /**
- * @description 
+ * @description 请求接口类型枚举
  * @author xiaobo
  * @date 2023/11/30 14:44
  */
@@ -23,7 +23,9 @@ public enum CrawEnum {
     COMPANY_FINANCIAL_INDICATOR_Q_ZH("COMPANY_FINANCIAL_INDICATOR","财务指标单季", "12", "3,4,21,22,24,25,80,81,82", "zh_CN", false),
     COMPANY_FINANCIAL_INDICATOR_H_ZH("COMPANY_FINANCIAL_INDICATOR","财务指标累季", "13", "3,4,21,22,24,25,80,81,82", "zh_CN", false),
     COMPANY_FINANCIAL_INDICATOR_Y_ZH("COMPANY_FINANCIAL_INDICATOR","财务指标年", "11", "3,4,21,22,24,25,80,81,82", "zh_CN", false),
-    COMPANY_INCOME_ZH("COMPANY_INCOME","利润表", "", "", "zh_CN", false);
+    COMPANY_INCOME_HK_ZH("COMPANY_INCOME_HK","港股利润表", "", "", "zh_CN", false),
+    COMPANY_INCOME_US_8_ZH("COMPANY_INCOME_US","美股利润表(年+季)", "8", "", "zh_CN", false),
+    COMPANY_INCOME_US_7_ZH("COMPANY_INCOME_US","美股利润表(累计季)", "7", "", "zh_CN", false);
 
     /**
      * 描述

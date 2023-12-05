@@ -7,6 +7,7 @@ import com.example.craw.http.IncomeKeyAnnotation;
 import lombok.Data;
 
 /**
+ * 利润表（hk）
  * tb_company_hk_income_statement
  * @author 
  */

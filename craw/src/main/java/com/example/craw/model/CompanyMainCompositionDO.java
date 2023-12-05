@@ -5,6 +5,7 @@ import java.util.Date;
 import lombok.Data;
 
 /**
+ * 主营业务构成的实体类
  * tb_company_main_composition
  * @author 
  */

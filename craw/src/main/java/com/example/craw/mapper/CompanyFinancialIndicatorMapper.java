@@ -4,6 +4,11 @@ import com.example.craw.model.CompanyFinancialIndicatorDO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+/**
+ * @description 财务指标的mapper
+ * @author xiaobo
+ * @date `2023/12/4` 8:16
+ */
 @Mapper
 public interface CompanyFinancialIndicatorMapper {
 

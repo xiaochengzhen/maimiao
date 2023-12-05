@@ -20,6 +20,43 @@
     where symbol = #{symbol} and quarter = #{quarter}  limit 1
   </select>
 
+  <select id="listQuarter"  resultType="java.lang.String">
+    select
+        quarter
+    from tb_company_main_composition
+    <where>
+      <if test="symbol != null">
+        and symbol = #{symbol}
+      </if>
+      <if test="type != null and type == 4">
+        and region is not null
+      </if>
+      <if test="type != null and type == 8">
+        and business is not null
+      </if>
+    </where>
+  </select>
+
+  <select id="list"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_company_main_composition
+    <where>
+      <if test="symbol != null">
+        and symbol = #{symbol}
+      </if>
+      <if test="quarter != null">
+        and quarter = #{quarter}
+      </if>
+      <if test="type != null and type == 4">
+        and region is not null
+      </if>
+      <if test="type != null and type == 8">
+        and business is not null
+      </if>
+    </where>
+  </select>
+
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.example.craw.model.CompanyMainCompositionDO" useGeneratedKeys="true">
     insert into tb_company_main_composition (symbol, quarter, business, region)
     values (#{symbol,jdbcType=VARCHAR}, #{quarter,jdbcType=VARCHAR}, #{business,jdbcType=OTHER}, 

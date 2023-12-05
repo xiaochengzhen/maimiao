@@ -6,6 +6,7 @@ import java.util.Date;
 import lombok.Data;
 
 /**
+ * 财务指标汇总的实体类
  * tb_company_financial_real
  * @author 
  */

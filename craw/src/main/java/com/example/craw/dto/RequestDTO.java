@@ -4,7 +4,7 @@ import com.example.craw.http.CrawEnum;
 import lombok.Data;
 
 /**
- * @description 
+ * @description 通用请求类
  * @author xiaobo
  * @date 2023/11/29 16:56
  */

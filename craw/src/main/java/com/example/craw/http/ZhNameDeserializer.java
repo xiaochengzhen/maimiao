@@ -5,7 +5,11 @@ import com.alibaba.fastjson.parser.DefaultJSONParser;
 import com.alibaba.fastjson.parser.deserializer.ObjectDeserializer;
 
 import java.lang.reflect.Type;
-
+/**
+ * @description name序列号类
+ * @author xiaobo
+ * @date 2023/12/4 8:15
+ */
 public class ZhNameDeserializer implements ObjectDeserializer{
     @Override
     public Object deserialze(DefaultJSONParser defaultJSONParser, Type type, Object o) {

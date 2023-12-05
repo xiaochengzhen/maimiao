@@ -7,13 +7,13 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 /**
- * @description 
+ * @description 利润表接口返回的DTO
  * @author xiaobo
  * @date 2023/12/1 14:35
  */
 @NoArgsConstructor
 @Data
-public class CompanyIncomeStatementDTO {
+public class CompanyHkIncomeStatementDTO {
 
 
     @JSONField(name = "code")

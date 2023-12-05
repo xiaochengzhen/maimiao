@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 /**
- * @description 
+ * @description 财务指标的接口返回DTO
  * @author xiaobo
  * @date 2023/12/1 10:25
  */

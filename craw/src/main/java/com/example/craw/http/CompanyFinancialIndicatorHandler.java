@@ -10,6 +10,7 @@ import com.example.craw.mapper.CompanyFinancialRealMapper;
 import com.example.craw.model.CompanyFinancialIndicatorDO;
 import com.example.craw.model.CompanyFinancialRealDO;
 import com.example.craw.util.EncodeUtil;
+import com.example.craw.util.RestTemplateUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -21,10 +22,11 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.RestTemplate;
 import java.util.*;
 
+import static com.example.craw.http.CrawConstant.*;
 import static com.example.craw.http.MainCompositionHandler.stockIdThreadLocal;
 
 /**
- * @description 
+ * @description 财务指标的handler
  * @author xiaobo
  * @date 2023/11/29 8:59
  */
@@ -34,17 +36,19 @@ public class CompanyFinancialIndicatorHandler extends CrawHandler{
     private static final String URL = "https://www.futunn.com/quote-api/quote-v2/get-financial-indicator?marketCode={marketCode}&stockId={stockId}&reqFinancial={reqFinancial}";
 
     @Autowired
-    private RestTemplate restTemplate;
+    private RestTemplateUtil restTemplateUtil;
     @Autowired
     private CompanyFinancialIndicatorMapper companyFinancialIndicatorMapper;
     @Autowired
     private CompanyFinancialRealMapper companyFinancialRealMapper;
 
+    //匹配相应的handler
     @Override
     public boolean match(CrawEnum crawEnum, String market) {
         return crawEnum.getCode().equals("COMPANY_FINANCIAL_INDICATOR");
     }
 
+    //http 请求数据
     @Override
     void httpRequest(RequestDTO requestDTO) {
         String language = requestDTO.getLanguage();
@@ -68,8 +72,6 @@ public class CompanyFinancialIndicatorHandler extends CrawHandler{
         map.put("marketCode",marketCode);
         map.put("stockId",stockIdThreadLocal.get());
         map.put("reqFinancial",jsonArray.toJSONString());
-        String s = JSONObject.toJSONString(map);
-        System.out.println(s);
         String quoteToken = EncodeUtil.getQuoteToken(map);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("quote-token", quoteToken);
@@ -78,13 +80,11 @@ public class CompanyFinancialIndicatorHandler extends CrawHandler{
             String symbolMarket = StringUtils.substringBefore(symbol, ".")+"-"+StringUtils.substringAfter(symbol, ".").toUpperCase(Locale.ROOT);
             httpHeaders.add("referer", "https://www.futunn.com/en/stock/"+symbolMarket+"/financial/main-composition");
         }
-        HttpEntity httpEntity = new HttpEntity(map, httpHeaders);
-        ResponseEntity<String> exchange = restTemplate.exchange(URL, HttpMethod.GET, httpEntity, String.class, map);
-        String body = exchange.getBody();
-        System.out.println(body);
+        String body = restTemplateUtil.httpGet(map, httpHeaders, URL);
         requestDTO.setHttpResult(body);
     }
 
+    //相应数据转换
     @Override
     void convertResponse(RequestDTO requestDTO) {
         String httpResult = requestDTO.getHttpResult();
@@ -111,14 +111,14 @@ public class CompanyFinancialIndicatorHandler extends CrawHandler{
                     companyFinancialIndicatorDO.setFcf(data.getFcf() != null ? JSON.toJSONString(data.getFcf()) : null);
                     Integer period = null;
                     switch (type) {
-                        case "12":
-                            period = 1;
+                        case QUARTER_PERIOD_REQ:
+                            period = QUARTER_PERIOD;
                             break;
-                        case "13":
-                            period = 2;
+                        case ACCMULATED_QUARTER_PERIOD_REQ:
+                            period = ACCMULATED_QUARTER_PERIOD;
                             break;
-                        case "11":
-                            period = 3;
+                        case YEAR_PERIOD_REQ:
+                            period = YEAR_PERIOD;
                             break;
                         default:
                             break;
@@ -136,12 +136,14 @@ public class CompanyFinancialIndicatorHandler extends CrawHandler{
         }
     }
 
+    //转换好的数据存库
     @Override
     void saveData(RequestDTO requestDTO) {
         Object convertResult = requestDTO.getConvertResult();
         if (convertResult != null) {
             CompanyFinancialIndicatorDO companyFinancialIndicatorDO = (CompanyFinancialIndicatorDO) convertResult;
             CompanyFinancialIndicatorDO companyFinancialIndicatorRaw = companyFinancialIndicatorMapper.selectByPrimaryKey(companyFinancialIndicatorDO.getSymbol(), companyFinancialIndicatorDO.getPeriod());
+            //保存财务指标详情
             if (companyFinancialIndicatorRaw == null) {
                 companyFinancialIndicatorMapper.insert(companyFinancialIndicatorDO);
             }
@@ -195,6 +197,7 @@ public class CompanyFinancialIndicatorHandler extends CrawHandler{
                     companyFinancialRealDO.setCurrentRatio(max.getIndicatorData());
                 }
             }
+            //如果有最新的财务指标，保存财务指标最新数据
             if (companyFinancialRealDO.getCurrentRatio() != null || companyFinancialRealDO.getGrossMargin() != null
                 || companyFinancialRealDO.getReturnOnEquity() != null || companyFinancialRealDO.getEarningsPerShare() != null) {
                 if (companyFinancialRealRaw != null &&
