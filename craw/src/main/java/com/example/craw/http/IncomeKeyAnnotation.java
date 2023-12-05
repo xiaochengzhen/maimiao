@@ -14,4 +14,6 @@ import java.lang.annotation.Target;
 public @interface IncomeKeyAnnotation {
 
     String value() default "";
+    String enName() default "";
+    String zhName() default "";
 }

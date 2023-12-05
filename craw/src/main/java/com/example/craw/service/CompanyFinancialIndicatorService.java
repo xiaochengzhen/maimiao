@@ -93,7 +93,7 @@ public class CompanyFinancialIndicatorService {
 
 
     /**
-     * @description 查询单个财务指标列表
+     * @description 查询财务指标列表
      * @author xiaobo
      * @date 2023/12/4 14:22
      */

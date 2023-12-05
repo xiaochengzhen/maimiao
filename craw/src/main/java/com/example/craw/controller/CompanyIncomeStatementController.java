@@ -1,5 +1,7 @@
 package com.example.craw.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.example.craw.dto.SpiderResModel;
 import com.example.craw.dto.query.ListCompanyFinancialIndicatorQuery;
 import com.example.craw.dto.query.ListCompanyIncomeStatementQuery;
 import com.example.craw.dto.vo.CompanyFinancialIndicatorVO;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @description 利润表的controller
@@ -37,13 +40,13 @@ public class CompanyIncomeStatementController {
     }
 
     /**
-     * @description 查询财务指标列表
+     * @description 查询利润表列表
      * @author xiaobo
      * @date 2023/12/4 10:32
      */
-   /* @GetMapping("/list")
-    public Object list(ListCompanyFinancialIndicatorQuery listCompanyFinancialIndicatorQuery) {
-        CompanyFinancialIndicatorVO companyFinancialIndicatorVO = companyFinancialIndicatorService.listCompanyFinancialIndicator(listCompanyFinancialIndicatorQuery);
-        return companyFinancialIndicatorVO;
-    }*/
+    @GetMapping("/list")
+    public Object list(ListCompanyIncomeStatementQuery listCompanyIncomeStatementQuery) {
+        SpiderResModel spiderResModel = companyIncomeStatementService.list(listCompanyIncomeStatementQuery, "en_US");
+        return spiderResModel;
+    }
 }

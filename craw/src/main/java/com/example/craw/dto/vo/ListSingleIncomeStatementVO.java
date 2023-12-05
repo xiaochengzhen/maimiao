@@ -15,7 +15,7 @@ public class ListSingleIncomeStatementVO {
     /**
      * 金额
      */
-    private String value;
+    private BigDecimal value;
 
     /**
      * 增长率
