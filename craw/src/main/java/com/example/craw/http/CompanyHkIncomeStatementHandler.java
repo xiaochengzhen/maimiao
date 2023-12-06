@@ -5,8 +5,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.example.craw.dto.RequestDTO;
 import com.example.craw.dto.response.CompanyHkIncomeStatementDTO;
+import com.example.craw.dto.response.CompanyUsIncomeStatementDTO;
 import com.example.craw.mapper.CompanyHkIncomeStatementMapper;
 import com.example.craw.model.CompanyHkIncomeStatementDO;
+import com.example.craw.model.CompanyUsIncomeStatementDO;
 import com.example.craw.util.EncodeUtil;
 import com.example.craw.util.RestTemplateUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -26,7 +28,7 @@ import java.util.*;
 @Service
 public class CompanyHkIncomeStatementHandler extends CrawHandler{
 
-    private static final String URL = "https://www.futunn.com/quote-api/quote-v2/public-reports-data?fetchType={fetchType}&marketType={marketType}&code={code}&marketLabel={marketLabel}";
+    private static final String URL = "https://www.futunn.com/quote-api/quote-v2/get-reports-data?fetchType={fetchType}&code={code}&market={market}&quarter={quarter}&size={size}";
 
     @Autowired
     private RestTemplateUtil restTemplateUtil;
@@ -44,11 +46,13 @@ public class CompanyHkIncomeStatementHandler extends CrawHandler{
     void httpRequest(RequestDTO requestDTO) {
         String language = requestDTO.getLanguage();
         String symbol = requestDTO.getSymbol();
+        String type = requestDTO.getType();
         Map<String, String> map = new LinkedHashMap<>();
         map.put("fetchType","2");
-        map.put("marketType", requestDTO.getMarketType());
         map.put("code",StringUtils.substringBefore(symbol, "."));
-        map.put("marketLabel",StringUtils.substringAfter(symbol, ".").toUpperCase(Locale.ROOT));
+        map.put("market", StringUtils.substringAfter(symbol, "."));
+        map.put("quarter", type);
+        map.put("size", "20");
         String quoteToken = EncodeUtil.getQuoteToken(map);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("quote-token", quoteToken);
@@ -72,53 +76,51 @@ public class CompanyHkIncomeStatementHandler extends CrawHandler{
             Integer code = jsonObject.getInteger("code");
             JSONObject dataJT = jsonObject.getJSONObject("data");
             if (code == 0 && dataJT != null) {
-                CompanyHkIncomeStatementDTO companyIncomeStatementDTO = JSONObject.parseObject(httpResult, CompanyHkIncomeStatementDTO.class);
-                CompanyHkIncomeStatementDTO.DataDTO data = companyIncomeStatementDTO.getData();
+                CompanyHkIncomeStatementDTO companyHkIncomeStatementDTO = JSONObject.parseObject(httpResult, CompanyHkIncomeStatementDTO.class);
+                CompanyHkIncomeStatementDTO.DataDTO data = companyHkIncomeStatementDTO.getData();
                 if (data != null) {
-                    CompanyHkIncomeStatementDTO.DataDTO.KeyIndicatorsReportsDataDTO keyIndicatorsReportsData = data.getKeyIndicatorsReportsData();
-                    if (keyIndicatorsReportsData != null) {
-                        CompanyHkIncomeStatementDTO.DataDTO.KeyIndicatorsReportsDataDTO.ListDTO reportsDataList = keyIndicatorsReportsData.getList();
-                        if (reportsDataList != null) {
-                            List<String> title = reportsDataList.getTitle();
-                            List<List<CompanyHkIncomeStatementDTO.DataDTO.KeyIndicatorsReportsDataDTO.ListDTO.ValuesDTO>> values = reportsDataList.getValues();
-                            List<String> keys = reportsDataList.getKeys();
-                            //利润表key和下标对应关系维护
-                            Map<String, Integer> keyMap = new HashMap<>();
-                            if (!CollectionUtils.isEmpty(keys)) {
-                                for (int i = 0; i < keys.size(); i++) {
-                                    keyMap.put(keys.get(i), i);
-                                }
+                    CompanyHkIncomeStatementDTO.DataDTO.ListDTO reportsDataList = data.getList();
+                    if (reportsDataList != null) {
+                        List<String> title = reportsDataList.getTitle();
+                        List<List<CompanyHkIncomeStatementDTO.DataDTO.ListDTO.ValuesDTO>> values = reportsDataList.getValues();
+                        List<String> keys = reportsDataList.getKeys();
+                        //利润表key和下标对应关系维护
+                        Map<String, Integer> keyMap = new HashMap<>();
+                        if (!CollectionUtils.isEmpty(keys)) {
+                            for (int i = 0; i < keys.size(); i++) {
+                                keyMap.put(keys.get(i), i);
                             }
-                            //根据对应关系反射设置值
-                            if (!CollectionUtils.isEmpty(title) && !CollectionUtils.isEmpty(keyMap)) {
-                                String lastQ = getLastQ(title);
-                                for (int i = 0; i < title.size(); i++) {
-                                    String quarter = title.get(i);
-                                    CompanyHkIncomeStatementDO companyHkIncomeStatementDO = new CompanyHkIncomeStatementDO();
-                                    companyHkIncomeStatementDO.setSymbol(symbol);
-                                    companyHkIncomeStatementDO.setQuarter(quarter);
-                                    List<CompanyHkIncomeStatementDTO.DataDTO.KeyIndicatorsReportsDataDTO.ListDTO.ValuesDTO> valuesDTOS = values.get(i);
-                                    Class<CompanyHkIncomeStatementDO> companyHkIncomeStatementDOClass = CompanyHkIncomeStatementDO.class;
-                                    Field[] declaredFields = companyHkIncomeStatementDOClass.getDeclaredFields();
-                                    for (Field declaredField : declaredFields) {
-                                        declaredField.setAccessible(true);
-                                        if (declaredField.isAnnotationPresent(IncomeKeyAnnotation.class)) {
-                                            IncomeKeyAnnotation incomeKeyAnnotation = declaredField.getAnnotation(IncomeKeyAnnotation.class);
-                                            String key = incomeKeyAnnotation.value();
-                                            CompanyHkIncomeStatementDTO.DataDTO.KeyIndicatorsReportsDataDTO.ListDTO.ValuesDTO valuesDTO = valuesDTOS.get(keyMap.get(key));
-                                            if (valuesDTO != null) {
-                                                try {
-                                                    declaredField.set(companyHkIncomeStatementDO, JSON.toJSONString(valuesDTO, SerializerFeature.WriteMapNullValue));
-                                                } catch (IllegalAccessException e) {
-                                                    e.printStackTrace();
-                                                }
+                        }
+                        //根据对应关系反射设置值
+                        if (!CollectionUtils.isEmpty(title) && !CollectionUtils.isEmpty(keyMap)) {
+                            String lastQ = getLastQ(title);
+                            for (int i = 0; i < title.size(); i++) {
+                                String quarter = title.get(i);
+                                CompanyHkIncomeStatementDO companyHkIncomeStatementDO = new CompanyHkIncomeStatementDO();
+                                companyHkIncomeStatementDO.setSymbol(symbol);
+                                companyHkIncomeStatementDO.setQuarter(quarter);
+                                companyHkIncomeStatementDO.setPeriod(Integer.valueOf(requestDTO.getType()));
+                                List<CompanyHkIncomeStatementDTO.DataDTO.ListDTO.ValuesDTO> valuesDTOS = values.get(i);
+                                Class<CompanyHkIncomeStatementDO> companyHkIncomeStatementDOClass = CompanyHkIncomeStatementDO.class;
+                                Field[] declaredFields = companyHkIncomeStatementDOClass.getDeclaredFields();
+                                for (Field declaredField : declaredFields) {
+                                    declaredField.setAccessible(true);
+                                    if (declaredField.isAnnotationPresent(IncomeKeyAnnotation.class)) {
+                                        IncomeKeyAnnotation incomeKeyAnnotation = declaredField.getAnnotation(IncomeKeyAnnotation.class);
+                                        String key = incomeKeyAnnotation.value();
+                                        CompanyHkIncomeStatementDTO.DataDTO.ListDTO.ValuesDTO valuesDTO = valuesDTOS.get(keyMap.get(key));
+                                        if (valuesDTO != null) {
+                                            try {
+                                                declaredField.set(companyHkIncomeStatementDO, JSON.toJSONString(valuesDTO, SerializerFeature.WriteMapNullValue));
+                                            } catch (IllegalAccessException e) {
+                                                e.printStackTrace();
                                             }
                                         }
                                     }
-                                    hkList.add(companyHkIncomeStatementDO);
-                                    //保存指标最新数据
-                                    saveTotalIncome(lastQ, companyHkIncomeStatementDO, null);
                                 }
+                                hkList.add(companyHkIncomeStatementDO);
+                                //保存指标最新数据
+                                saveTotalIncome(lastQ, companyHkIncomeStatementDO, null);
                             }
                         }
                     }
@@ -135,7 +137,8 @@ public class CompanyHkIncomeStatementHandler extends CrawHandler{
             List<CompanyHkIncomeStatementDO> hkList = (List<CompanyHkIncomeStatementDO>) convertResult;
             if (!CollectionUtils.isEmpty(hkList)) {
                 for (CompanyHkIncomeStatementDO companyHkIncomeStatementDO : hkList) {
-                    CompanyHkIncomeStatementDO companyHkIncomeStatementDORaw = companyHkIncomeStatementMapper.selectByPrimaryKey(companyHkIncomeStatementDO.getSymbol(), companyHkIncomeStatementDO.getQuarter());
+                    CompanyHkIncomeStatementDO companyHkIncomeStatementDORaw = companyHkIncomeStatementMapper.selectByPrimaryKey(
+                            companyHkIncomeStatementDO.getSymbol(), companyHkIncomeStatementDO.getQuarter(), Integer.valueOf(requestDTO.getType()));
                     if (companyHkIncomeStatementDORaw == null) {
                         companyHkIncomeStatementMapper.insert(companyHkIncomeStatementDO);
                     }

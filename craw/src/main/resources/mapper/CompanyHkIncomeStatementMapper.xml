@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.example.craw.model.CompanyHkIncomeStatementDO">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="symbol" jdbcType="VARCHAR" property="symbol" />
+    <result column="period" jdbcType="TINYINT" property="period" />
     <result column="quarter" jdbcType="VARCHAR" property="quarter" />
     <result column="turnover" jdbcType="OTHER" property="turnover" />
     <result column="special_items_of_operating_revenue" jdbcType="OTHER" property="specialItemsOfOperatingRevenue" />
@@ -69,7 +70,7 @@
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, symbol, quarter, turnover, special_items_of_operating_revenue, adjustment_items_of_operating_revenue, 
+    id, symbol, period, quarter, turnover, special_items_of_operating_revenue, adjustment_items_of_operating_revenue,
     operating_income, employee_expenditure_operating_expenses, depreciation_and_amortization_operating_expenses, 
     cost_of_sales, other_costs, operating_expenses, special_items_of_gross_profit, adjustment_items_of_gross_profit, 
     gross_profit, selling_expenses, administrative_expenses, research_and_development_expenses, 
@@ -94,7 +95,7 @@
     select
     <include refid="Base_Column_List" />
     from tb_company_hk_income_statement
-    where symbol = #{symbol} and quarter = #{quarter} limit 1
+    where symbol = #{symbol} and quarter = #{quarter} and period = #{period} limit 1
   </select>
 
   <select id="listBySymbol"  resultMap="BaseResultMap">
@@ -106,7 +107,7 @@
 
 
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.example.craw.model.CompanyHkIncomeStatementDO" useGeneratedKeys="true">
-    insert into tb_company_hk_income_statement (symbol, quarter, turnover, 
+    insert into tb_company_hk_income_statement (symbol, period, quarter, turnover,
       special_items_of_operating_revenue, adjustment_items_of_operating_revenue, 
       operating_income, employee_expenditure_operating_expenses, 
       depreciation_and_amortization_operating_expenses, cost_of_sales, 
@@ -135,7 +136,7 @@
       dividend, dividend_per_share, basic_earnings_per_share, 
       diluted_earnings_per_share
       )
-    values (#{symbol,jdbcType=VARCHAR}, #{quarter,jdbcType=VARCHAR}, #{turnover,jdbcType=OTHER}, 
+    values (#{symbol,jdbcType=VARCHAR}, #{period}, #{quarter,jdbcType=VARCHAR}, #{turnover,jdbcType=OTHER},
       #{specialItemsOfOperatingRevenue,jdbcType=OTHER}, #{adjustmentItemsOfOperatingRevenue,jdbcType=OTHER}, 
       #{operatingIncome,jdbcType=OTHER}, #{employeeExpenditureOperatingExpenses,jdbcType=OTHER}, 
       #{depreciationAndAmortizationOperatingExpenses,jdbcType=OTHER}, #{costOfSales,jdbcType=OTHER}, 
@@ -171,6 +172,9 @@
     <set>
       <if test="symbol != null">
         symbol = #{symbol,jdbcType=VARCHAR},
+      </if>
+      <if test="period != null">
+        period = #{period},
       </if>
       <if test="quarter != null">
         quarter = #{quarter,jdbcType=VARCHAR},

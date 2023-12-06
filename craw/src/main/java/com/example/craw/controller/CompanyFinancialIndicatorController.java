@@ -1,7 +1,9 @@
 package com.example.craw.controller;
 
+import com.example.craw.dto.SpiderResModel;
 import com.example.craw.dto.query.ListCompanyFinancialIndicatorQuery;
 import com.example.craw.dto.vo.CompanyFinancialIndicatorVO;
+import com.example.craw.dto.vo.ListSingleIncomeStatementVO;
 import com.example.craw.dto.vo.ListSingleIndicatorVO;
 import com.example.craw.service.CompanyFinancialIndicatorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +31,8 @@ public class CompanyFinancialIndicatorController {
      */
     @GetMapping("/listSingleIndicator")
     public Object listSingleIndicator(ListCompanyFinancialIndicatorQuery listCompanyFinancialIndicatorQuery) {
-        List<ListSingleIndicatorVO> listSingleIndicator = companyFinancialIndicatorService.listSingleIndicator(listCompanyFinancialIndicatorQuery);
-        return listSingleIndicator;
+        List<ListSingleIncomeStatementVO> listSingleIncomeStatementVOS = companyFinancialIndicatorService.listSingleIndicator(listCompanyFinancialIndicatorQuery);
+        return listSingleIncomeStatementVOS;
     }
 
     /**
@@ -40,7 +42,7 @@ public class CompanyFinancialIndicatorController {
      */
     @GetMapping("/list")
     public Object list(ListCompanyFinancialIndicatorQuery listCompanyFinancialIndicatorQuery) {
-        CompanyFinancialIndicatorVO companyFinancialIndicatorVO = companyFinancialIndicatorService.listCompanyFinancialIndicator(listCompanyFinancialIndicatorQuery);
-        return companyFinancialIndicatorVO;
+        SpiderResModel spiderResModel = companyFinancialIndicatorService.list(listCompanyFinancialIndicatorQuery, "zh_CN");
+        return spiderResModel;
     }
 }

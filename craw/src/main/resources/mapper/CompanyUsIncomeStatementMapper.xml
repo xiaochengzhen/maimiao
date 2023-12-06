@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.example.craw.model.CompanyUsIncomeStatementDO">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="symbol" jdbcType="VARCHAR" property="symbol" />
+    <result column="period" jdbcType="TINYINT" property="period" />
     <result column="quarter" jdbcType="VARCHAR" property="quarter" />
     <result column="total_revenue" jdbcType="OTHER" property="totalRevenue" />
     <result column="operating_revenue" jdbcType="OTHER" property="operatingRevenue" />
@@ -60,7 +61,7 @@
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, symbol, quarter, total_revenue, operating_revenue, excise_taxes, cost_of_revenue, 
+    id, symbol, period, quarter, total_revenue, operating_revenue, excise_taxes, cost_of_revenue,
     gross_profit, operating_expense, selling_and_administrative_expenses, selling_and_marketing_expense, 
     general_and_administrative_expense, research_and_development_costs, depreciation_amortization_depletion, 
     depreciation_and_amortization, depletion, provision_for_doubtful_accounts, other_taxes, 
@@ -81,7 +82,7 @@
     select 
     <include refid="Base_Column_List" />
     from tb_company_us_income_statement
-    where symbol = #{symbol} and quarter = #{quarter} limit 1
+    where symbol = #{symbol} and quarter = #{quarter}  and period = #{period} limit 1
   </select>
 
   <select id="listBySymbol"  resultMap="BaseResultMap">
@@ -92,7 +93,7 @@
   </select>
 
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.example.craw.model.CompanyUsIncomeStatementDO" useGeneratedKeys="true">
-    insert into tb_company_us_income_statement (symbol, quarter, total_revenue, 
+    insert into tb_company_us_income_statement (symbol, period, quarter, total_revenue,
       operating_revenue, excise_taxes, cost_of_revenue, 
       gross_profit, operating_expense, selling_and_administrative_expenses, 
       selling_and_marketing_expense, general_and_administrative_expense, 
@@ -114,7 +115,7 @@
       preferred_stock_dividends, other_preferred_stock_dividends, 
       net_income_attributable_to_common_stockholders, basic_earnings_per_share, 
       diluted_earnings_per_share, dividend_per_share)
-    values (#{symbol,jdbcType=VARCHAR}, #{quarter,jdbcType=VARCHAR}, #{totalRevenue,jdbcType=OTHER}, 
+    values (#{symbol,jdbcType=VARCHAR}, #{period}, #{quarter,jdbcType=VARCHAR}, #{totalRevenue,jdbcType=OTHER},
       #{operatingRevenue,jdbcType=OTHER}, #{exciseTaxes,jdbcType=OTHER}, #{costOfRevenue,jdbcType=OTHER}, 
       #{grossProfit,jdbcType=OTHER}, #{operatingExpense,jdbcType=OTHER}, #{sellingAndAdministrativeExpenses,jdbcType=OTHER}, 
       #{sellingAndMarketingExpense,jdbcType=OTHER}, #{generalAndAdministrativeExpense,jdbcType=OTHER}, 
@@ -143,6 +144,9 @@
     <set>
       <if test="symbol != null">
         symbol = #{symbol,jdbcType=VARCHAR},
+      </if>
+      <if test="period != null">
+        period = #{period},
       </if>
       <if test="quarter != null">
         quarter = #{quarter,jdbcType=VARCHAR},

@@ -2,6 +2,8 @@ package com.example.craw.model;
 
 import java.io.Serializable;
 import java.util.Date;
+
+import com.example.craw.http.IncomeKeyAnnotation;
 import lombok.Data;
 
 /**
@@ -27,48 +29,62 @@ public class CompanyFinancialIndicatorDO implements Serializable {
     private Integer period;
 
     /**
+     * 周期对应的时间
+     */
+    private String quarter;
+
+    /**
      * 每股收益信息
      */
+    @IncomeKeyAnnotation(value = "eps", enName = "EPS", zhName = "每股收益")
     private String eps;
 
     /**
      * 每股净资产
      */
+    @IncomeKeyAnnotation(value = "bvps", enName = "BVPS", zhName = "每股净资产")
     private String bvps;
 
     /**
      * 流动比率信息信息
      */
+    @IncomeKeyAnnotation(value = "currentRatio", enName = "Current Ratio", zhName = "流动比率")
     private String currentRatio;
 
     /**
      * 速动比率
      */
+    @IncomeKeyAnnotation(value = "quickRatio", enName = "Quick Ratio", zhName = "速动比率")
     private String quickRatio;
 
     /**
      * 净资产收益率
      */
+    @IncomeKeyAnnotation(value = "roe", enName = "ROE", zhName = "净资产收益率")
     private String roe;
 
     /**
      * 总资产收益率
      */
+    @IncomeKeyAnnotation(value = "roa", enName = "ROA", zhName = "总资产收益率")
     private String roa;
 
     /**
      * 毛利率
      */
+    @IncomeKeyAnnotation(value = "grossMargin", enName = "Gross Margin", zhName = "毛利率")
     private String grossMargin;
 
     /**
      * 净利率
      */
+    @IncomeKeyAnnotation(value = "netMargin", enName = "Net Margin", zhName = "净利率")
     private String netMargin;
 
     /**
      * 自由现金流
      */
+    @IncomeKeyAnnotation(value = "fcf", enName = "FCF", zhName = "自由现金流")
     private String fcf;
 
     /**

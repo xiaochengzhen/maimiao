@@ -24,6 +24,11 @@ public class CompanyHkIncomeStatementDO implements Serializable {
     private String symbol;
 
     /**
+     * 周期：1=1季度； 2=中报； 3=3季度； 4=年报
+     */
+    private Integer period;
+
+    /**
      * 季度
      */
     private String quarter;

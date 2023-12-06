@@ -5,6 +5,7 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="symbol" jdbcType="VARCHAR" property="symbol" />
     <result column="period" jdbcType="TINYINT" property="period" />
+    <result column="quarter" jdbcType="VARCHAR" property="quarter" />
     <result column="eps" jdbcType="OTHER" property="eps" />
     <result column="bvps" jdbcType="OTHER" property="bvps" />
     <result column="current_ratio" jdbcType="OTHER" property="currentRatio" />
@@ -18,23 +19,30 @@
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, symbol, period, eps, bvps, current_ratio, quick_ratio, roe, roa, gross_margin, 
+    id, symbol, period,quarter, eps, bvps, current_ratio, quick_ratio, roe, roa, gross_margin,
     net_margin, fcf, created_at, updated_at
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from tb_company_financial_indicator
-    where symbol = #{symbol} and period = #{period}  limit 1
+    where symbol = #{symbol} and period = #{period} and quarter = #{quarter}  limit 1
+  </select>
+
+  <select id="listBySymbolAndPeriod" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_company_financial_indicator
+    where symbol = #{symbol} and period = #{period}
   </select>
 
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.example.craw.model.CompanyFinancialIndicatorDO" useGeneratedKeys="true">
-    insert into tb_company_financial_indicator (symbol, period, eps, 
+    insert into tb_company_financial_indicator (symbol, period, quarter, eps,
       bvps, current_ratio, quick_ratio, 
       roe, roa, gross_margin, net_margin, 
       fcf
       )
-    values (#{symbol,jdbcType=VARCHAR}, #{period,jdbcType=TINYINT}, #{eps,jdbcType=OTHER}, 
+    values (#{symbol,jdbcType=VARCHAR}, #{period,jdbcType=TINYINT}, #{quarter}, #{eps,jdbcType=OTHER},
       #{bvps,jdbcType=OTHER}, #{currentRatio,jdbcType=OTHER}, #{quickRatio,jdbcType=OTHER}, 
       #{roe,jdbcType=OTHER}, #{roa,jdbcType=OTHER}, #{grossMargin,jdbcType=OTHER}, #{netMargin,jdbcType=OTHER}, 
       #{fcf,jdbcType=OTHER}
@@ -49,6 +57,9 @@
       </if>
       <if test="period != null">
         period = #{period,jdbcType=TINYINT},
+      </if>
+      <if test="quarter != null">
+        quarter = #{quarter},
       </if>
       <if test="eps != null">
         eps = #{eps,jdbcType=OTHER},

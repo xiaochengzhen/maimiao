@@ -98,6 +98,7 @@ public class CompanyUsIncomeStatementHandler extends CrawHandler{
                                 CompanyUsIncomeStatementDO companyUsIncomeStatementDO = new CompanyUsIncomeStatementDO();
                                 companyUsIncomeStatementDO.setSymbol(symbol);
                                 companyUsIncomeStatementDO.setQuarter(quarter);
+                                companyUsIncomeStatementDO.setPeriod(Integer.valueOf(requestDTO.getType()));
                                 List<CompanyUsIncomeStatementDTO.DataDTO.ListDTO.ValuesDTO> valuesDTOS = values.get(i);
                                 Class<CompanyUsIncomeStatementDO> CompanyUsIncomeStatementDOClass = CompanyUsIncomeStatementDO.class;
                                 Field[] declaredFields = CompanyUsIncomeStatementDOClass.getDeclaredFields();
@@ -135,7 +136,8 @@ public class CompanyUsIncomeStatementHandler extends CrawHandler{
             List<CompanyUsIncomeStatementDO> hkList = (List<CompanyUsIncomeStatementDO>) convertResult;
             if (!CollectionUtils.isEmpty(hkList)) {
                 for (CompanyUsIncomeStatementDO companyUsIncomeStatementDO : hkList) {
-                    CompanyUsIncomeStatementDO companyUsIncomeStatementDORaw = companyUsIncomeStatementMapper.selectByPrimaryKey(companyUsIncomeStatementDO.getSymbol(), companyUsIncomeStatementDO.getQuarter());
+                    CompanyUsIncomeStatementDO companyUsIncomeStatementDORaw = companyUsIncomeStatementMapper.selectByPrimaryKey(
+                            companyUsIncomeStatementDO.getSymbol(), companyUsIncomeStatementDO.getQuarter(), Integer.valueOf(requestDTO.getType()));
                     if (companyUsIncomeStatementDORaw == null) {
                         companyUsIncomeStatementMapper.insert(companyUsIncomeStatementDO);
                     }

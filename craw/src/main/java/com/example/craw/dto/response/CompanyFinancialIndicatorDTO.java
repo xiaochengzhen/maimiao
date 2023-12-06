@@ -85,7 +85,7 @@ public class CompanyFinancialIndicatorDTO {
             @Data
             public static class DataInfoDTO {
                 @JSONField(name = "financialType")
-                private String financialType;
+                private Integer financialType;
                 @JSONField(name = "year")
                 private String year;
                 @JSONField(name = "indicatorData")
@@ -111,7 +111,7 @@ public class CompanyFinancialIndicatorDTO {
             @Data
             public static class DataInfoDTO {
                 @JSONField(name = "financialType")
-                private String financialType;
+                private Integer financialType;
                 @JSONField(name = "year")
                 private String year;
                 @JSONField(name = "indicatorData")
@@ -137,7 +137,7 @@ public class CompanyFinancialIndicatorDTO {
             @Data
             public static class DataInfoDTO {
                 @JSONField(name = "financialType")
-                private String financialType;
+                private Integer financialType;
                 @JSONField(name = "year")
                 private String year;
                 @JSONField(name = "indicatorData")
@@ -163,7 +163,7 @@ public class CompanyFinancialIndicatorDTO {
             @Data
             public static class DataInfoDTO {
                 @JSONField(name = "financialType")
-                private String financialType;
+                private Integer financialType;
                 @JSONField(name = "year")
                 private String year;
                 @JSONField(name = "indicatorData")
@@ -189,7 +189,7 @@ public class CompanyFinancialIndicatorDTO {
             @Data
             public static class DataInfoDTO {
                 @JSONField(name = "financialType")
-                private String financialType;
+                private Integer financialType;
                 @JSONField(name = "year")
                 private String year;
                 @JSONField(name = "indicatorData")
@@ -215,7 +215,7 @@ public class CompanyFinancialIndicatorDTO {
             @Data
             public static class DataInfoDTO {
                 @JSONField(name = "financialType")
-                private String financialType;
+                private Integer financialType;
                 @JSONField(name = "year")
                 private String year;
                 @JSONField(name = "indicatorData")
@@ -243,7 +243,7 @@ public class CompanyFinancialIndicatorDTO {
             @Data
             public static class DataInfoDTO {
                 @JSONField(name = "financialType")
-                private String financialType;
+                private Integer financialType;
                 @JSONField(name = "year")
                 private String year;
                 @JSONField(name = "indicatorData")
@@ -271,7 +271,7 @@ public class CompanyFinancialIndicatorDTO {
             @Data
             public static class DataInfoDTO {
                 @JSONField(name = "financialType")
-                private String financialType;
+                private Integer financialType;
                 @JSONField(name = "year")
                 private String year;
                 @JSONField(name = "indicatorData")
@@ -299,7 +299,7 @@ public class CompanyFinancialIndicatorDTO {
             @Data
             public static class DataInfoDTO {
                 @JSONField(name = "financialType")
-                private String financialType;
+                private Integer financialType;
                 @JSONField(name = "year")
                 private String year;
                 @JSONField(name = "indicatorData")

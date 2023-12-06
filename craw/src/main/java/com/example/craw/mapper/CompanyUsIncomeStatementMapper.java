@@ -16,7 +16,7 @@ public interface CompanyUsIncomeStatementMapper {
 
     int insert(CompanyUsIncomeStatementDO record);
 
-    CompanyUsIncomeStatementDO selectByPrimaryKey(@Param("symbol") String symbol, @Param("quarter") String quarter);
+    CompanyUsIncomeStatementDO selectByPrimaryKey(@Param("symbol") String symbol, @Param("quarter") String quarter,  @Param("period") Integer period);
 
     List<CompanyUsIncomeStatementDO> listBySymbol(@Param("symbol") String symbol);
 

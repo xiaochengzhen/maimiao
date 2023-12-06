@@ -23,8 +23,12 @@ public enum CrawEnum {
     COMPANY_FINANCIAL_INDICATOR_Q_ZH("COMPANY_FINANCIAL_INDICATOR","财务指标单季", "12", "3,4,21,22,24,25,80,81,82", "zh_CN", false),
     COMPANY_FINANCIAL_INDICATOR_H_ZH("COMPANY_FINANCIAL_INDICATOR","财务指标累季", "13", "3,4,21,22,24,25,80,81,82", "zh_CN", false),
     COMPANY_FINANCIAL_INDICATOR_Y_ZH("COMPANY_FINANCIAL_INDICATOR","财务指标年", "11", "3,4,21,22,24,25,80,81,82", "zh_CN", false),
-    COMPANY_INCOME_HK_ZH("COMPANY_INCOME_HK","港股利润表", "", "", "zh_CN", false),
-    COMPANY_INCOME_US_8_ZH("COMPANY_INCOME_US","美股利润表(年+季)", "8", "", "zh_CN", false),
+    COMPANY_INCOME_HK_1_ZH("COMPANY_INCOME_HK","港股利润表(1季度)", "1", "", "zh_CN", false),
+    COMPANY_INCOME_HK_2_ZH("COMPANY_INCOME_HK","港股利润表(中报)", "2", "", "zh_CN", false),
+    COMPANY_INCOME_HK_3_ZH("COMPANY_INCOME_HK","港股利润表(3季度)", "3", "", "zh_CN", false),
+    COMPANY_INCOME_HK_4_ZH("COMPANY_INCOME_HK","港股利润表(年报)", "4", "", "zh_CN", false),
+    COMPANY_INCOME_US_5_ZH("COMPANY_INCOME_US","美股利润表(年)", "5", "", "zh_CN", false),
+    COMPANY_INCOME_US_6_ZH("COMPANY_INCOME_US","美股利润表(季)", "6", "", "zh_CN", false),
     COMPANY_INCOME_US_7_ZH("COMPANY_INCOME_US","美股利润表(累计季)", "7", "", "zh_CN", false);
 
     /**

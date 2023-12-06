@@ -23,6 +23,11 @@ public class CompanyUsIncomeStatementDO implements Serializable {
      */
     private String symbol;
 
+    /**
+     * 周期：5=年报； 6=季报； 7=累计季
+     */
+    private Integer period;
+
     private String quarter;
 
     /**

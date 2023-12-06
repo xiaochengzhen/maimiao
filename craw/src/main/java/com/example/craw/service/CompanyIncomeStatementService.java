@@ -1,7 +1,5 @@
 package com.example.craw.service;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.example.craw.dto.SpiderResModel;
 import com.example.craw.dto.query.ListCompanyIncomeStatementQuery;
 import com.example.craw.dto.vo.ListSingleIncomeStatementVO;
@@ -14,11 +12,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-
 import java.lang.reflect.Field;
-import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static com.example.craw.util.CrawUtil.*;
 
 /**
  * @description 利润表的service
@@ -69,7 +67,13 @@ public class CompanyIncomeStatementService {
         //key==dataList
         Map<String, List<SpiderResModel.DataModel>> dataListMap = new HashMap<>();
         //key==title
-        Map<String, String> titleMap = getTitleMap(language, market);
+        Class clazz = null;
+        if (market.equals("us")) {
+            clazz = CompanyUsIncomeStatementDO.class;
+        } else {
+            clazz = CompanyHkIncomeStatementDO.class;
+        }
+        Map<String, String> titleMap = getTitleMap(language, market, clazz);
         //date list
         List<String> dateList = new ArrayList<>();
         if (market.equals("us")) {
@@ -93,32 +97,6 @@ public class CompanyIncomeStatementService {
     }
 
     //处理美股数据
-    private Map<String, String>  getTitleMap(String language, String market) {
-        Map<String, String> titleMap = new LinkedHashMap<>();
-        Class clazz = null;
-        if (market.equals("us")) {
-             clazz = CompanyUsIncomeStatementDO.class;
-        } else {
-            clazz = CompanyHkIncomeStatementDO.class;
-        }
-        Field[] fields = clazz.getDeclaredFields();
-        for (Field field : fields) {
-            if (field.isAnnotationPresent(IncomeKeyAnnotation.class)) {
-                IncomeKeyAnnotation annotation = field.getAnnotation(IncomeKeyAnnotation.class);
-                String value = annotation.value();
-                String title = "";
-                if ("zh_CN".equals(language)) {
-                    title = annotation.zhName();
-                } else {
-                    title = annotation.enName();
-                }
-                titleMap.put(value, title);
-            }
-        }
-        return titleMap;
-    }
-
-    //处理美股数据
     private  List<String> extractedUS(Integer period, String symbol, Map<String, List<SpiderResModel.DataModel>> dataListMap) {
         List<String> dateList = new ArrayList<>();
         List<CompanyUsIncomeStatementDO> companyUsIncomeStatementDOS = companyUsIncomeStatementMapper.listBySymbol(symbol);
@@ -136,17 +114,15 @@ public class CompanyIncomeStatementService {
                         IncomeKeyAnnotation annotation = declaredField.getAnnotation(IncomeKeyAnnotation.class);
                         String value = annotation.value();
                         try {
-                            String str = (String) declaredField.get(companyUsIncomeStatementDO);
-                            if (StringUtils.isNotBlank(str)) {
-                                SpiderResModel.DataModel dataModel = getDataModel(str);
-                                List<SpiderResModel.DataModel> dataModels = dataListMap.get(value);
-                                if (!CollectionUtils.isEmpty(dataModels)) {
-                                    dataModels.add(dataModel);
-                                } else {
-                                    List<SpiderResModel.DataModel> dataModelList = new ArrayList<>();
-                                    dataModelList.add(dataModel);
-                                    dataListMap.put(value, dataModelList);
-                                }
+                            String str = declaredField.get(companyUsIncomeStatementDO) == null?"":(String) declaredField.get(companyUsIncomeStatementDO);
+                            SpiderResModel.DataModel dataModel = getDataModel(str);
+                            List<SpiderResModel.DataModel> dataModels = dataListMap.get(value);
+                            if (!CollectionUtils.isEmpty(dataModels)) {
+                                dataModels.add(dataModel);
+                            } else {
+                                List<SpiderResModel.DataModel> dataModelList = new ArrayList<>();
+                                dataModelList.add(dataModel);
+                                dataListMap.put(value, dataModelList);
                             }
                         } catch (IllegalAccessException e) {
                             e.printStackTrace();
@@ -176,17 +152,15 @@ public class CompanyIncomeStatementService {
                         IncomeKeyAnnotation annotation = declaredField.getAnnotation(IncomeKeyAnnotation.class);
                         String value = annotation.value();
                         try {
-                            String str = (String) declaredField.get(companyHkIncomeStatementDO);
-                            if (StringUtils.isNotBlank(str)) {
-                                SpiderResModel.DataModel dataModel = getDataModel(str);
-                                List<SpiderResModel.DataModel> dataModels = dataListMap.get(value);
-                                if (!CollectionUtils.isEmpty(dataModels)) {
-                                    dataModels.add(dataModel);
-                                } else {
-                                    List<SpiderResModel.DataModel> dataModelList = new ArrayList<>();
-                                    dataModelList.add(dataModel);
-                                    dataListMap.put(value, dataModelList);
-                                }
+                            String str = declaredField.get(companyHkIncomeStatementDO)==null?"":(String) declaredField.get(companyHkIncomeStatementDO);
+                            SpiderResModel.DataModel dataModel = getDataModel(str);
+                            List<SpiderResModel.DataModel> dataModels = dataListMap.get(value);
+                            if (!CollectionUtils.isEmpty(dataModels)) {
+                                dataModels.add(dataModel);
+                            } else {
+                                List<SpiderResModel.DataModel> dataModelList = new ArrayList<>();
+                                dataModelList.add(dataModel);
+                                dataListMap.put(value, dataModelList);
                             }
                         } catch (IllegalAccessException e) {
                             e.printStackTrace();
@@ -196,26 +170,6 @@ public class CompanyIncomeStatementService {
             }
         }
         return dateList;
-    }
-
-    //排序过滤日期
-    private List<String> listDate(Integer period, List<String> list) {
-        List<String> newList = null;
-        list = list.stream().sorted(Comparator.comparing(s-> StringUtils.substringAfter(s, ")"), Comparator.reverseOrder())).collect(Collectors.toList());
-        switch (period) {
-            case 1:
-                newList = list.stream().filter(s->StringUtils.containsAny(s,"Q1", "Q2", "Q3", "Q4")).collect(Collectors.toList());
-                break;
-            case 2:
-                newList = list.stream().filter(s->StringUtils.containsAny(s, "Q6", "Q9")).collect(Collectors.toList());
-                break;
-            case 3:
-                newList = list.stream().filter(s->StringUtils.containsAny(s,"FY")).collect(Collectors.toList());
-                break;
-            default:
-                break;
-        }
-        return newList;
     }
 
     //美股处理
@@ -302,27 +256,6 @@ public class CompanyIncomeStatementService {
         return list;
     }
 
-    //单个数据处理
-    private ListSingleIncomeStatementVO handleSingle(String data, String quarter) {
-        ListSingleIncomeStatementVO listSingleIncomeStatementVO = new ListSingleIncomeStatementVO();
-        JSONObject jsonObject = JSON.parseObject(data);
-        String ratio = jsonObject.getString("ratio");
-        BigDecimal value = jsonObject.getBigDecimal("raw_value");
-        listSingleIncomeStatementVO.setValue(value);
-        listSingleIncomeStatementVO.setRatio(ratio);
-        listSingleIncomeStatementVO.setQuarter(quarter);
-        return listSingleIncomeStatementVO;
-    }
 
-    //单个数据处理
-    private SpiderResModel.DataModel getDataModel(String data) {
-        SpiderResModel.DataModel dataModel = new SpiderResModel.DataModel();
-        JSONObject jsonObject = JSON.parseObject(data);
-        String ratio = jsonObject.getString("ratio");
-        BigDecimal value = jsonObject.getBigDecimal("raw_value");
-        dataModel.setValue(value);
-        dataModel.setRatio(ratio);
-        return dataModel;
-    }
 }
 
