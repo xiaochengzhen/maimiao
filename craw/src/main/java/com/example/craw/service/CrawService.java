@@ -26,8 +26,8 @@ public class CrawService {
 
     //爬取数据
     public void craw() {
-        String symbol = "AAPL.us";
-      //  String symbol = "00700.hk";
+       // String symbol = "AAPL.us";
+        String symbol = "00700.hk";
         String marketCode = MARKET_CODE_HK;
         String marketType = MARKET_TYPE_HK;
         String market = StringUtils.substringAfter(symbol, ".");
