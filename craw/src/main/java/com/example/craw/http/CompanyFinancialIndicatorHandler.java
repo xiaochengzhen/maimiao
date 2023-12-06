@@ -317,6 +317,7 @@ public class CompanyFinancialIndicatorHandler extends CrawHandler{
         }
     }
 
+    //保存指标汇总数据
     private void realExt(List<CompanyFinancialIndicatorDO> companyFinancialIndicatorDOList, String symbol) {
         CompanyFinancialRealDO companyFinancialRealRaw = companyFinancialRealMapper.selectByPrimaryKey(symbol);
         CompanyFinancialRealDO companyFinancialRealDO = new CompanyFinancialRealDO();
