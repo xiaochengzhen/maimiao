@@ -73,8 +73,8 @@ public class CompanyUsIncomeStatementHandler extends CrawHandler{
         if (StringUtils.isNotBlank(httpResult)) {
             JSONObject jsonObject = JSON.parseObject(httpResult);
             Integer code = jsonObject.getInteger("code");
-            JSONObject dataJT = jsonObject.getJSONObject("data");
-            if (code == 0 && dataJT != null) {
+            String dataJT = jsonObject.getString("data");
+            if (code == 0 && StringUtils.isNotBlank(dataJT) && !("[]").equals(dataJT)) {
                 CompanyUsIncomeStatementDTO companyUsIncomeStatementDTO = JSONObject.parseObject(httpResult, CompanyUsIncomeStatementDTO.class);
                 CompanyUsIncomeStatementDTO.DataDTO data = companyUsIncomeStatementDTO.getData();
                 if (data != null) {

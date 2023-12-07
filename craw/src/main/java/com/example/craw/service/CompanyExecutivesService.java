@@ -2,9 +2,8 @@ package com.example.craw.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.example.craw.CompanyExecutivesDO;
-import com.example.craw.CompanyShareActiveDO;
-import com.example.craw.controller.CompanyExecutivesController;
+import com.example.craw.model.CompanyExecutivesDO;
+import com.example.craw.model.CompanyShareActiveDO;
 import com.example.craw.dto.vo.CompanyExecutivesVO;
 import com.example.craw.mapper.CompanyExecutivesMapper;
 import com.example.craw.mapper.CompanyShareActiveMapper;

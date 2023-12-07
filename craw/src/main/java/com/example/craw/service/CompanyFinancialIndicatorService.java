@@ -1,20 +1,11 @@
 package com.example.craw.service;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.example.craw.dto.SpiderResModel;
 import com.example.craw.dto.query.ListCompanyFinancialIndicatorQuery;
-import com.example.craw.dto.query.ListCompanyIncomeStatementQuery;
-import com.example.craw.dto.vo.CompanyFinancialIndicatorVO;
 import com.example.craw.dto.vo.ListSingleIncomeStatementVO;
-import com.example.craw.dto.vo.ListSingleIndicatorVO;
 import com.example.craw.http.IncomeKeyAnnotation;
 import com.example.craw.mapper.CompanyFinancialIndicatorMapper;
-import com.example.craw.mapper.CompanyHkIncomeStatementMapper;
-import com.example.craw.mapper.CompanyUsIncomeStatementMapper;
 import com.example.craw.model.CompanyFinancialIndicatorDO;
-import com.example.craw.model.CompanyHkIncomeStatementDO;
-import com.example.craw.model.CompanyUsIncomeStatementDO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -20,6 +20,6 @@ public class SpiderResModel {
     @Data
     public static class DataModel {
         private String ratio;
-        private BigDecimal value;
+        private String value;
     }
 }

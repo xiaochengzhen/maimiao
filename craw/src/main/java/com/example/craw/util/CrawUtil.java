@@ -41,11 +41,11 @@ public class CrawUtil {
         SpiderResModel.DataModel dataModel = new SpiderResModel.DataModel();
         JSONObject jsonObject = new JSONObject();
         String ratio = null;
-        BigDecimal value = null;
+        String value = null;
         if (StringUtils.isNotBlank(data)) {
             jsonObject = JSON.parseObject(data);
             ratio = jsonObject.getString("ratio");
-            value = jsonObject.getBigDecimal("raw_value");
+            value = jsonObject.getString("raw_value");
         }
         dataModel.setValue(value);
         dataModel.setRatio(ratio);

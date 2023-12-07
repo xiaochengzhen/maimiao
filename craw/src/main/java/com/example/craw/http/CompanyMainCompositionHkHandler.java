@@ -84,8 +84,8 @@ public class CompanyMainCompositionHkHandler extends CrawHandler{
         if (StringUtils.isNotBlank(httpResult)) {
             JSONObject jsonObject = JSON.parseObject(httpResult);
             Integer code = jsonObject.getInteger("code");
-            JSONObject dataJT = jsonObject.getJSONObject("data");
-            if (code == 0 && dataJT != null) {
+            String dataJT = jsonObject.getString("data");
+            if (code == 0 && StringUtils.isNotBlank(dataJT) && !("[]").equals(dataJT)) {
                 CompositionDataHkDTO compositionDataHkDTO = JSONObject.parseObject(httpResult, CompositionDataHkDTO.class);
                 CompositionDataHkDTO.DataDTO data = compositionDataHkDTO.getData();
                 if (data != null) {

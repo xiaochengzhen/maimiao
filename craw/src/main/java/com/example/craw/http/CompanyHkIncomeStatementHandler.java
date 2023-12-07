@@ -74,8 +74,8 @@ public class CompanyHkIncomeStatementHandler extends CrawHandler{
         if (StringUtils.isNotBlank(httpResult)) {
             JSONObject jsonObject = JSON.parseObject(httpResult);
             Integer code = jsonObject.getInteger("code");
-            JSONObject dataJT = jsonObject.getJSONObject("data");
-            if (code == 0 && dataJT != null) {
+            String dataJT = jsonObject.getString("data");
+            if (code == 0 && StringUtils.isNotBlank(dataJT) && !("[]").equals(dataJT)) {
                 CompanyHkIncomeStatementDTO companyHkIncomeStatementDTO = JSONObject.parseObject(httpResult, CompanyHkIncomeStatementDTO.class);
                 CompanyHkIncomeStatementDTO.DataDTO data = companyHkIncomeStatementDTO.getData();
                 if (data != null) {

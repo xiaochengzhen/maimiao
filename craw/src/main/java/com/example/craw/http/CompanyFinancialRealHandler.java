@@ -66,8 +66,8 @@ public class CompanyFinancialRealHandler extends CrawHandler{
         if (StringUtils.isNotBlank(httpResult)) {
             JSONObject jsonObject = JSON.parseObject(httpResult);
             Integer code = jsonObject.getInteger("code");
-            JSONObject dataJT = jsonObject.getJSONObject("data");
-            if (code == 0 && dataJT != null) {
+            String dataJT = jsonObject.getString("data");
+            if (code == 0 && StringUtils.isNotBlank(dataJT) && !("[]").equals(dataJT)) {
                 CompanyFinancialRealDTO companyFinancialRealDTO = JSONObject.parseObject(httpResult, CompanyFinancialRealDTO.class);
                 CompanyFinancialRealDTO.DataDTO data = companyFinancialRealDTO.getData();
                 if (data != null) {

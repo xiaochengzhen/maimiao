@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.craw.mapper.SymbolMapper">
+  <resultMap id="BaseResultMap" type="com.example.craw.model.SymbolDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="symbol" jdbcType="VARCHAR" property="symbol" />
+    <result column="office_symbol" jdbcType="VARCHAR" property="officeSymbol" />
+    <result column="currency" jdbcType="VARCHAR" property="currency" />
+    <result column="base_symbol" jdbcType="VARCHAR" property="baseSymbol" />
+    <result column="short_name" jdbcType="VARCHAR" property="shortName" />
+    <result column="full_name" jdbcType="VARCHAR" property="fullName" />
+    <result column="cn_name" jdbcType="VARCHAR" property="cnName" />
+    <result column="en_name" jdbcType="VARCHAR" property="enName" />
+    <result column="product_type" jdbcType="TINYINT" property="productType" />
+    <result column="lot_size" jdbcType="DECIMAL" property="lotSize" />
+    <result column="region" jdbcType="VARCHAR" property="region" />
+    <result column="market" jdbcType="VARCHAR" property="market" />
+    <result column="market_status" jdbcType="TINYINT" property="marketStatus" />
+    <result column="security_status" jdbcType="TINYINT" property="securityStatus" />
+    <result column="status" jdbcType="BOOLEAN" property="status" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+    <result column="is_short_stoke" jdbcType="BOOLEAN" property="isShortStoke" />
+    <result column="frr_grade" jdbcType="VARCHAR" property="frrGrade" />
+    <result column="listing_day" jdbcType="VARCHAR" property="listingDay" />
+    <result column="is_hot" jdbcType="TINYINT" property="isHot" />
+    <result column="key_word" jdbcType="VARCHAR" property="keyWord" />
+    <result column="release_status" jdbcType="BOOLEAN" property="releaseStatus" />
+    <result column="trade_status" jdbcType="BOOLEAN" property="tradeStatus" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, symbol, office_symbol, currency, base_symbol, short_name, full_name, cn_name, 
+    en_name, product_type, lot_size, region, market, market_status, security_status, 
+    `status`, created_at, updated_at, is_short_stoke, frr_grade, listing_day, is_hot, 
+    key_word, release_status, trade_status
+  </sql>
+  <select id="listSymbol"  resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_symbol
+    where product_type = 1 and is_hot = 1
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tb_symbol
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.example.craw.model.SymbolDO" useGeneratedKeys="true">
+    insert into tb_symbol (symbol, office_symbol, currency, 
+      base_symbol, short_name, full_name, 
+      cn_name, en_name, product_type, 
+      lot_size, region, market, 
+      market_status, security_status, `status`, 
+      created_at, updated_at, is_short_stoke, 
+      frr_grade, listing_day, is_hot, 
+      key_word, release_status, trade_status
+      )
+    values (#{symbol,jdbcType=VARCHAR}, #{officeSymbol,jdbcType=VARCHAR}, #{currency,jdbcType=VARCHAR}, 
+      #{baseSymbol,jdbcType=VARCHAR}, #{shortName,jdbcType=VARCHAR}, #{fullName,jdbcType=VARCHAR}, 
+      #{cnName,jdbcType=VARCHAR}, #{enName,jdbcType=VARCHAR}, #{productType,jdbcType=TINYINT}, 
+      #{lotSize,jdbcType=DECIMAL}, #{region,jdbcType=VARCHAR}, #{market,jdbcType=VARCHAR}, 
+      #{marketStatus,jdbcType=TINYINT}, #{securityStatus,jdbcType=TINYINT}, #{status,jdbcType=BOOLEAN}, 
+      #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}, #{isShortStoke,jdbcType=BOOLEAN}, 
+      #{frrGrade,jdbcType=VARCHAR}, #{listingDay,jdbcType=VARCHAR}, #{isHot,jdbcType=TINYINT}, 
+      #{keyWord,jdbcType=VARCHAR}, #{releaseStatus,jdbcType=BOOLEAN}, #{tradeStatus,jdbcType=BOOLEAN}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.example.craw.model.SymbolDO" useGeneratedKeys="true">
+    insert into tb_symbol
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="symbol != null">
+        symbol,
+      </if>
+      <if test="officeSymbol != null">
+        office_symbol,
+      </if>
+      <if test="currency != null">
+        currency,
+      </if>
+      <if test="baseSymbol != null">
+        base_symbol,
+      </if>
+      <if test="shortName != null">
+        short_name,
+      </if>
+      <if test="fullName != null">
+        full_name,
+      </if>
+      <if test="cnName != null">
+        cn_name,
+      </if>
+      <if test="enName != null">
+        en_name,
+      </if>
+      <if test="productType != null">
+        product_type,
+      </if>
+      <if test="lotSize != null">
+        lot_size,
+      </if>
+      <if test="region != null">
+        region,
+      </if>
+      <if test="market != null">
+        market,
+      </if>
+      <if test="marketStatus != null">
+        market_status,
+      </if>
+      <if test="securityStatus != null">
+        security_status,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="createdAt != null">
+        created_at,
+      </if>
+      <if test="updatedAt != null">
+        updated_at,
+      </if>
+      <if test="isShortStoke != null">
+        is_short_stoke,
+      </if>
+      <if test="frrGrade != null">
+        frr_grade,
+      </if>
+      <if test="listingDay != null">
+        listing_day,
+      </if>
+      <if test="isHot != null">
+        is_hot,
+      </if>
+      <if test="keyWord != null">
+        key_word,
+      </if>
+      <if test="releaseStatus != null">
+        release_status,
+      </if>
+      <if test="tradeStatus != null">
+        trade_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="symbol != null">
+        #{symbol,jdbcType=VARCHAR},
+      </if>
+      <if test="officeSymbol != null">
+        #{officeSymbol,jdbcType=VARCHAR},
+      </if>
+      <if test="currency != null">
+        #{currency,jdbcType=VARCHAR},
+      </if>
+      <if test="baseSymbol != null">
+        #{baseSymbol,jdbcType=VARCHAR},
+      </if>
+      <if test="shortName != null">
+        #{shortName,jdbcType=VARCHAR},
+      </if>
+      <if test="fullName != null">
+        #{fullName,jdbcType=VARCHAR},
+      </if>
+      <if test="cnName != null">
+        #{cnName,jdbcType=VARCHAR},
+      </if>
+      <if test="enName != null">
+        #{enName,jdbcType=VARCHAR},
+      </if>
+      <if test="productType != null">
+        #{productType,jdbcType=TINYINT},
+      </if>
+      <if test="lotSize != null">
+        #{lotSize,jdbcType=DECIMAL},
+      </if>
+      <if test="region != null">
+        #{region,jdbcType=VARCHAR},
+      </if>
+      <if test="market != null">
+        #{market,jdbcType=VARCHAR},
+      </if>
+      <if test="marketStatus != null">
+        #{marketStatus,jdbcType=TINYINT},
+      </if>
+      <if test="securityStatus != null">
+        #{securityStatus,jdbcType=TINYINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=BOOLEAN},
+      </if>
+      <if test="createdAt != null">
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isShortStoke != null">
+        #{isShortStoke,jdbcType=BOOLEAN},
+      </if>
+      <if test="frrGrade != null">
+        #{frrGrade,jdbcType=VARCHAR},
+      </if>
+      <if test="listingDay != null">
+        #{listingDay,jdbcType=VARCHAR},
+      </if>
+      <if test="isHot != null">
+        #{isHot,jdbcType=TINYINT},
+      </if>
+      <if test="keyWord != null">
+        #{keyWord,jdbcType=VARCHAR},
+      </if>
+      <if test="releaseStatus != null">
+        #{releaseStatus,jdbcType=BOOLEAN},
+      </if>
+      <if test="tradeStatus != null">
+        #{tradeStatus,jdbcType=BOOLEAN},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.craw.model.SymbolDO">
+    update tb_symbol
+    <set>
+      <if test="symbol != null">
+        symbol = #{symbol,jdbcType=VARCHAR},
+      </if>
+      <if test="officeSymbol != null">
+        office_symbol = #{officeSymbol,jdbcType=VARCHAR},
+      </if>
+      <if test="currency != null">
+        currency = #{currency,jdbcType=VARCHAR},
+      </if>
+      <if test="baseSymbol != null">
+        base_symbol = #{baseSymbol,jdbcType=VARCHAR},
+      </if>
+      <if test="shortName != null">
+        short_name = #{shortName,jdbcType=VARCHAR},
+      </if>
+      <if test="fullName != null">
+        full_name = #{fullName,jdbcType=VARCHAR},
+      </if>
+      <if test="cnName != null">
+        cn_name = #{cnName,jdbcType=VARCHAR},
+      </if>
+      <if test="enName != null">
+        en_name = #{enName,jdbcType=VARCHAR},
+      </if>
+      <if test="productType != null">
+        product_type = #{productType,jdbcType=TINYINT},
+      </if>
+      <if test="lotSize != null">
+        lot_size = #{lotSize,jdbcType=DECIMAL},
+      </if>
+      <if test="region != null">
+        region = #{region,jdbcType=VARCHAR},
+      </if>
+      <if test="market != null">
+        market = #{market,jdbcType=VARCHAR},
+      </if>
+      <if test="marketStatus != null">
+        market_status = #{marketStatus,jdbcType=TINYINT},
+      </if>
+      <if test="securityStatus != null">
+        security_status = #{securityStatus,jdbcType=TINYINT},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=BOOLEAN},
+      </if>
+      <if test="createdAt != null">
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isShortStoke != null">
+        is_short_stoke = #{isShortStoke,jdbcType=BOOLEAN},
+      </if>
+      <if test="frrGrade != null">
+        frr_grade = #{frrGrade,jdbcType=VARCHAR},
+      </if>
+      <if test="listingDay != null">
+        listing_day = #{listingDay,jdbcType=VARCHAR},
+      </if>
+      <if test="isHot != null">
+        is_hot = #{isHot,jdbcType=TINYINT},
+      </if>
+      <if test="keyWord != null">
+        key_word = #{keyWord,jdbcType=VARCHAR},
+      </if>
+      <if test="releaseStatus != null">
+        release_status = #{releaseStatus,jdbcType=BOOLEAN},
+      </if>
+      <if test="tradeStatus != null">
+        trade_status = #{tradeStatus,jdbcType=BOOLEAN},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.craw.model.SymbolDO">
+    update tb_symbol
+    set symbol = #{symbol,jdbcType=VARCHAR},
+      office_symbol = #{officeSymbol,jdbcType=VARCHAR},
+      currency = #{currency,jdbcType=VARCHAR},
+      base_symbol = #{baseSymbol,jdbcType=VARCHAR},
+      short_name = #{shortName,jdbcType=VARCHAR},
+      full_name = #{fullName,jdbcType=VARCHAR},
+      cn_name = #{cnName,jdbcType=VARCHAR},
+      en_name = #{enName,jdbcType=VARCHAR},
+      product_type = #{productType,jdbcType=TINYINT},
+      lot_size = #{lotSize,jdbcType=DECIMAL},
+      region = #{region,jdbcType=VARCHAR},
+      market = #{market,jdbcType=VARCHAR},
+      market_status = #{marketStatus,jdbcType=TINYINT},
+      security_status = #{securityStatus,jdbcType=TINYINT},
+      `status` = #{status,jdbcType=BOOLEAN},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      is_short_stoke = #{isShortStoke,jdbcType=BOOLEAN},
+      frr_grade = #{frrGrade,jdbcType=VARCHAR},
+      listing_day = #{listingDay,jdbcType=VARCHAR},
+      is_hot = #{isHot,jdbcType=TINYINT},
+      key_word = #{keyWord,jdbcType=VARCHAR},
+      release_status = #{releaseStatus,jdbcType=BOOLEAN},
+      trade_status = #{tradeStatus,jdbcType=BOOLEAN}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

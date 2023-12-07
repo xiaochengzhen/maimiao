@@ -18,7 +18,19 @@ public class UnitDeserializer implements ObjectDeserializer{
         if (ob != null) {
             String obStr = ob.toString();
             BigDecimal bigDecimal = null;
-            if (obStr.contains("亿")) {
+            if (obStr.contains("万亿")) {
+                String value = obStr.replaceAll("万亿", "").replaceAll(",", "");
+                bigDecimal = new BigDecimal(value).multiply(new BigDecimal("1000000000000"));
+            } else if (obStr.contains("千亿")) {
+                String value = obStr.replaceAll("千亿", "").replaceAll(",", "");
+                bigDecimal = new BigDecimal(value).multiply(new BigDecimal("100000000000"));
+            } else if (obStr.contains("百亿")) {
+                String value = obStr.replaceAll("百亿", "").replaceAll(",", "");
+                bigDecimal = new BigDecimal(value).multiply(new BigDecimal("10000000000"));
+            } else if (obStr.contains("十亿")) {
+                String value = obStr.replaceAll("十亿", "").replaceAll(",", "");
+                bigDecimal = new BigDecimal(value).multiply(new BigDecimal(1000000000));
+            } else if (obStr.contains("亿")) {
                 String value = obStr.replaceAll("亿", "").replaceAll(",", "");
                 bigDecimal = new BigDecimal(value).multiply(new BigDecimal(100000000));
             } else if (obStr.contains("万")) {
@@ -32,7 +44,7 @@ public class UnitDeserializer implements ObjectDeserializer{
                 bigDecimal = new BigDecimal(value).multiply(new BigDecimal(100));
             }
             if (bigDecimal != null) {
-                return bigDecimal;
+                return bigDecimal.toPlainString();
             }
         }
         return ob;

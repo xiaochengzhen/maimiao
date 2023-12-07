@@ -1,9 +1,8 @@
 package com.example.craw.service;
-import java.math.BigDecimal;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.example.craw.CompanyShareActiveDO;
+import com.example.craw.model.CompanyShareActiveDO;
 import com.example.craw.dto.vo.CompanyShareActiveTotalVO;
 import com.example.craw.dto.vo.CompanyShareActiveVO;
 import com.example.craw.mapper.CompanyShareActiveMapper;

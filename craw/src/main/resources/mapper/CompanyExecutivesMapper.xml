@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.craw.mapper.CompanyExecutivesMapper">
-  <resultMap id="BaseResultMap" type="com.example.craw.CompanyExecutivesDO">
+  <resultMap id="BaseResultMap" type="com.example.craw.model.CompanyExecutivesDO">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="symbol" jdbcType="VARCHAR" property="symbol" />
     <result column="name" jdbcType="OTHER" property="name" />
@@ -32,7 +32,7 @@
     where symbol = #{symbol}
   </select>
 
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.example.craw.CompanyExecutivesDO" useGeneratedKeys="true">
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.example.craw.model.CompanyExecutivesDO" useGeneratedKeys="true">
     insert into tb_company_executives (symbol, `name`, `position`, 
       salary, age, gender, 
       description, `level`, created_at, 
@@ -42,7 +42,7 @@
       #{description,jdbcType=OTHER}, #{level,jdbcType=INTEGER}, #{createdAt,jdbcType=TIMESTAMP}, 
       #{updatedAt,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.example.craw.CompanyExecutivesDO" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.example.craw.model.CompanyExecutivesDO" useGeneratedKeys="true">
     insert into tb_company_executives
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="symbol != null">
@@ -109,7 +109,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.example.craw.CompanyExecutivesDO">
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.craw.model.CompanyExecutivesDO">
     update tb_company_executives
     <set>
       <if test="symbol != null">
@@ -145,7 +145,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.example.craw.CompanyExecutivesDO">
+  <update id="updateByPrimaryKey" parameterType="com.example.craw.model.CompanyExecutivesDO">
     update tb_company_executives
     set symbol = #{symbol,jdbcType=VARCHAR},
       `name` = #{name,jdbcType=OTHER},

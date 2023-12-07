@@ -3,6 +3,8 @@ package com.example.craw.service;
 import com.example.craw.dto.RequestDTO;
 import com.example.craw.http.CrawEnum;
 import com.example.craw.http.CrawHandler;
+import com.example.craw.mapper.SymbolMapper;
+import com.example.craw.model.SymbolDO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,13 +25,14 @@ public class CrawService {
 
     @Autowired
     private List<CrawHandler> crawHandlerList;
+    @Autowired
+    private SymbolMapper symbolMapper;
 
     //爬取数据
     public void craw() {
-      //  String symbol = "AAPL.us";
-     //   String symbol = "00700.hk";
-        String [] symbols = {"00700.hk","00001.hk","00002.hk","00003.hk","00004.hk", "AAPL.us","SMFL.us", "ANY.us"};
-        for (String symbol : symbols) {
+        List<SymbolDO> symbolDOS = symbolMapper.listSymbol();
+        for (SymbolDO symbolDO : symbolDOS) {
+            String symbol = symbolDO.getSymbol();
             String marketCode = MARKET_CODE_HK;
             String marketType = MARKET_TYPE_HK;
             String market = StringUtils.substringAfter(symbol, ".");

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.craw.mapper.CompanyShareActiveMapper">
-  <resultMap id="BaseResultMap" type="com.example.craw.CompanyShareActiveDO">
+  <resultMap id="BaseResultMap" type="com.example.craw.model.CompanyShareActiveDO">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="symbol" jdbcType="VARCHAR" property="symbol" />
     <result column="date" jdbcType="VARCHAR" property="date" />
@@ -55,7 +55,7 @@
     delete from tb_company_share_active
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.example.craw.CompanyShareActiveDO" useGeneratedKeys="true">
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.example.craw.model.CompanyShareActiveDO" useGeneratedKeys="true">
     insert into tb_company_share_active (symbol, `date`, `type`, 
       `name`, side, quantity, 
       amount, share_value, share_ratio, 
@@ -65,7 +65,7 @@
       #{amount,jdbcType=DECIMAL}, #{shareValue,jdbcType=DECIMAL}, #{shareRatio,jdbcType=DECIMAL}, 
       #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.example.craw.CompanyShareActiveDO" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.example.craw.model.CompanyShareActiveDO" useGeneratedKeys="true">
     insert into tb_company_share_active
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="symbol != null">
@@ -138,7 +138,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.example.craw.CompanyShareActiveDO">
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.craw.model.CompanyShareActiveDO">
     update tb_company_share_active
     <set>
       <if test="symbol != null">
@@ -177,7 +177,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.example.craw.CompanyShareActiveDO">
+  <update id="updateByPrimaryKey" parameterType="com.example.craw.model.CompanyShareActiveDO">
     update tb_company_share_active
     set symbol = #{symbol,jdbcType=VARCHAR},
       `date` = #{date,jdbcType=VARCHAR},
