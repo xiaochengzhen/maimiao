@@ -29,7 +29,7 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-@SpringBootTest(classes = MybatisPlusDemoApplication.class)
+//@SpringBootTest(classes = MybatisPlusDemoApplication.class)
 class MybatisPlusDemoApplicationTests {
     @Autowired
     private UserService userService;
@@ -51,6 +51,7 @@ class MybatisPlusDemoApplicationTests {
         tbSecur.setUpdateTime(new Date());*/
         tbSecurDao.insertSelective(tbSecur);
     }
+
 
     @Test
     public void getUser() {
