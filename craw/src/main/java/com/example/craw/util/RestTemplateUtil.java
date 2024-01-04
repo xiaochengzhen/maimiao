@@ -25,11 +25,16 @@ public class RestTemplateUtil {
     private RestTemplate restTemplate;
 
     public String httpGet(Map<String, String> map, HttpHeaders httpHeaders ,String URL) {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         log.info("请求地址：{}", URL);
         log.info("请求参数：{}", JSONObject.toJSONString(map));
         HttpEntity httpEntity = new HttpEntity(map, httpHeaders);
         ResponseEntity<String> exchange = restTemplate.exchange(URL, HttpMethod.GET, httpEntity, String.class, map);
-        log.info("响应结果：{}", exchange.getBody());
+        log.info("响应结果：{}", exchange.getBody().substring(0, Math.min(500, exchange.getBody().length())));
         return exchange.getBody();
     }
 }
