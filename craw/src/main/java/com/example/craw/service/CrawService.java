@@ -6,6 +6,8 @@ import com.example.craw.http.CrawHandler;
 import com.example.craw.mapper.SymbolMapper;
 import com.example.craw.model.SymbolDO;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
+import org.apache.ibatis.javassist.compiler.ast.Symbol;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,39 +31,43 @@ public class CrawService {
     private SymbolMapper symbolMapper;
 
     //爬取数据
-    public void craw() {
-        List<SymbolDO> symbolDOS = symbolMapper.listSymbol();
-        for (SymbolDO symbolDO : symbolDOS) {
-            String symbol = symbolDO.getSymbol();
-            String marketCode = MARKET_CODE_HK;
-            String marketType = MARKET_TYPE_HK;
-            String market = StringUtils.substringAfter(symbol, ".");
-            if (StringUtils.substringAfter(symbol, ".").equalsIgnoreCase("us")) {
-                marketCode = MARKET_CODE_US;
-                marketType = MARKET_TYPE_US;
+    public void craw(Pair<CrawEnum[], String> params) {
+        if (params != null) {
+            String symbol = params.getRight();
+            CrawEnum[] values = params.getLeft();
+            if (StringUtils.isNotBlank(symbol)) {
+                handle(symbol, values);
             }
-            CrawEnum[] values = CrawEnum.values();
-            for (CrawEnum value : values) {
-                if (!value.getSkip()) {
-                    for (CrawHandler crawHandler : crawHandlerList) {
-                        boolean match = crawHandler.match(value, market.toUpperCase(Locale.ROOT));
-                        if (match) {
-                            RequestDTO requestDTO = new RequestDTO();
-                            requestDTO.setSymbol(symbol);
-                            requestDTO.setType(value.getType());
-                            requestDTO.setLanguage(value.getLanguage());
-                            requestDTO.setLevelThreeType(value.getLevelThreeType());
-                            requestDTO.setMarketCode(marketCode);
-                            requestDTO.setMarketType(marketType);
-                            crawHandler.craw(requestDTO);
-                            break;
-                        }
+        }
+    }
+
+    private void handle(String symbol, CrawEnum[] values) {
+        String marketCode = MARKET_CODE_HK;
+        String marketType = MARKET_TYPE_HK;
+        String market = StringUtils.substringAfter(symbol, ".");
+        if (StringUtils.substringAfter(symbol, ".").equalsIgnoreCase("us")) {
+            marketCode = MARKET_CODE_US;
+            marketType = MARKET_TYPE_US;
+        }
+        for (CrawEnum value : values) {
+            if (!value.getSkip()) {
+                for (CrawHandler crawHandler : crawHandlerList) {
+                    boolean match = crawHandler.match(value, market.toUpperCase(Locale.ROOT));
+                    if (match) {
+                        RequestDTO requestDTO = new RequestDTO();
+                        requestDTO.setSymbol(symbol);
+                        requestDTO.setType(value.getType());
+                        requestDTO.setLanguage(value.getLanguage());
+                        requestDTO.setLevelThreeType(value.getLevelThreeType());
+                        requestDTO.setMarketCode(marketCode);
+                        requestDTO.setMarketType(marketType);
+                        crawHandler.craw(requestDTO);
+                        break;
                     }
                 }
             }
-            stockIdThreadLocal.remove();
         }
-
+        stockIdThreadLocal.remove();
     }
 
 }

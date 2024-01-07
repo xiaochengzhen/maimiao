@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 
 //此类可以监控MySQL库数据的增删改
-//@Component
+@Component
 @Slf4j  //用于打印日志
 //在SpringBoot中，提供了一个接口：ApplicationRunner。
 //该接口中，只有一个run方法，他执行的时机是：spring容器启动完成之后，就会紧接着执行这个接口实现类的run方法。
@@ -33,7 +33,8 @@ public class MysqlBinLogClient implements ApplicationRunner {
         log.info("监控BinLog服务已启动");
 
         //自己MySQL的信息。host，port，username，password
-        BinaryLogClient client = new BinaryLogClient("172.16.0.112", 3306, "root", "EB1234");
+        BinaryLogClient client = new BinaryLogClient("localhost", 3306, "root", "123456");
+    //    BinaryLogClient client = new BinaryLogClient("172.16.0.112", 3306, "root", "EB1234");
         /**因为binlog不是以数据库为单位划分的，所以监控binglog不是监控的单个的数据库，而是整个当前所设置连接的MySQL，
          *其中任何一个库发生数据增删改，这里都能检测到，
          *所以不用设置所监控的数据库的名字(我也不知道怎么设置，没发现有包含这个形参的构造函数)

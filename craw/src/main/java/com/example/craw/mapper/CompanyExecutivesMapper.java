@@ -3,6 +3,7 @@ package com.example.craw.mapper;
 import com.example.craw.model.CompanyExecutivesDO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.cursor.Cursor;
 
 import java.util.List;
 

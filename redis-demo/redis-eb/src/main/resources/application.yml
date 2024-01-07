@@ -1,0 +1,15 @@
+server:
+  port: 8080
+
+spring:
+  redis:
+    database: 0
+    timeout: 3000
+    cluster:
+      nodes: redis-svc.securities.svc.ebonex-newdev:4001,redis-svc.securities.svc.ebonex-newdev:4002,redis-svc.securities.svc.ebonex-newdev:4003
+    lettuce:
+      pool:
+        max-idle: 50
+        min-idle: 10
+        max-active: 100
+        max-wait: 1000

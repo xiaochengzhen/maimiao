@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.craw.mapper.ClearRecordMapper">
+  <resultMap id="BaseResultMap" type="com.example.craw.model.ClearRecord">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="clearing_date" jdbcType="VARCHAR" property="clearingDate" />
+    <result column="clear_cycle" jdbcType="VARCHAR" property="clearCycle" />
+    <result column="clear_status" jdbcType="TINYINT" property="clearStatus" />
+    <result column="trade_match_status" jdbcType="TINYINT" property="tradeMatchStatus" />
+    <result column="route_position_status" jdbcType="TINYINT" property="routePositionStatus" />
+    <result column="route_cash_status" jdbcType="TINYINT" property="routeCashStatus" />
+    <result column="client_position_status" jdbcType="TINYINT" property="clientPositionStatus" />
+    <result column="client_cash_status" jdbcType="TINYINT" property="clientCashStatus" />
+    <result column="financing_interest_calculation_status" jdbcType="TINYINT" property="financingInterestCalculationStatus" />
+    <result column="stock_borrow_interest_calculation_status" jdbcType="TINYINT" property="stockBorrowInterestCalculationStatus" />
+    <result column="day_end_balance_status" jdbcType="TINYINT" property="dayEndBalanceStatus" />
+    <result column="business_time_ids" jdbcType="VARCHAR" property="businessTimeIds" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, clearing_date, clear_cycle, clear_status, trade_match_status, route_position_status, 
+    route_cash_status, client_position_status, client_cash_status, financing_interest_calculation_status, 
+    stock_borrow_interest_calculation_status, day_end_balance_status, business_time_ids, 
+    created_at, updated_at
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_clear_record
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectByclearingDate"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_clear_record
+    where clearing_date = #{clearingDate}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tb_clear_record
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.example.craw.model.ClearRecord" useGeneratedKeys="true">
+    insert into tb_clear_record (clearing_date, clear_cycle, clear_status, 
+      trade_match_status, route_position_status, 
+      route_cash_status, client_position_status, 
+      client_cash_status, financing_interest_calculation_status, 
+      stock_borrow_interest_calculation_status, day_end_balance_status, 
+      business_time_ids, created_at, updated_at
+      )
+    values (#{clearingDate,jdbcType=VARCHAR}, #{clearCycle,jdbcType=VARCHAR}, #{clearStatus,jdbcType=TINYINT}, 
+      #{tradeMatchStatus,jdbcType=TINYINT}, #{routePositionStatus,jdbcType=TINYINT}, 
+      #{routeCashStatus,jdbcType=TINYINT}, #{clientPositionStatus,jdbcType=TINYINT}, 
+      #{clientCashStatus,jdbcType=TINYINT}, #{financingInterestCalculationStatus,jdbcType=TINYINT}, 
+      #{stockBorrowInterestCalculationStatus,jdbcType=TINYINT}, #{dayEndBalanceStatus,jdbcType=TINYINT}, 
+      #{businessTimeIds,jdbcType=VARCHAR}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.example.craw.model.ClearRecord" useGeneratedKeys="true">
+    insert into tb_clear_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="clearingDate != null">
+        clearing_date,
+      </if>
+      <if test="clearCycle != null">
+        clear_cycle,
+      </if>
+      <if test="clearStatus != null">
+        clear_status,
+      </if>
+      <if test="tradeMatchStatus != null">
+        trade_match_status,
+      </if>
+      <if test="routePositionStatus != null">
+        route_position_status,
+      </if>
+      <if test="routeCashStatus != null">
+        route_cash_status,
+      </if>
+      <if test="clientPositionStatus != null">
+        client_position_status,
+      </if>
+      <if test="clientCashStatus != null">
+        client_cash_status,
+      </if>
+      <if test="financingInterestCalculationStatus != null">
+        financing_interest_calculation_status,
+      </if>
+      <if test="stockBorrowInterestCalculationStatus != null">
+        stock_borrow_interest_calculation_status,
+      </if>
+      <if test="dayEndBalanceStatus != null">
+        day_end_balance_status,
+      </if>
+      <if test="businessTimeIds != null">
+        business_time_ids,
+      </if>
+      <if test="createdAt != null">
+        created_at,
+      </if>
+      <if test="updatedAt != null">
+        updated_at,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="clearingDate != null">
+        #{clearingDate,jdbcType=VARCHAR},
+      </if>
+      <if test="clearCycle != null">
+        #{clearCycle,jdbcType=VARCHAR},
+      </if>
+      <if test="clearStatus != null">
+        #{clearStatus,jdbcType=TINYINT},
+      </if>
+      <if test="tradeMatchStatus != null">
+        #{tradeMatchStatus,jdbcType=TINYINT},
+      </if>
+      <if test="routePositionStatus != null">
+        #{routePositionStatus,jdbcType=TINYINT},
+      </if>
+      <if test="routeCashStatus != null">
+        #{routeCashStatus,jdbcType=TINYINT},
+      </if>
+      <if test="clientPositionStatus != null">
+        #{clientPositionStatus,jdbcType=TINYINT},
+      </if>
+      <if test="clientCashStatus != null">
+        #{clientCashStatus,jdbcType=TINYINT},
+      </if>
+      <if test="financingInterestCalculationStatus != null">
+        #{financingInterestCalculationStatus,jdbcType=TINYINT},
+      </if>
+      <if test="stockBorrowInterestCalculationStatus != null">
+        #{stockBorrowInterestCalculationStatus,jdbcType=TINYINT},
+      </if>
+      <if test="dayEndBalanceStatus != null">
+        #{dayEndBalanceStatus,jdbcType=TINYINT},
+      </if>
+      <if test="businessTimeIds != null">
+        #{businessTimeIds,jdbcType=VARCHAR},
+      </if>
+      <if test="createdAt != null">
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.craw.model.ClearRecord">
+    update tb_clear_record
+    <set>
+      <if test="clearingDate != null">
+        clearing_date = #{clearingDate,jdbcType=VARCHAR},
+      </if>
+      <if test="clearCycle != null">
+        clear_cycle = #{clearCycle,jdbcType=VARCHAR},
+      </if>
+      <if test="clearStatus != null">
+        clear_status = #{clearStatus,jdbcType=TINYINT},
+      </if>
+      <if test="tradeMatchStatus != null">
+        trade_match_status = #{tradeMatchStatus,jdbcType=TINYINT},
+      </if>
+      <if test="routePositionStatus != null">
+        route_position_status = #{routePositionStatus,jdbcType=TINYINT},
+      </if>
+      <if test="routeCashStatus != null">
+        route_cash_status = #{routeCashStatus,jdbcType=TINYINT},
+      </if>
+      <if test="clientPositionStatus != null">
+        client_position_status = #{clientPositionStatus,jdbcType=TINYINT},
+      </if>
+      <if test="clientCashStatus != null">
+        client_cash_status = #{clientCashStatus,jdbcType=TINYINT},
+      </if>
+      <if test="financingInterestCalculationStatus != null">
+        financing_interest_calculation_status = #{financingInterestCalculationStatus,jdbcType=TINYINT},
+      </if>
+      <if test="stockBorrowInterestCalculationStatus != null">
+        stock_borrow_interest_calculation_status = #{stockBorrowInterestCalculationStatus,jdbcType=TINYINT},
+      </if>
+      <if test="dayEndBalanceStatus != null">
+        day_end_balance_status = #{dayEndBalanceStatus,jdbcType=TINYINT},
+      </if>
+      <if test="businessTimeIds != null">
+        business_time_ids = #{businessTimeIds,jdbcType=VARCHAR},
+      </if>
+      <if test="createdAt != null">
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.craw.model.ClearRecord">
+    update tb_clear_record
+    set clearing_date = #{clearingDate,jdbcType=VARCHAR},
+      clear_cycle = #{clearCycle,jdbcType=VARCHAR},
+      clear_status = #{clearStatus,jdbcType=TINYINT},
+      trade_match_status = #{tradeMatchStatus,jdbcType=TINYINT},
+      route_position_status = #{routePositionStatus,jdbcType=TINYINT},
+      route_cash_status = #{routeCashStatus,jdbcType=TINYINT},
+      client_position_status = #{clientPositionStatus,jdbcType=TINYINT},
+      client_cash_status = #{clientCashStatus,jdbcType=TINYINT},
+      financing_interest_calculation_status = #{financingInterestCalculationStatus,jdbcType=TINYINT},
+      stock_borrow_interest_calculation_status = #{stockBorrowInterestCalculationStatus,jdbcType=TINYINT},
+      day_end_balance_status = #{dayEndBalanceStatus,jdbcType=TINYINT},
+      business_time_ids = #{businessTimeIds,jdbcType=VARCHAR},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateFinancingInterestStatus">
+    update tb_clear_record
+    set
+        financing_interest_calculation_status = #{newStatus}
+    where clearing_date = #{clearingDate,jdbcType=VARCHAR} and financing_interest_calculation_status = #{oldStatus}
+  </update>
+
+  <update id="updateStockBorrowInterestStatus">
+    update tb_clear_record
+    set
+      stock_borrow_interest_calculation_status = #{newStatus}
+    where clearing_date = #{clearingDate,jdbcType=VARCHAR} and stock_borrow_interest_calculation_status = #{oldStatus}
+  </update>
+
+  <update id="updateClearStatus">
+    update tb_clear_record
+    set
+      clear_status = #{newStatus}
+    where clearing_date = #{clearingDate,jdbcType=VARCHAR} and clear_status = #{oldStatus}
+  </update>
+
+</mapper>
