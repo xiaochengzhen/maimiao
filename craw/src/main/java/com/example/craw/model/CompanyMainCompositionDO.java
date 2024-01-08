@@ -22,19 +22,24 @@ public class CompanyMainCompositionDO implements Serializable {
     private String symbol;
 
     /**
-     * 季度
+     * 主营构成类型：1=产品；4=地区；8=业务
      */
-    private String quarter;
+    private Integer type;
 
     /**
-     * 业务营业数据
+     * 日期
+     */
+    private Long date;
+
+    /**
+     * 日期展示
+     */
+    private String dateShow;
+
+    /**
+     * 营业数据
      */
     private String business;
-
-    /**
-     * 地区营业数据
-     */
-    private String region;
 
     /**
      * 创建时间

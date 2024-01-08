@@ -3,8 +3,8 @@ package com.example.craw.service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.example.craw.dto.query.ListMainCompositionDateQuery;
 import com.example.craw.dto.query.ListMainCompositionQuery;
+import com.example.craw.dto.vo.ListMainCompositionDateVO;
 import com.example.craw.dto.vo.ListMainCompositionVO;
 import com.example.craw.mapper.CompanyMainCompositionMapper;
 import com.example.craw.model.CompanyMainCompositionDO;
@@ -36,61 +36,49 @@ public class CompanyMainCompositionService {
      * @author xiaobo
      * @date 2023/12/4 10:32
      */
-    public List<String> listMainCompositionDate(ListMainCompositionDateQuery listMainCompositionDateQuery) {
-        String symbol = listMainCompositionDateQuery.getSymbol();
-        String type = listMainCompositionDateQuery.getType();
-        List<String> list = companyMainCompositionMapper.listQuarter(symbol, type);
+    public List<ListMainCompositionDateVO> listMainCompositionDate(ListMainCompositionQuery listMainCompositionQuery, String language) {
+        List<ListMainCompositionDateVO> resultList = new ArrayList<>();
+        List<CompanyMainCompositionDO> list = companyMainCompositionMapper.list(listMainCompositionQuery);
         if (!CollectionUtils.isEmpty(list)) {
-            Comparator<String> comparator = null;
-            if (StringUtils.substringAfter(symbol, ".").equalsIgnoreCase("hk")) {
-                comparator = Comparator.comparing(s-> StringUtils.substringAfter(s, ")"), Comparator.reverseOrder());
-            } else {
-                comparator = Comparator.comparing(s-> s, Comparator.reverseOrder());
+            for (CompanyMainCompositionDO companyMainCompositionDO : list) {
+                ListMainCompositionDateVO listMainCompositionDateVO = new ListMainCompositionDateVO();
+                String dateShow = companyMainCompositionDO.getDateShow();
+                Long date = companyMainCompositionDO.getDate();
+                if (StringUtils.isNotBlank(dateShow)) {
+                    JSONObject jsonObject = JSONObject.parseObject(dateShow);
+                    String name = jsonObject.getString(language);
+                    listMainCompositionDateVO.setDate(date);
+                    listMainCompositionDateVO.setDateShow(name);
+                    resultList.add(listMainCompositionDateVO);
+                }
             }
-            list = list.stream().sorted(comparator).collect(Collectors.toList());
         }
-        return list;
+        return resultList;
     }
 
     /**
-     * @description 获取主营构成时间列表
+     * @description 获取主营构成列表
      * @author xiaobo
      * @date 2023/12/4 10:32
      */
     public List<ListMainCompositionVO> listMainComposition(ListMainCompositionQuery listMainCompositionQuery, String language) {
         List<ListMainCompositionVO> resutList = new ArrayList<>();
-        String symbol = listMainCompositionQuery.getSymbol();
-        String quarter = listMainCompositionQuery.getQuarter();
-        String type = listMainCompositionQuery.getType();
-        List<CompanyMainCompositionDO> list = companyMainCompositionMapper.list(symbol, quarter, type);
+        Long date = listMainCompositionQuery.getDate();
+        List<CompanyMainCompositionDO> list = companyMainCompositionMapper.list(listMainCompositionQuery);
         if (!CollectionUtils.isEmpty(list)) {
             //如果不传入日期，去最新的
-            if (StringUtils.isBlank(quarter)) {
-                Comparator<CompanyMainCompositionDO> comparator = null;
-                if (StringUtils.substringAfter(symbol, ".").equalsIgnoreCase("hk")) {
-                    comparator = Comparator.comparing(s-> StringUtils.substringAfter(s.getQuarter(), ")"), Comparator.reverseOrder());
-                } else {
-                    comparator = Comparator.comparing(s-> s.getQuarter(), Comparator.reverseOrder());
-                }
-                list = list.stream().sorted(comparator).collect(Collectors.toList());
-            }
-            CompanyMainCompositionDO companyMainCompositionDO = list.get(0);
-            if (companyMainCompositionDO != null) {
-                String data = "";
-                //地区
-                if (type.equals(REGION_TYPE)) {
-                    data = companyMainCompositionDO.getRegion();
-                } else {
-                    //业务
-                    data = companyMainCompositionDO.getBusiness();
-                }
-                if (StringUtils.isNotBlank(data)) {
-                    resutList = JSONArray.parseArray(data, ListMainCompositionVO.class);
-                    for (ListMainCompositionVO listMainCompositionVO : resutList) {
-                        String name = listMainCompositionVO.getName();
-                        JSONObject jsonObject = JSON.parseObject(name);
-                        String string = jsonObject.getString(language);
-                        listMainCompositionVO.setName(string);
+            if (date == null) {
+                CompanyMainCompositionDO companyMainCompositionDO = list.get(0);
+                if (companyMainCompositionDO != null) {
+                    String data = companyMainCompositionDO.getBusiness();
+                    if (StringUtils.isNotBlank(data)) {
+                        resutList = JSONArray.parseArray(data, ListMainCompositionVO.class);
+                        for (ListMainCompositionVO listMainCompositionVO : resutList) {
+                            String name = listMainCompositionVO.getName();
+                            JSONObject jsonObject = JSON.parseObject(name);
+                            String string = jsonObject.getString(language);
+                            listMainCompositionVO.setName(string);
+                        }
                     }
                 }
             }

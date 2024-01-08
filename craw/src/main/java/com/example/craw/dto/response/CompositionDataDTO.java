@@ -15,7 +15,7 @@ import java.util.List;
  */
 @NoArgsConstructor
 @Data
-public class CompositionDataUsDTO {
+public class CompositionDataDTO {
 
     @JSONField(name = "code")
     private Integer code;

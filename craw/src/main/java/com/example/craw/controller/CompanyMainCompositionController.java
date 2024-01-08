@@ -1,7 +1,7 @@
 package com.example.craw.controller;
 
-import com.example.craw.dto.query.ListMainCompositionDateQuery;
 import com.example.craw.dto.query.ListMainCompositionQuery;
+import com.example.craw.dto.vo.ListMainCompositionDateVO;
 import com.example.craw.dto.vo.ListMainCompositionVO;
 import com.example.craw.service.CompanyMainCompositionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +28,8 @@ public class CompanyMainCompositionController {
      * @date 2023/12/4 10:32
      */
     @GetMapping("/listDate")
-    public Object listDate(ListMainCompositionDateQuery listMainCompositionDateQuery) {
-        List<String> list = companyMainCompositionService.listMainCompositionDate(listMainCompositionDateQuery);
+    public Object listDate(ListMainCompositionQuery listMainCompositionQuery) {
+        List<ListMainCompositionDateVO> list = companyMainCompositionService.listMainCompositionDate(listMainCompositionQuery, "en_US");
         return list;
     }
 
@@ -40,7 +40,7 @@ public class CompanyMainCompositionController {
      */
     @GetMapping("/list")
     public Object list(ListMainCompositionQuery listMainCompositionQuery) {
-        List<ListMainCompositionVO> list = companyMainCompositionService.listMainComposition(listMainCompositionQuery, "en_US");
+        List<ListMainCompositionVO> list = companyMainCompositionService.listMainComposition(listMainCompositionQuery, "zh_CN");
         return list;
     }
 }

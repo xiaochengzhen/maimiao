@@ -4,40 +4,24 @@
   <resultMap id="BaseResultMap" type="com.example.craw.model.CompanyMainCompositionDO">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="symbol" jdbcType="VARCHAR" property="symbol" />
-    <result column="quarter" jdbcType="VARCHAR" property="quarter" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="date" jdbcType="BIGINT" property="date" />
+    <result column="date_show" jdbcType="OTHER" property="dateShow" />
     <result column="business" jdbcType="OTHER" property="business" />
-    <result column="region" jdbcType="OTHER" property="region" />
     <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
     <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, symbol, quarter, business, region, created_at, updated_at
+    id, symbol, `type`, `date`, date_show, business, created_at, updated_at
   </sql>
-  <select id="selectByQuarter"  resultMap="BaseResultMap">
+  <select id="selectByParams"  resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from tb_company_main_composition
-    where symbol = #{symbol} and quarter = #{quarter}  limit 1
+    where type = #{type} and symbol = #{symbol} and `date` = #{date}  limit 1
   </select>
 
-  <select id="listQuarter"  resultType="java.lang.String">
-    select
-        quarter
-    from tb_company_main_composition
-    <where>
-      <if test="symbol != null">
-        and symbol = #{symbol}
-      </if>
-      <if test="type != null and type == 4">
-        and region is not null
-      </if>
-      <if test="type != null and type == 8">
-        and business is not null
-      </if>
-    </where>
-  </select>
-
-  <select id="list"  resultMap="BaseResultMap">
+  <select id="list"  resultMap="BaseResultMap" parameterType="com.example.craw.dto.query.ListMainCompositionQuery">
     select
     <include refid="Base_Column_List" />
     from tb_company_main_composition
@@ -45,32 +29,19 @@
       <if test="symbol != null">
         and symbol = #{symbol}
       </if>
-      <if test="quarter != null">
-        and quarter = #{quarter}
+      <if test="date != null">
+        and date = #{date}
       </if>
-      <if test="type != null and type == 4">
-        and region is not null
+      <if test="type != null">
+        and type = #{type}
       </if>
-      <if test="type != null and type == 8">
-        and business is not null
-      </if>
+        order by date desc
     </where>
   </select>
 
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.example.craw.model.CompanyMainCompositionDO" useGeneratedKeys="true">
-    insert into tb_company_main_composition (symbol, quarter, business, region)
-    values (#{symbol,jdbcType=VARCHAR}, #{quarter,jdbcType=VARCHAR}, #{business,jdbcType=OTHER}, 
-      #{region,jdbcType=OTHER})
-  </insert>
-
-  <insert id="insertBatch"  parameterType="com.example.craw.model.CompanyMainCompositionDO">
-    insert into tb_company_main_composition (symbol, quarter, business,region)
-    values
-    <foreach collection="list" item="item" separator=",">
-      (#{item.symbol,jdbcType=VARCHAR}, #{item.quarter,jdbcType=VARCHAR}, #{item.business,jdbcType=OTHER},
-      #{item.region,jdbcType=OTHER}
-      )
-    </foreach>
+    insert into tb_company_main_composition (symbol, `type`, `date`, date_show, business)
+    values (#{symbol,jdbcType=VARCHAR}, #{type},#{date},#{dateShow,jdbcType=OTHER}, #{business,jdbcType=OTHER})
   </insert>
 
   <update id="update">
@@ -79,8 +50,8 @@
       <if test="business != null">
         business = #{business},
       </if>
-      <if test="region != null">
-        region = #{region},
+      <if test="dateShow != null">
+        date_show = #{dateShow},
       </if>
     </set>
     where id = #{id}

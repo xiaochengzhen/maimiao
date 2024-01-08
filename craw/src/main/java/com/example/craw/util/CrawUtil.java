@@ -91,4 +91,10 @@ public class CrawUtil {
         }
         return titleMap;
     }
+
+    public static void main(String[] args) {
+        Long a = 1L;
+        String s  = a.toString();
+
+    }
 }

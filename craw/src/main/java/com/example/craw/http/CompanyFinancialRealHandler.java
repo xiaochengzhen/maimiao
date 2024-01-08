@@ -27,7 +27,8 @@ import static com.example.craw.http.MainCompositionHandler.stockIdThreadLocal;
 @Service
 public class CompanyFinancialRealHandler extends CrawHandler{
 
-    private static final String URL = "https://www.futunn.com/quote-api/quote-v2/get-financial-report-live?stockId={stockId}&date={date}";
+   // private static final String URL = "https://www.futunn.com/quote-api/quote-v2/get-financial-report-live?stockId={stockId}&date={date}";
+    private static final String URL = "https://www.futunn.com/quote-api/quote-v2/get-financial-report-data?stockId={stockId}";
 
     @Autowired
     private RestTemplateUtil restTemplateUtil;
@@ -46,7 +47,7 @@ public class CompanyFinancialRealHandler extends CrawHandler{
         String language = requestDTO.getLanguage();
         Map<String, String> map = new LinkedHashMap<>();
         map.put("stockId",stockIdThreadLocal.get());
-        map.put("date",getDateStr());
+     //   map.put("date",getDateStr());
         String quoteToken = EncodeUtil.getQuoteToken(map);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("quote-token", quoteToken);

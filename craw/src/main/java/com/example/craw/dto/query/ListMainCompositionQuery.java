@@ -17,10 +17,10 @@ public class ListMainCompositionQuery {
     /**
      * 时间
      */
-    private String quarter;
+    private Long date;
 
     /**
      * 主营类型：4=地区； 8=业务
      */
-    private String type;
+    private Integer type;
 }

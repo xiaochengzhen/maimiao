@@ -1,5 +1,6 @@
 package com.example.craw.mapper;
 
+import com.example.craw.dto.query.ListMainCompositionQuery;
 import com.example.craw.model.CompanyMainCompositionDO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -16,14 +17,10 @@ public interface CompanyMainCompositionMapper {
 
     int insert(CompanyMainCompositionDO record);
 
-    int insertBatch(List<CompanyMainCompositionDO> list);
-
     int update(CompanyMainCompositionDO record);
 
-    CompanyMainCompositionDO selectByQuarter(@Param("symbol") String symbol, @Param("quarter") String quarter);
+    CompanyMainCompositionDO selectByParams(@Param("type") Integer type, @Param("symbol") String symbol, @Param("date") Long date);
 
-    List<String> listQuarter(@Param("symbol") String symbol, @Param("type") String type);
-
-    List<CompanyMainCompositionDO> list(@Param("symbol") String symbol, @Param("quarter") String quarter, @Param("type") String type);
+    List<CompanyMainCompositionDO> list(ListMainCompositionQuery listMainCompositionQuery);
 
 }

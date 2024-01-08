@@ -338,8 +338,8 @@ public class CompanyFinancialIndicatorHandler extends CrawHandler{
         if (companyFinancialRealDO.getCurrentRatio() != null || companyFinancialRealDO.getGrossMargin() != null
                 || companyFinancialRealDO.getReturnOnEquity() != null || companyFinancialRealDO.getEarningsPerShare() != null) {
             if (companyFinancialRealRaw != null &&
-                    (companyFinancialRealRaw.getEarningsPerShare() == null) || (companyFinancialRealRaw.getReturnOnEquity() == null)
-                    ||(companyFinancialRealRaw.getGrossMargin() == null) || (companyFinancialRealRaw.getCurrentRatio() == null) ) {
+                    (companyFinancialRealRaw.getEarningsPerShare() == null || companyFinancialRealRaw.getReturnOnEquity() == null
+                    ||companyFinancialRealRaw.getGrossMargin() == null || companyFinancialRealRaw.getCurrentRatio() == null) ) {
                 companyFinancialRealDO.setId(companyFinancialRealRaw.getId());
                 companyFinancialRealMapper.update(companyFinancialRealDO);
             }

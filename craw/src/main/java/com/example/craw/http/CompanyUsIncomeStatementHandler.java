@@ -107,12 +107,15 @@ public class CompanyUsIncomeStatementHandler extends CrawHandler{
                                     if (declaredField.isAnnotationPresent(IncomeKeyAnnotation.class)) {
                                         IncomeKeyAnnotation incomeKeyAnnotation = declaredField.getAnnotation(IncomeKeyAnnotation.class);
                                         String key = incomeKeyAnnotation.value();
-                                        CompanyUsIncomeStatementDTO.DataDTO.ListDTO.ValuesDTO valuesDTO = valuesDTOS.get(keyMap.get(key));
-                                        if (valuesDTO != null) {
-                                            try {
-                                                declaredField.set(companyUsIncomeStatementDO, JSON.toJSONString(valuesDTO, SerializerFeature.WriteMapNullValue));
-                                            } catch (IllegalAccessException e) {
-                                                e.printStackTrace();
+                                        Integer index = keyMap.get(key);
+                                        if (index != null) {
+                                            CompanyUsIncomeStatementDTO.DataDTO.ListDTO.ValuesDTO valuesDTO = valuesDTOS.get(keyMap.get(key));
+                                            if (valuesDTO != null) {
+                                                try {
+                                                    declaredField.set(companyUsIncomeStatementDO, JSON.toJSONString(valuesDTO, SerializerFeature.WriteMapNullValue));
+                                                } catch (IllegalAccessException e) {
+                                                    e.printStackTrace();
+                                                }
                                             }
                                         }
                                     }
