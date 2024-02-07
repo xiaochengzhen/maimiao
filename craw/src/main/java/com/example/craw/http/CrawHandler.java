@@ -10,6 +10,7 @@ import com.example.craw.model.CompanyUsIncomeStatementDO;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
@@ -33,7 +34,11 @@ public abstract class CrawHandler {
         httpRequest(requestDTO);
         convertResponse(requestDTO);
         saveData(requestDTO);
+        System.out.println();
     };
+
+   // @Transactional
+    public void testtra(){};
 
     //http 请求数据
     abstract void httpRequest(RequestDTO requestDTO);

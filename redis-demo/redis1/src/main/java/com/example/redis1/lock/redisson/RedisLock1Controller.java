@@ -1,5 +1,7 @@
 package com.example.redis1.lock.redisson;
 
+import org.redisson.Redisson;
+import org.redisson.api.RLock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,4 +29,20 @@ public class RedisLock1Controller {
             }
         }
     }
+
+
+    @Autowired
+    Redisson redisson;
+
+    public void testLock() {
+        RLock lock = redisson.getLock("123");
+        lock.lock();
+        try {
+            System.out.println("");
+        } finally {
+            RLock unlock = redisson.getLock("123");
+            unlock.unlock();
+        }
+    }
+
 }

@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 /**
  * @description
  * @author xiaobo
@@ -26,10 +28,9 @@ public class CrawController {
 
     @GetMapping("/craw")
     public void craw(String craw, String symbol) {
-        CrawEnum[] values = CrawEnum.values();
+        List<CrawEnum> values = CrawEnum.getCrawEnum(1);
         if (StringUtils.isNotBlank(craw)) {
-            values = new CrawEnum[1];
-            values[0] = CrawEnum.valueOf(craw);
+            values.add(CrawEnum.valueOf(craw));
         }
         crawService.craw(Pair.of(values, symbol));
     }

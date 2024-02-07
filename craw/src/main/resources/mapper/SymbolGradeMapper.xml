@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.craw.mapper.SymbolGradeMapper">
+  <resultMap id="BaseResultMap" type="com.example.craw.model.SymbolGradeDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="symbol" jdbcType="VARCHAR" property="symbol" />
+    <result column="market" jdbcType="VARCHAR" property="market" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, symbol, market, `type`, created_at, updated_at
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_symbol_grade
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByType">
+    delete from tb_symbol_grade
+    where type = #{type}
+  </delete>
+  <insert id="insertBatch" keyColumn="id" keyProperty="id" parameterType="com.example.craw.model.SymbolGradeDO" useGeneratedKeys="true">
+    insert into tb_symbol_grade (symbol, market, `type`)
+    values
+       <foreach collection="list" separator="," item="item">
+         (#{item.symbol,jdbcType=VARCHAR}, #{item.market,jdbcType=VARCHAR}, #{item.type,jdbcType=TINYINT})
+       </foreach>
+
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.craw.model.SymbolGradeDO">
+    update tb_symbol_grade
+    <set>
+      <if test="symbol != null">
+        symbol = #{symbol,jdbcType=VARCHAR},
+      </if>
+      <if test="market != null">
+        market = #{market,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        `type` = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="createdAt != null">
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.craw.model.SymbolGradeDO">
+    update tb_symbol_grade
+    set symbol = #{symbol,jdbcType=VARCHAR},
+      market = #{market,jdbcType=VARCHAR},
+      `type` = #{type,jdbcType=TINYINT},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

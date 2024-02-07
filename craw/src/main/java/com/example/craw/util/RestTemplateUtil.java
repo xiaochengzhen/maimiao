@@ -59,4 +59,17 @@ public class RestTemplateUtil {
         log.info("响应结果：{}", exchange.getBody().substring(0, Math.min(500, exchange.getBody().length())));
         return exchange.getBody();
     }
+
+
+    public String httpGetSimple(String URL) {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        log.info("请求地址：{}", URL);
+        String forObject = restTemplate.getForObject(URL, String.class);
+        log.info("响应结果：{}", forObject.substring(0, Math.min(500, forObject.length())));
+        return forObject;
+    }
 }

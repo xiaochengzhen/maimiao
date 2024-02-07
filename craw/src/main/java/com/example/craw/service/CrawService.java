@@ -31,17 +31,17 @@ public class CrawService {
     private SymbolMapper symbolMapper;
 
     //爬取数据
-    public void craw(Pair<CrawEnum[], String> params) {
+    public void craw(Pair<List<CrawEnum>, String> params) {
         if (params != null) {
             String symbol = params.getRight();
-            CrawEnum[] values = params.getLeft();
+            List<CrawEnum> values = params.getLeft();
             if (StringUtils.isNotBlank(symbol)) {
                 handle(symbol, values);
             }
         }
     }
 
-    private void handle(String symbol, CrawEnum[] values) {
+    private void handle(String symbol,List<CrawEnum> values) {
         String marketCode = MARKET_CODE_HK;
         String marketType = MARKET_TYPE_HK;
         String market = StringUtils.substringAfter(symbol, ".");

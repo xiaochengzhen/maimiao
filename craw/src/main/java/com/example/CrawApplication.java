@@ -17,6 +17,6 @@ public class CrawApplication {
 
     @Bean
     public RestTemplate restTemplate() {
-        return new RestTemplateBuilder().setConnectTimeout(Duration.ofSeconds(3)).setReadTimeout(Duration.ofSeconds(5)).build();
+        return new RestTemplateBuilder().setConnectTimeout(Duration.ofSeconds(10)).setReadTimeout(Duration.ofSeconds(10)).build();
     }
 }
