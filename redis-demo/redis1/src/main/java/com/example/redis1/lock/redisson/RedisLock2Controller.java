@@ -14,7 +14,7 @@ public class RedisLock2Controller {
     @Autowired
     StringRedisTemplate stringRedisTemplate;
 
-    @GetMapping("/lock")
+    @GetMapping("/lock2")
     public void test() {
         Boolean aBoolean = stringRedisTemplate.opsForValue().setIfAbsent("key", "clientID");
         try {

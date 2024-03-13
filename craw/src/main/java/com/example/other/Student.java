@@ -1,8 +1,7 @@
 package com.example.other;
 
-import lombok.Data;
 
-import java.lang.reflect.Field;
+import lombok.Data;
 
 /**
  * @description 
@@ -13,6 +12,6 @@ import java.lang.reflect.Field;
 public class Student {
     private Integer age;
 
-
-
 }
+
+

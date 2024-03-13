@@ -20,24 +20,41 @@ public class RedissonController {
     private StringRedisTemplate stringRedisTemplate;
 
     @RequestMapping("/deduct_stock")
+    public void testlock() {
+        for (int i = 0; i < 8; i++) {
+            new Thread(()->{
+                deductStock();
+            }).start();
+        }
+
+    }
+
     public String deductStock() {
         String lockKey = "lock:product_101";
         //获取锁对象
         RLock redissonLock = redisson.getLock(lockKey);
         //加分布式锁
         redissonLock.lock();  //  .setIfAbsent(lockKey, clientId, 30, TimeUnit.SECONDS);
+        System.out.println("加锁成功");
         try {
-            int stock = Integer.parseInt(stringRedisTemplate.opsForValue().get("stock")); // jedis.get("stock")
+         /*   int stock = Integer.parseInt(stringRedisTemplate.opsForValue().get("stock")); // jedis.get("stock")
             if (stock > 0) {
                 int realStock = stock - 1;
                 stringRedisTemplate.opsForValue().set("stock", realStock + ""); // jedis.set(key,value)
                 System.out.println("扣减成功，剩余库存:" + realStock);
             } else {
                 System.out.println("扣减失败，库存不足");
+            }*/
+            System.out.println("");
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         } finally {
             //解锁
             redissonLock.unlock();
+            System.out.println("解锁成功");
         }
         return "end";
     }
@@ -72,6 +89,20 @@ public class RedissonController {
         }
 
         return "end";
+    }
+
+    public void redissonLock() {
+        String lockKey = "lockKey";
+        //获取公平锁对象
+        RLock redissonLock = redisson.getFairLock(lockKey);
+        //加锁
+        redissonLock.lock();
+        try {
+            System.out.println("业务逻辑处理");
+        } finally {
+            //解锁
+            redissonLock.unlock();
+        }
     }
 
 }

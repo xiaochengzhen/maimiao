@@ -16,7 +16,7 @@ public class RedisLock1Controller {
     @Autowired
     StringRedisTemplate stringRedisTemplate;
 
-    @GetMapping("/lock")
+    @GetMapping("/lock1")
     public void test() {
         synchronized (object) {
             int count = Integer.parseInt(stringRedisTemplate.opsForValue().get("count"));

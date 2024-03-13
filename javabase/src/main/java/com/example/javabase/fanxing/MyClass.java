@@ -10,7 +10,7 @@ import java.math.BigDecimal;
  * @date 2023/3/17 09:06
  */
 @Data
-public class MyClass <T>{
+public class MyClass <T> {
 
     T value1;
     T value2;

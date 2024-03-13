@@ -1,11 +1,13 @@
 package com.example.kafkaspringboot.kafka.consumer;
 
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
+import javax.annotation.PostConstruct;
+import java.util.UUID;
+
 @Slf4j
 @Component
 public class MyConsumer {
@@ -29,4 +31,18 @@ public class MyConsumer {
         //手动提交
         acknowledgment.acknowledge();
     }
+
+    @PostConstruct
+    public void init() {
+        // Dynamically set a unique group ID for each node
+        String uniqueGroupId = generateUniqueGroupId();
+        System.setProperty("spring.kafka.consumer.group-id", uniqueGroupId);
+    }
+
+    private String generateUniqueGroupId() {
+        // Implement logic to generate a unique group ID
+        // For example, use the node's hostname or a unique identifier
+        return "unique-group-id-" + UUID.randomUUID().toString();
+    }
+
 }

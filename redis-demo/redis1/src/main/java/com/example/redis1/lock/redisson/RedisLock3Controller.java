@@ -18,7 +18,7 @@ public class RedisLock3Controller {
     @Autowired
     StringRedisTemplate stringRedisTemplate;
 
-    @GetMapping("/lock")
+    @GetMapping("/lock3")
     public void test() {
         String clientId = UUID.randomUUID().toString();
         Boolean aBoolean = stringRedisTemplate.opsForValue().setIfAbsent("key", clientId, 30, TimeUnit.SECONDS);
