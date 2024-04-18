@@ -20,8 +20,15 @@ public class TimeZoneConversion {
 
     public static LocalDateTime timeTransFormLocale2(long time, String timeZone) {
         Instant instant = Instant.ofEpochMilli(time);
-        // 将 Instant 转换为 LocalDateTime，并指定目标时区
+        //将 Instant 转换为 LocalDateTime，并指定目标时区
         ZoneId targetZoneId = ZoneId.of(timeZone);
         return LocalDateTime.ofInstant(instant, targetZoneId);
+    }
+
+    public static void main(String[] args) throws ClassNotFoundException {
+        System.out.println(TimeZoneConversion.class.getName());
+        Class<?> timeZoneConversion = Class.forName("com.example.javabase.date.TimeZoneConversion");
+
+        System.out.println(timeZoneConversion);
     }
 }

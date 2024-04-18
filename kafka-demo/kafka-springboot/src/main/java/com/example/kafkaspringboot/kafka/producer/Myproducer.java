@@ -12,7 +12,7 @@ public class Myproducer {
     private KafkaTemplate<String, String> kafkaTemplate;
 
     @RequestMapping("/send")
-    public void send() {
-        kafkaTemplate.send("test", 0, "key", "value");
+    public void send(String value) {
+        kafkaTemplate.send("test", 0, "key", value);
     }
 }

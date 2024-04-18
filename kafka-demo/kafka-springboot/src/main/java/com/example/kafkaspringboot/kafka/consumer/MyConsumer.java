@@ -3,13 +3,15 @@ package com.example.kafkaspringboot.kafka.consumer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.config.KafkaListenerContainerFactory;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
-@Component
+//@Component
 public class MyConsumer {
 
     /**
@@ -22,17 +24,22 @@ public class MyConsumer {
      18 * @param record
      19 */
 
-    @KafkaListener(topics = "test", groupId = "xxx", concurrency = "3")
-    public void receive(ConsumerRecord<String, String> record, Acknowledgment acknowledgment) {
-        String key = record.key();
-        log.info(key);
-        String value = record.value();
-        log.info(value);
-        //手动提交
-        acknowledgment.acknowledge();
+    @KafkaListener(topics = "test",   concurrency = "1")
+    public void receive(List<ConsumerRecord<String, String>> records, Acknowledgment acknowledgment) {
+        for (ConsumerRecord<String, String> record : records) {
+            log.info("===========================receive========================================{}", record.offset());
+            String key = record.key();
+            String value = record.value();
+            if (value.equals("2")) {
+                int i = 1 / 0;
+            }
+            log.info("====================================key={}=======value={}", key, value);
+            //手动提交
+            acknowledgment.acknowledge();
+        }
     }
 
-    @PostConstruct
+    /*@PostConstruct
     public void init() {
         // Dynamically set a unique group ID for each node
         String uniqueGroupId = generateUniqueGroupId();
@@ -44,5 +51,5 @@ public class MyConsumer {
         // For example, use the node's hostname or a unique identifier
         return "unique-group-id-" + UUID.randomUUID().toString();
     }
-
+*/
 }

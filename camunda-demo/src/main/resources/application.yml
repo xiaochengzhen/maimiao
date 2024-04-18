@@ -1,0 +1,24 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/camunda?nullCatalogMeansCurrent=true
+    username: root
+    password: 123456
+# camunda配置
+camunda:
+  bpm:
+    admin-user:
+      id: admin
+      password: 123456
+      first-name:
+    filter:
+      create: All tasks
+    database:
+      type: mysql
+      schema-update: false
+    auto-deployment-enabled: true
+    # 配置扫描 bpmn的目录 默认在 resources/processes
+    #deployment-resource-pattern: classpath:/bpmn/*.bpmn
+

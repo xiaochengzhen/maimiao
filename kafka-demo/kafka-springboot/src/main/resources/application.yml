@@ -5,7 +5,7 @@ spring:
   kafka:
     bootstrap‐servers: kafka-svc.securities.svc.ebonex-newdev:9292
     producer: # 生产者
-      retries: 3 # 设置大于0的值，则客户端会将发送失败的记录重新发送
+      retries: 3 # 设置大于0的值，则客户端会将发送失败的记录重新发送(默认  2147483647)
       batch‐size: 16384
       buffer‐memory: 33554432
       acks: 1
@@ -15,9 +15,13 @@ spring:
     consumer:
       group‐id: default‐group
       enable‐auto‐commit: false
-      auto‐offset‐reset: earliest
+      auto‐offset‐reset: latest
       key‐deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value‐deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      properties:
+        max:
+          poll:
+            retries: 3
     listener:
   # 当每一条记录被消费者监听器（ListenerConsumer）处理之后提交
    # RECORD
@@ -33,4 +37,5 @@ spring:
     # MANUAL
     # 手动调用Acknowledgment.acknowledge()后立即提交，一般使用这种
     # MANUAL_IMMEDIATE
-      ack‐mode: manual_immediate
+      ack‐mode: MANUAL
+      type: batch
