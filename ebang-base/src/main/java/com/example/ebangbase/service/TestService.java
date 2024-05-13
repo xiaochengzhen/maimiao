@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 
 /**
@@ -46,4 +47,32 @@ public class TestService {
     public List<TestDO> getTestDO() {
         return testMapper.getTestDO();
     }
+
+    @PostConstruct
+    public void save() {
+      Thread thread =   new Thread(()->{
+            for (int i = 0; i < 100; i++) {
+                try {
+                    TestDO testDO = new TestDO();
+                    testDO.setAge(0);
+                    testDO.setName("1");
+                    testDO.setLang("1");
+                    testDO.setXxx("1");
+                    if (i > 1) {
+                        testDO.setAge(i);
+                    }
+                    testMapper.insert1(testDO);
+                    System.out.println("=================="+i);
+                  //  Thread.sleep(1000);
+                    //    } catch (InterruptedException e) {
+                } catch (Exception e) {
+                    Thread.currentThread().interrupt();
+                    e.printStackTrace();
+                }
+            }
+        });
+      thread.setDaemon(true);
+      thread.start();
+    }
+
 }

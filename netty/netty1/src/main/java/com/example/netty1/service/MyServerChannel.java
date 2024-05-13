@@ -16,4 +16,11 @@ public class MyServerChannel extends ChannelInboundHandlerAdapter {
       //  ctx.pipeline().writeAndFlush(byteBuf);
         ctx.close().sync();
     }
+
+
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("===========server start===========================");
+    }
+
 }
