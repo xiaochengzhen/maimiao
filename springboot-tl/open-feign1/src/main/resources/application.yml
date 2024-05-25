@@ -1,0 +1,46 @@
+server:
+  port: 8083
+spring:
+  application:
+    name: open-feign1
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 172.16.24.156:8848
+        cluster-name: SH
+        username: nacos
+        password: nacos
+
+feign:
+  client:
+    config:
+  #    default:
+  #      loggerLevel: FULL # 对应微服务
+      nacos1-order:
+
+        loggerLevel: FULL # 对应微服务
+        connectTimeout: 2000 #连接超时
+        readTimeout: 3000 #请求超时
+
+        # 配置编解码器
+        encoder: feign.jackson.JacksonEncoder
+        decoder: feign.jackson.JacksonDecoder
+
+  httpclient:
+    hc5:
+      enabled: true
+
+  compression: # 配置 GZIP 来压缩数据
+    request:
+      enabled: true
+      mime-types: text/xml,application/xml,application/json
+      min-request-size: 1024  # 最小请求压缩阈值
+    response:
+      enabled: true
+
+
+logging:
+  level:
+    com.example.openfeign1.feign.OrderFeignService: DEBUG  #打印openFegin日志
+    feign: DEBUG
+

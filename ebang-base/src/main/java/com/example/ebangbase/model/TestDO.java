@@ -2,6 +2,9 @@ package com.example.ebangbase.model;
 
 import lombok.Data;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 /**
  * @description 
  * @author xiaobo
@@ -10,8 +13,9 @@ import lombok.Data;
 @Data
 public class TestDO {
     private Integer id;
-    private Integer age;
+
+    private Timestamp createTime;
+    private Timestamp updateTime;
     private String name;
-    private String lang;
-    private String  xxx;
+    private Long age;
 }

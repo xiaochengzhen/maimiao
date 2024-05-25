@@ -24,7 +24,7 @@ public interface TestMapper {
     @Insert({"insert into test(id, age, name) values(#{id}, #{age}, #{name})"})
     int insert3(TestDO testDO);
 
-    @Select("select id id, age age from test")
+    @Select("select * from test")
     List<TestDO> getTestDO();
 
    /* @Select("select * from test where id >= 5")

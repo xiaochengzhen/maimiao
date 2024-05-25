@@ -3,6 +3,8 @@ package com.example.ebangbase.service;
 import com.example.ebangbase.mapper.TestMapper;
 import com.example.ebangbase.model.TestDO;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.deser.std.StringCollectionDeserializer;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
@@ -45,21 +47,22 @@ public class TestService {
     }
 
     public List<TestDO> getTestDO() {
-        return testMapper.getTestDO();
+        List<TestDO> testDO = testMapper.getTestDO();
+        return testDO;
     }
 
-    @PostConstruct
+  //  @PostConstruct
     public void save() {
       Thread thread =   new Thread(()->{
             for (int i = 0; i < 100; i++) {
                 try {
                     TestDO testDO = new TestDO();
-                    testDO.setAge(0);
+                    testDO.setAge(1L);
                     testDO.setName("1");
-                    testDO.setLang("1");
-                    testDO.setXxx("1");
+                   /* testDO.setLang("1");
+                    testDO.setXxx("1");*/
                     if (i > 1) {
-                        testDO.setAge(i);
+                        testDO.setAge((long) i);
                     }
                     testMapper.insert1(testDO);
                     System.out.println("=================="+i);
