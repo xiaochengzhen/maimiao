@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="generate.BrokerRoleMapper">
+  <resultMap id="BaseResultMap" type="generate.BrokerRole">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="bid" jdbcType="BIGINT" property="bid" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="is_admin" jdbcType="TINYINT" property="isAdmin" />
+    <result column="role_type" jdbcType="TINYINT" property="roleType" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="delete_status" jdbcType="TINYINT" property="deleteStatus" />
+    <result column="permission_change_status" jdbcType="TINYINT" property="permissionChangeStatus" />
+    <result column="role_assign_operator_status" jdbcType="TINYINT" property="roleAssignOperatorStatus" />
+    <result column="approving_permission" jdbcType="OTHER" property="approvingPermission" />
+    <result column="approving_operator" jdbcType="OTHER" property="approvingOperator" />
+    <result column="operator" jdbcType="BIGINT" property="operator" />
+    <result column="operator_type" jdbcType="TINYINT" property="operatorType" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, bid, `name`, is_admin, role_type, `status`, delete_status, permission_change_status, 
+    role_assign_operator_status, approving_permission, approving_operator, `operator`, 
+    operator_type, created_at, updated_at
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_broker_role
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tb_broker_role
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="generate.BrokerRole" useGeneratedKeys="true">
+    insert into tb_broker_role (bid, `name`, is_admin, 
+      role_type, `status`, delete_status, 
+      permission_change_status, role_assign_operator_status, 
+      approving_permission, approving_operator, `operator`, 
+      operator_type, created_at, updated_at
+      )
+    values (#{bid,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{isAdmin,jdbcType=TINYINT}, 
+      #{roleType,jdbcType=TINYINT}, #{status,jdbcType=TINYINT}, #{deleteStatus,jdbcType=TINYINT}, 
+      #{permissionChangeStatus,jdbcType=TINYINT}, #{roleAssignOperatorStatus,jdbcType=TINYINT}, 
+      #{approvingPermission,jdbcType=OTHER}, #{approvingOperator,jdbcType=OTHER}, #{operator,jdbcType=BIGINT}, 
+      #{operatorType,jdbcType=TINYINT}, #{createdAt,jdbcType=TIMESTAMP}, #{updatedAt,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="generate.BrokerRole" useGeneratedKeys="true">
+    insert into tb_broker_role
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="bid != null">
+        bid,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="isAdmin != null">
+        is_admin,
+      </if>
+      <if test="roleType != null">
+        role_type,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="deleteStatus != null">
+        delete_status,
+      </if>
+      <if test="permissionChangeStatus != null">
+        permission_change_status,
+      </if>
+      <if test="roleAssignOperatorStatus != null">
+        role_assign_operator_status,
+      </if>
+      <if test="approvingPermission != null">
+        approving_permission,
+      </if>
+      <if test="approvingOperator != null">
+        approving_operator,
+      </if>
+      <if test="operator != null">
+        `operator`,
+      </if>
+      <if test="operatorType != null">
+        operator_type,
+      </if>
+      <if test="createdAt != null">
+        created_at,
+      </if>
+      <if test="updatedAt != null">
+        updated_at,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="bid != null">
+        #{bid,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="isAdmin != null">
+        #{isAdmin,jdbcType=TINYINT},
+      </if>
+      <if test="roleType != null">
+        #{roleType,jdbcType=TINYINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="deleteStatus != null">
+        #{deleteStatus,jdbcType=TINYINT},
+      </if>
+      <if test="permissionChangeStatus != null">
+        #{permissionChangeStatus,jdbcType=TINYINT},
+      </if>
+      <if test="roleAssignOperatorStatus != null">
+        #{roleAssignOperatorStatus,jdbcType=TINYINT},
+      </if>
+      <if test="approvingPermission != null">
+        #{approvingPermission,jdbcType=OTHER},
+      </if>
+      <if test="approvingOperator != null">
+        #{approvingOperator,jdbcType=OTHER},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=BIGINT},
+      </if>
+      <if test="operatorType != null">
+        #{operatorType,jdbcType=TINYINT},
+      </if>
+      <if test="createdAt != null">
+        #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="generate.BrokerRole">
+    update tb_broker_role
+    <set>
+      <if test="bid != null">
+        bid = #{bid,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="isAdmin != null">
+        is_admin = #{isAdmin,jdbcType=TINYINT},
+      </if>
+      <if test="roleType != null">
+        role_type = #{roleType,jdbcType=TINYINT},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="deleteStatus != null">
+        delete_status = #{deleteStatus,jdbcType=TINYINT},
+      </if>
+      <if test="permissionChangeStatus != null">
+        permission_change_status = #{permissionChangeStatus,jdbcType=TINYINT},
+      </if>
+      <if test="roleAssignOperatorStatus != null">
+        role_assign_operator_status = #{roleAssignOperatorStatus,jdbcType=TINYINT},
+      </if>
+      <if test="approvingPermission != null">
+        approving_permission = #{approvingPermission,jdbcType=OTHER},
+      </if>
+      <if test="approvingOperator != null">
+        approving_operator = #{approvingOperator,jdbcType=OTHER},
+      </if>
+      <if test="operator != null">
+        `operator` = #{operator,jdbcType=BIGINT},
+      </if>
+      <if test="operatorType != null">
+        operator_type = #{operatorType,jdbcType=TINYINT},
+      </if>
+      <if test="createdAt != null">
+        created_at = #{createdAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedAt != null">
+        updated_at = #{updatedAt,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="generate.BrokerRole">
+    update tb_broker_role
+    set bid = #{bid,jdbcType=BIGINT},
+      `name` = #{name,jdbcType=VARCHAR},
+      is_admin = #{isAdmin,jdbcType=TINYINT},
+      role_type = #{roleType,jdbcType=TINYINT},
+      `status` = #{status,jdbcType=TINYINT},
+      delete_status = #{deleteStatus,jdbcType=TINYINT},
+      permission_change_status = #{permissionChangeStatus,jdbcType=TINYINT},
+      role_assign_operator_status = #{roleAssignOperatorStatus,jdbcType=TINYINT},
+      approving_permission = #{approvingPermission,jdbcType=OTHER},
+      approving_operator = #{approvingOperator,jdbcType=OTHER},
+      `operator` = #{operator,jdbcType=BIGINT},
+      operator_type = #{operatorType,jdbcType=TINYINT},
+      created_at = #{createdAt,jdbcType=TIMESTAMP},
+      updated_at = #{updatedAt,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
