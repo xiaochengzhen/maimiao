@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.std.StringCollectionDeserializer;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -52,6 +54,19 @@ public class TestService {
     }
 
   //  @PostConstruct
+    @ConditionalOnBean
+    @ConditionalOnMissingBean
+    public void test() {
+       InterfaceTest interfaceTest =  new InterfaceTest(){
+
+            @Override
+            public void test() {
+
+            }
+        };
+    }
+
+    @PostConstruct
     public void save() {
       Thread thread =   new Thread(()->{
             for (int i = 0; i < 100; i++) {
