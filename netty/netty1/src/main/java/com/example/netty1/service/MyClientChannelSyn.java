@@ -5,6 +5,7 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -35,6 +36,8 @@ public class MyClientChannelSyn extends SimpleChannelInboundHandler<ByteBuf> {
         ctx.writeAndFlush(Unpooled.copiedBuffer(ss.getBytes(StandardCharsets.UTF_8)));
         Object result =  msgQueue.take();
         System.out.println("获取到服务端的处理结果"+result);
+        ByteBuffer allocate = ByteBuffer.allocate(1024);
+        ByteBuffer byteBuffer = ByteBuffer.allocateDirect(1024);
 
     }
 }

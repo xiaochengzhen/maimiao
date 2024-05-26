@@ -4,6 +4,8 @@ import com.example.ebangbase.mapper.TestMapper;
 import com.example.ebangbase.model.TestDO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -45,5 +47,17 @@ public class TestService {
 
     public List<TestDO> getTestDO() {
         return testMapper.getTestDO();
+    }
+
+    @ConditionalOnBean
+    @ConditionalOnMissingBean
+    public void test() {
+       InterfaceTest interfaceTest =  new InterfaceTest(){
+
+            @Override
+            public void test() {
+
+            }
+        };
     }
 }
