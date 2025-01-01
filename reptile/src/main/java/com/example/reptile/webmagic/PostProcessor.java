@@ -4,8 +4,11 @@ import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Request;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
+import us.codecraft.webmagic.downloader.HttpClientDownloader;
 import us.codecraft.webmagic.model.HttpRequestBody;
 import us.codecraft.webmagic.processor.PageProcessor;
+import us.codecraft.webmagic.proxy.Proxy;
+import us.codecraft.webmagic.proxy.SimpleProxyProvider;
 import us.codecraft.webmagic.selector.Json;
 import us.codecraft.webmagic.selector.Selectable;
 import us.codecraft.webmagic.utils.HttpConstant;
@@ -26,7 +29,13 @@ import java.util.List;
  */
 public class PostProcessor implements PageProcessor {
     //抓取网站的相关配置，包括编码、抓取间隔、重试次数等
-    private Site site = Site.me().setRetryTimes(3).setSleepTime(100).setUserAgent("");
+    private Site site = Site.me()
+            .setRetryTimes(1).setTimeOut(5000).setSleepTime(100)
+            .addHeader("accept-language", "zh-CN,zh;q=0.9")
+            .addCookie("123", "234")
+           // .addHeader("cookie", "t_gid=4659ee78-9d34-4b5f-9fea-fd91d67c4a62-tuct98624b6; t_pt_gid=4659ee78-9d34-4b5f-9fea-fd91d67c4a62-tuct98624b6; receive-cookie-deprecation=1")
+            .setUserAgent("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36")
+            ;
     private static int count = 0;
     private static List<String> urlList = new ArrayList<>();
 
@@ -45,14 +54,19 @@ public class PostProcessor implements PageProcessor {
     }
 
     public static void main(String[] args) {
-        Request request = new Request("https://www.hsi.com.hk/data/schi/rt/index-series/hsi/constituents.do");
+        HttpClientDownloader httpClientDownloader = new HttpClientDownloader();
+        httpClientDownloader.setProxyProvider(SimpleProxyProvider.from(new Proxy("127.0.0.1",7897,"","")));
+       // Request request = new Request("https://www.hsi.com.hk/data/schi/rt/index-series/hsi/constituents.do");
+        Request request = new Request("https://cn.investing.com/news/headlines");
         request.setMethod(HttpConstant.Method.GET);
-    //    request.setRequestBody(HttpRequestBody.json("{'id':1}","utf-8"));
+      //  request.setRequestBody(HttpRequestBody.json("{'id':1}","utf-8"));
         Spider.create(new PostProcessor())
                 .addRequest(request)
                 .addPipeline(new HousePricePipeline())  //使用自定义的Pipeline
                 .thread(1)
+         //       .setDownloader(httpClientDownloader)
                 .run();
         System.out.println("----------抓取了"+count+"条记录");
+
     }
 }
