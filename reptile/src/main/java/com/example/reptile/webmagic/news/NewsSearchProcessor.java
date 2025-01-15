@@ -2,6 +2,7 @@ package com.example.reptile.webmagic.news;
 
 import com.example.reptile.webmagic.news.model.NewsInfoDTO;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.context.annotation.RequestScope;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
@@ -22,7 +23,7 @@ import java.util.List;
 public class NewsSearchProcessor implements PageProcessor {
     //抓取网站的相关配置，包括编码、抓取间隔、重试次数等
     private Site site = Site.me().setRetryTimes(1).setSleepTime(2000)
-            .addCookie("123", "234")
+            .addCookie("cn.investing.com", "cn.investing.com")
             .setUserAgent("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36")
              .setUseGzip(true)
             .addHeader("accept-language", "zh-CN,zh;q=0.9");
@@ -65,10 +66,10 @@ public class NewsSearchProcessor implements PageProcessor {
         HttpClientDownloader httpClientDownloader = new HttpClientDownloader();
         httpClientDownloader.setProxyProvider(SimpleProxyProvider.from(new Proxy("127.0.0.1",7897,"","")));
         Spider.create(new NewsSearchProcessor())
-                .addUrl("https://www.futunn.com/stock/00017-HK/company") //从https://qd.anjuke.com/community/开始爬取
+                .addUrl("https://cn.investing.com/search/?q=00700") //从https://qd.anjuke.com/community/开始爬取
                 .addPipeline(new NewsInfoPipeline())  //使用自定义的Pipeline
                 .thread(1)
-             //   .setDownloader(httpClientDownloader)
+                .setDownloader(httpClientDownloader)
                 .run();
     }
 }

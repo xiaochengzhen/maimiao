@@ -21,7 +21,7 @@ public class PlaywrightExample1 {
             Page page = context.newPage();
             context.setDefaultTimeout(120000);
             // 导航到网页
-            Response navigate = page.navigate("https://www.futunn.com/stock/00017-HK/company");
+            Response navigate = page.navigate("https://cn.investing.com/search/?q=00700");
             int status = navigate.status();
             System.out.println(status);
            /* page.evaluate("document.querySelector('input[type=hidden]').style.display = 'block';");
@@ -54,12 +54,12 @@ public class PlaywrightExample1 {
                     }
                 }
             }
-            System.out.println(content);
+          //  System.out.println(content);
             // 截图
-            page.screenshot(new Page.ScreenshotOptions().setPath(Paths.get("screenshot111.png")));
+         //   page.screenshot(new Page.ScreenshotOptions().setPath(Paths.get("screenshot111.png")));
             // 关闭浏览器
-          /*  browser.close();
-            context.close();*/
+            browser.close();
+            context.close();
         }
     }
 }
